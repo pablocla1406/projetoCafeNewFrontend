@@ -1,10 +1,10 @@
-import { IFuncao } from "@/utils/interfaces/IFuncao";
+import { ISetor } from "@/utils/interfaces/ISetor";
 import ApiService from "./ApiService";
 
-class FuncaoService extends ApiService<IFuncao>{
+class SetorService extends ApiService<ISetor>{
     constructor(){
         super('funcoes')
     }
 }
 
-export const funcaoService = new FuncaoService
+export const SetorService = new SetorService

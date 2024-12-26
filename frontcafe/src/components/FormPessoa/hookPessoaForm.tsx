@@ -11,7 +11,7 @@ export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
             foto: "",
             usuario: "",
             senha: "",
-            funcao: {id: "", nome: ""},
+            Setor: {id: "", nome: ""},
             permissao: "USER"
         }
     })

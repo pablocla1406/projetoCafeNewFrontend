@@ -1,7 +1,7 @@
 import PessoaFormulario from "@/components/FormPessoa/PessoaFormulario";
-import { funcaoService } from "@/service/funcaoService";
+import { SetorService } from "@/service/SetorService";
 import { pessoaService } from "@/service/PessoaService";
-import { IFuncao } from "@/utils/interfaces/IFuncao";
+import { ISetor } from "@/utils/interfaces/ISetor";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import { useEffect, useState } from "react";
 
@@ -9,7 +9,7 @@ export default function PessoaCadastro(){
     const [pessoa, setPessoa] = useState<IPessoa>({
         id: "",
         nome: "",
-        funcao: {
+        Setor: {
             id: "",
             nome: ""
         },
@@ -19,19 +19,19 @@ export default function PessoaCadastro(){
         permissao: "USER"
     })
 
-    const [todasFuncoes, setTodasFuncoes] = useState<IFuncao[]>([])
-    const [funcoesFiltradas, setFuncoesFiltradas] = useState<IFuncao[]>([])
+    const [todasFuncoes, setTodasFuncoes] = useState<ISetor[]>([])
+    const [funcoesFiltradas, setFuncoesFiltradas] = useState<ISetor[]>([])
 
 
     async function buscarTodasFuncoes() {
-        const todasAsFuncoes = await funcaoService.listarDados()
+        const todasAsFuncoes = await SetorService.listarDados()
         
         setTodasFuncoes(todasAsFuncoes)
     }
 
     function FiltrarFuncoes(termo : string){
-        const resultadoFiltro = todasFuncoes.filter(funcao =>
-            funcao.nome.toLowerCase().includes(termo.toLowerCase())
+        const resultadoFiltro = todasFuncoes.filter(Setor =>
+            Setor.nome.toLowerCase().includes(termo.toLowerCase())
         )
 
         setFuncoesFiltradas(resultadoFiltro)
@@ -51,20 +51,20 @@ export default function PessoaCadastro(){
         buscarTodasFuncoes()
     }, [])
 
-    async function AdicionarFuncao(novafuncao : IFuncao){
+    async function AdicionarSetor(novaSetor : ISetor){
         
-        if (!todasFuncoes.some(funcao => funcao.id === novafuncao.id)) {
+        if (!todasFuncoes.some(Setor => Setor.id === novaSetor.id)) {
             try {
-                const novaFuncaoCriada = await funcaoService.criarNovoCadastroID(novafuncao);
+                const novaSetorCriada = await SetorService.criarNovoCadastroID(novaSetor);
 
                 setTodasFuncoes([
                     ...todasFuncoes,
-                    novaFuncaoCriada
+                    novaSetorCriada
                 ]);
 
                 setPessoa({
                     ...pessoa,
-                    funcao: novaFuncaoCriada
+                    Setor: novaSetorCriada
                 });
             } catch (error) {
                 console.error("Erro ao criar nova função:", error);
@@ -72,7 +72,7 @@ export default function PessoaCadastro(){
         } else {
             setPessoa({
                 ...pessoa,
-                funcao: novafuncao
+                Setor: novaSetor
             });
         }
     }
@@ -106,7 +106,7 @@ export default function PessoaCadastro(){
 
     return(
         <>
-        <PessoaFormulario dadosExistentes={pessoa} onAdicionarFuncao={AdicionarFuncao} funcaosFiltradas={funcoesFiltradas} />
+        <PessoaFormulario dadosExistentes={pessoa} onAdicionarSetor={AdicionarSetor} SetorsFiltradas={funcoesFiltradas} />
         </>
     )
 }

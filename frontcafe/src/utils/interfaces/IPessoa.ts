@@ -1,9 +1,9 @@
-import { IFuncao } from "./IFuncao";
+import { ISetor } from "./ISetor";
 
 export default interface IPessoa {
     id: string,
     nome: string,
-    funcao: IFuncao,
+    Setor: ISetor,
     foto?: string | undefined,
     usuario: string,
     senha: string,

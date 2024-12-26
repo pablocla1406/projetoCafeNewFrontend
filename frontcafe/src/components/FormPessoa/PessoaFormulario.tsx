@@ -4,16 +4,16 @@ import { Input } from "../ui/input";
 import HookPessoaForm from "./hookPessoaForm";
 import { PessoaFormSchema } from "./schema";
 import { ComboboxDemo } from "@/components/ComboboxDemo"; // Import the ComboboxDemo component
-import { IFuncao } from "@/utils/interfaces/IFuncao";
+import { ISetor } from "@/utils/interfaces/ISetor";
 import { Button } from "../ui/button";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
-  onAdicionarFuncao: (funcao: IFuncao) => void; // Add the onAdicionarFuncao prop
-  funcaosFiltradas: IFuncao[];
+  onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
+  SetorsFiltradas: ISetor[];
 }
 
-export default function PessoaFormulario({ dadosExistentes, onAdicionarFuncao, funcaosFiltradas }: PessoaFormularioProps) {
+export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetorsFiltradas }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
 
   return (
@@ -68,16 +68,16 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarFuncao, f
 
         <FormField
           control={form.control}
-          name="funcao"
+          name="Setor"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Função</FormLabel>
               <ComboboxDemo
-                items={funcaosFiltradas} // Pass the todasFuncoes prop
+                items={SetorsFiltradas} // Pass the todasFuncoes prop
                 onSelect={field.onChange}
-                onCreate={onAdicionarFuncao} // Use the onAdicionarFuncao prop
+                onCreate={onAdicionarSetor} // Use the onAdicionarSetor prop
               />
-              {errors.funcao?.message && <FormMessage>{errors.funcao.message}</FormMessage>}
+              {errors.Setor?.message && <FormMessage>{errors.Setor.message}</FormMessage>}
             </FormItem>
           )}
         ></FormField>

@@ -1,4 +1,4 @@
- export interface IFuncao{
+ export interface ISetor{
     id: string,
     nome: string
 }

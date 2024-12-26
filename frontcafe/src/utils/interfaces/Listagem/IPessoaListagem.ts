@@ -1,8 +1,8 @@
-import { IFuncao } from "../IFuncao";
+import { ISetor } from "../ISetor";
 
 export default interface IPessoaListagem {
     id: string,
     nome: string,
-    funcaoPrincipal: IFuncao,
+    SetorPrincipal: ISetor,
     image: string
 }
