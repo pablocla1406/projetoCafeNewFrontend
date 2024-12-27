@@ -17,6 +17,11 @@ class ApiService<T>{
         return resposta.data
     }
 
+    async listarDadosComFiltros(filters: object, page: number = 1, limit: number = 12): Promise<{ data: T[], totalPages: number }> {
+        const resposta = await api.get<{ data: T[], totalPages: number }>(`/${this.recurso}`, { params: { ...filters, page, limit } });
+        return resposta.data;
+    }
+
     async atualizarDadosID(id: string, dadosAtualizados : Partial<T>) : Promise<void>{
         await api.put<T>(`/${this.recurso}/${id}`, dadosAtualizados)
     }

@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { pessoaFormSchema, PessoaFormSchema } from "./schema";
 import { pessoaService } from "@/service/PessoaService";
@@ -11,7 +11,7 @@ export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
             foto: "",
             usuario: "",
             senha: "",
-            Setor: {id: "", nome: ""},
+            setor: {id: "", nome: ""},
             permissao: "USER"
         }
     })

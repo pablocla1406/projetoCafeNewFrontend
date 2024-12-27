@@ -2,7 +2,8 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Pencil, Trash2 } from 'lucide-react';
+import {  Pencil, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Column {
   key: string;
@@ -13,8 +14,8 @@ interface Column {
 interface GenericTableProps {
   data: any[] | undefined;
   columns: Column[];
-  onEdit: (id: string | number) => void;
-  onDelete: (id: string | number) => void;
+  href: string;
+  onDelete: (id: string ) => void;
   onFilter: (filters: Record<string, string>) => void;
   currentPage: number;
   totalPages: number;
@@ -24,7 +25,7 @@ interface GenericTableProps {
 export default function GenericTable({
   data,
   columns,
-  onEdit,
+  href,
   onDelete,
   onFilter,
   currentPage,
@@ -78,8 +79,10 @@ export default function GenericTable({
                   })}
                   <TableCell>
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="icon" onClick={() => onEdit(row.id)}>
+                      <Button variant="outline" size="icon">
+                        <Link to={`/${href}}/${row.id}`} className="flex items-center">
                         <Pencil className="h-4 w-4" />
+                        </Link>
                       </Button>
                       <Button variant="outline" size="icon" onClick={() => onDelete(row.id)}>
                         <Trash2 className="h-4 w-4" />
@@ -92,7 +95,7 @@ export default function GenericTable({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length + 1} className="text-center">
-                No data available
+                Não há mais um item cadastrado
               </TableCell>
             </TableRow>
           )}

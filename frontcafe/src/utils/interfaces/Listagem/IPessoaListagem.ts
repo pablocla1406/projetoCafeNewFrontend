@@ -2,7 +2,7 @@ import { ISetor } from "../ISetor";
 
 export default interface IPessoaListagem {
     id: string,
+    foto : string | null,
     nome: string,
-    SetorPrincipal: ISetor,
-    image: string
+    setor: ISetor,
 }

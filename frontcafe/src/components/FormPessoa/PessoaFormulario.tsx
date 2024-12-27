@@ -68,7 +68,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
 
         <FormField
           control={form.control}
-          name="Setor"
+          name="setor"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Função</FormLabel>
@@ -77,7 +77,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
                 onSelect={field.onChange}
                 onCreate={onAdicionarSetor} // Use the onAdicionarSetor prop
               />
-              {errors.Setor?.message && <FormMessage>{errors.Setor.message}</FormMessage>}
+              {errors.setor?.message && <FormMessage>{errors.setor.message}</FormMessage>}
             </FormItem>
           )}
         ></FormField>

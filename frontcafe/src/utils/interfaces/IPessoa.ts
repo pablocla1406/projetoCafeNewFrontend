@@ -3,8 +3,8 @@ import { ISetor } from "./ISetor";
 export default interface IPessoa {
     id: string,
     nome: string,
-    Setor: ISetor,
-    foto?: string | undefined,
+    setor: ISetor,
+    foto: string ,
     usuario: string,
     senha: string,
     permissao: "ADMIN" | "USER" | "AUX"

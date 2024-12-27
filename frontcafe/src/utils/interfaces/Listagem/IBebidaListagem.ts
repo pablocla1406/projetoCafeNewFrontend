@@ -1,6 +1,12 @@
-export default interface IBebidaListagem{
+export enum Status {
+    Ativo = "Ativo",
+    Inativado = "Inativado"
+}
+
+export default interface IBebidaListagem {
     id: string,
     nome: string,
     preco: number,
-    image: string
+    image: string,
+    status: Status,
 }

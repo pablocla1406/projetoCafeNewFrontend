@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const funcaoSchema = z.object({
+const setorSchema = z.object({
   id: z.string(),
   nome: z.string().min(1, { message: "Nome da função é obrigatório" }),
 });
@@ -13,7 +13,7 @@ export const pessoaFormSchema = z.object({
   foto: z.string().url().optional(),
   usuario: z.string().min(3, { message: "O campo Usuário é obrigatório" }),
   senha: z.string().min(3, { message: "O campo Senha é obrigatório" }),
-  funcao: funcaoSchema,
+  setor: setorSchema,
   permissao: permissaoEnum,
 });
 

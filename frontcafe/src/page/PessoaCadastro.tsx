@@ -1,20 +1,20 @@
 import PessoaFormulario from "@/components/FormPessoa/PessoaFormulario";
-import { SetorService } from "@/service/SetorService";
 import { pessoaService } from "@/service/PessoaService";
 import { ISetor } from "@/utils/interfaces/ISetor";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import { useEffect, useState } from "react";
+import { setorService } from "@/service/setorService";
 
 export default function PessoaCadastro(){
     const [pessoa, setPessoa] = useState<IPessoa>({
         id: "",
         nome: "",
-        Setor: {
+        setor: {
             id: "",
             nome: ""
         },
         foto: "",
-        usuario: "",
+        usuario: "", // Ensure this is always a string and not undefined
         senha: "",
         permissao: "USER"
     })
@@ -24,12 +24,12 @@ export default function PessoaCadastro(){
 
 
     async function buscarTodasFuncoes() {
-        const todasAsFuncoes = await SetorService.listarDados()
+        const todasAsFuncoes = await setorService.listarDados()
         
         setTodasFuncoes(todasAsFuncoes)
     }
 
-    function FiltrarFuncoes(termo : string){
+    function filtrarFuncoes(termo : string){
         const resultadoFiltro = todasFuncoes.filter(Setor =>
             Setor.nome.toLowerCase().includes(termo.toLowerCase())
         )
@@ -51,11 +51,11 @@ export default function PessoaCadastro(){
         buscarTodasFuncoes()
     }, [])
 
-    async function AdicionarSetor(novaSetor : ISetor){
+    async function adicionarSetor(novaSetor : ISetor){
         
-        if (!todasFuncoes.some(Setor => Setor.id === novaSetor.id)) {
+        if (!todasFuncoes.some(setor => setor.id === novaSetor.id)) {
             try {
-                const novaSetorCriada = await SetorService.criarNovoCadastroID(novaSetor);
+                const novaSetorCriada = await setorService.criarNovoCadastroID(novaSetor);
 
                 setTodasFuncoes([
                     ...todasFuncoes,
@@ -64,7 +64,7 @@ export default function PessoaCadastro(){
 
                 setPessoa({
                     ...pessoa,
-                    Setor: novaSetorCriada
+                    setor: novaSetorCriada
                 });
             } catch (error) {
                 console.error("Erro ao criar nova função:", error);
@@ -72,41 +72,16 @@ export default function PessoaCadastro(){
         } else {
             setPessoa({
                 ...pessoa,
-                Setor: novaSetor
+                setor: novaSetor
             });
         }
     }
 
-    
-
-    function handleChange(event : React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
-        const {name, value} = event.target
-
-        setPessoa({
-                ...pessoa,
-                [name] : value
-            })}
-
-    async function FormSubmit(event : React.FormEvent<HTMLFormElement>){
-        event.preventDefault()
-
-        const {id, ...dadosPessoaAtualizado} = pessoa
-
-        try {
-            if(pessoa.id){
-                await pessoaService.atualizarDadosID(id, dadosPessoaAtualizado)
-            }
-            else{
-                await pessoaService.criarNovoCadastroID(dadosPessoaAtualizado)
-            }
-        } catch (error) {
-            console.error("Erro ao salvar dados da pessoa:", error);
-        }
-    }
+        
 
     return(
         <>
-        <PessoaFormulario dadosExistentes={pessoa} onAdicionarSetor={AdicionarSetor} SetorsFiltradas={funcoesFiltradas} />
+        <PessoaFormulario dadosExistentes={pessoa} onAdicionarSetor={adicionarSetor} SetorsFiltradas={funcoesFiltradas} />
         </>
     )
 }

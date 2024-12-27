@@ -3,8 +3,8 @@ import ApiService from "./ApiService";
 
 class PessoaService extends ApiService<IPessoa>{
     constructor(){
-        super('/pessoas')
+        super('/Pessoas')
     }
 }
 
-export const pessoaService = new PessoaService
+export const pessoaService = new PessoaService()

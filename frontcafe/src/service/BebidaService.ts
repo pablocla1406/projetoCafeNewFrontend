@@ -4,8 +4,8 @@ import ApiService from "./ApiService";
 
 class BebidaService extends ApiService<IBebida | IBebidaListagem>{
     constructor(){
-        super('/bebidas')
+        super('/Bebidas')
     }
 }
 
-export const bebidaService = new BebidaService
+export const bebidaService = new BebidaService()
