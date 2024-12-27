@@ -1,4 +1,3 @@
-import { EnumDeclaration } from "typescript";
 
 export default interface IBebida{
     id: string,

@@ -41,7 +41,7 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <CommandInput
-            placeholder="Procure a Função"
+            placeholder="Procure o Setor"
             className="h-9"
             value={inputValue}
             onValueChange={setInputValue}
@@ -55,7 +55,7 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
             }}
           />
           <CommandList>
-            <CommandEmpty>Nenhuma função encontrada. Pressione Enter para criar.</CommandEmpty>
+            <CommandEmpty>Nenhum Setor encontrado. Pressione Enter para criar.</CommandEmpty>
             <CommandGroup>
               {items.map((item) => (
                 <CommandItem
