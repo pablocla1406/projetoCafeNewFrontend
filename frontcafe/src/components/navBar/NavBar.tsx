@@ -1,9 +1,9 @@
+import { Outlet } from 'react-router-dom';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
@@ -12,8 +12,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { AppSidebar } from './app-sidebar';
 
-import { AppSidebar } from "./app-sidebar"
 
 export default function NavBar() {
   return (
@@ -30,28 +30,24 @@ export default function NavBar() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/bebida-cadastro">Listagens de Bebida</BreadcrumbLink>
+                <BreadcrumbLink href="/bebidas">Listagens de Bebida</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/listagem-pessoa">Listagens de Pessoa</BreadcrumbLink>
+                <BreadcrumbLink href="/pessoas">Listagens de Pessoa</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href="/pedido-cadastro">Listagens de Pedido</BreadcrumbLink>
+                <BreadcrumbLink href="/pedidos">Listagens de Pedido</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-        </div>
+        <main className="flex-1 overflow-y-auto p-4">
+          <Outlet />
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )
 }
+

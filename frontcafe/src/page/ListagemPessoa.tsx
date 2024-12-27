@@ -1,9 +1,7 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { pessoaService } from "@/service/PessoaService";
-import IPessoa from "@/utils/interfaces/IPessoa";
 import IPessoaListagem from "@/utils/interfaces/Listagem/IPessoaListagem";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { head } from "axios";
 import { Badge } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -13,7 +11,9 @@ export default function ListagemPessoa(){
     const [totalPages, SetTotalPages] = useState(1);
 
     async function getPessoas(page: number = 1, filters: object = {}) {
+        console.log('Fetching pessoas with page:', page, 'and filters:', filters);
         const { data, totalPages } = await pessoaService.listarDadosComFiltros(filters, page, 12);
+        console.log('Fetched data:', data);
         const formattedData = data.map(pessoa => ({
             id: pessoa.id,
             foto: pessoa.foto,
@@ -22,14 +22,18 @@ export default function ListagemPessoa(){
         }));
         SetPessoas(formattedData);
         SetTotalPages(totalPages);
+        console.log('Formatted data:', formattedData);
+        console.log('Total pages:', totalPages);
+        console.log('State updated: pessoas:', formattedData, 'totalPages:', totalPages);
     }
 
     useEffect(() => {
+        console.log('Current page changed:', currentPage);
         getPessoas(currentPage);
     }, [currentPage]);
 
     async function handleDelete(id: string){
-        await pessoaService.DeletarDadosID(id);
+        await pessoaService.deletarDadosId(id);
         const dadosAposExclusao = pessoas.filter(pessoa => pessoa.id !== id);
         SetPessoas(dadosAposExclusao);
     }

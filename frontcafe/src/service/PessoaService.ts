@@ -3,7 +3,7 @@ import ApiService from "./ApiService";
 
 class PessoaService extends ApiService<IPessoa>{
     constructor(){
-        super('/Pessoas')
+        super('pessoas')
     }
 }
 
