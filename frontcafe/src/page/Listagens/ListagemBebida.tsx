@@ -21,6 +21,19 @@ export default function ListagemBebida(){
         fetchData(currentPage);
     }, [currentPage]);
 
+
+    async function handleDelete(id: string){
+        await bebidaService.deletarDadosId(id);
+        const dadosAposExclusao = bebidas.filter(bebida => bebida.id !== id);
+        SetBebidas(dadosAposExclusao);
+    }
+
+    async function handleFilter(filters: object) {
+        SetCurrentPage(1);
+        await fetchData(1, filters);
+    }
+
+
     const columnsBebidas = [
         {
             key: 'id',
@@ -33,18 +46,9 @@ export default function ListagemBebida(){
         {
             key: 'preco',
             header: 'Preço',
-            render(data: number){
-                return `R$ ${data.toFixed(2)}`
-            }
-        },
-        {
-            key: 'image',
-            header: 'Imagem',
-            render(data: string){
-                <Avatar>
-                    <AvatarImage src={data} alt="Imagem da Bebida" />
-                    <AvatarFallback>B</AvatarFallback>
-                </Avatar>
+            render: (value: string | number) => {
+                const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+                return `R$ ${numericValue.toFixed(2)}`;
             }
         },
         {
@@ -54,8 +58,6 @@ export default function ListagemBebida(){
     ]
 
 
-
-
     return(
         <GenericTable
         data={bebidas}
@@ -63,10 +65,11 @@ export default function ListagemBebida(){
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={SetCurrentPage}
-        href="/bebidas"
-
+        onDelete={handleDelete}
+        onFilter={handleFilter}
+        href="cadastroBebida"
         />
-        
+
 
     )
 

@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import HookPessoaForm from "./hookPessoaForm";
-import { PessoaFormSchema } from "./Pessoaschema";
+import { PessoaFormSchema } from "./PessoaSchema";
 import { ComboboxDemo } from "@/components/ComboboxDemo"; // Import the ComboboxDemo component
 import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";

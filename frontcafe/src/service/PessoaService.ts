@@ -10,21 +10,24 @@ class PessoaService extends ApiService<IPessoa>{
 
 
 
-     /**
-     * Obtém dados filtrados (colunas reduzidas) para listagem
-     * @param filters Filtros opcionais
-     * @param page Página atual
-     * @param limit Limite de itens por página
-     * @returns Dados no formato de IPessoaListagem
-     */
+     
      async listarDadosFiltrados(
         filters: object = {},
         page: number = 1,
         limit: number = 12
     ): Promise<{ data: IPessoaListagem[], totalPages: number }> {
-        // Faz a chamada à rota '/pessoas/listagem'
-        const resposta = await api.get<{ data: IPessoaListagem[], totalPages: number }>('/pessoas/listagem', {params: { ...filters, page, limit } });
-        return resposta.data;
+        const resposta = await api.get<{
+            items: IPessoaListagem[],
+            totalItems: number,
+            currentPage: number,
+            totalPages: number,
+            itemsPerPage: number
+        }>('/pessoas/listagem', {params: { ...filters, page, limit } });
+        
+        return {
+            data: resposta.data.items,
+            totalPages: resposta.data.totalPages
+        }
     }
 
     

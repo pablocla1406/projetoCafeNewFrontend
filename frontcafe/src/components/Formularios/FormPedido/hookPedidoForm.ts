@@ -1,3 +1,4 @@
+import { pedidoService } from "@/service/PedidoService";
 import { PedidoSchema } from "./PedidoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

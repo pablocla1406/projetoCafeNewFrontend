@@ -4,84 +4,106 @@ import IPessoa from "@/utils/interfaces/IPessoa";
 import { useEffect, useState } from "react";
 import { setorService } from "@/service/setorService";
 import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormulario";
+import { useParams } from "react-router-dom";
 
 export default function PessoaCadastro(){
+    const { id } = useParams();
+    console.log("ID from params:", id);
+
     const [pessoa, setPessoa] = useState<IPessoa>({
-        id: "",
+        id: id || "",
         nome: "",
         setor: {
             id: "",
             nome: ""
         },
         foto: "",
-        usuario: "", // Ensure this is always a string and not undefined
+        usuario: "",
         senha: "",
         permissao: "USER"
-    })
+    });
 
-    const [todasFuncoes, setTodasFuncoes] = useState<ISetor[]>([])
-    const [funcoesFiltradas, setFuncoesFiltradas] = useState<ISetor[]>([])
+    const [todosSetores, setTodosSetores] = useState<ISetor[]>([])
+    const [setoresFiltrados, setSetoresFiltrados] = useState<ISetor[]>([])
 
-
-    async function buscarTodasFuncoes() {
-        const todasAsFuncoes = await setorService.listarDados()
-        
-        setFuncoesFiltradas(todasAsFuncoes)
+    async function buscarTodosSetores() {
+        try {
+            const todosOsSetores = await setorService.listarDados()
+            console.log("Setores recebidos:", todosOsSetores);
+            setSetoresFiltrados(todosOsSetores)
+        } catch (error) {
+            console.error("Erro ao buscar setores:", error);
+        }
     }
-
-    // function filtrarFuncoes(termo : string){
-    //     const resultadoFiltro = todasFuncoes.filter(Setor =>
-    //         Setor.nome.toLowerCase().includes(termo.toLowerCase())
-    //     )
-
-    //     setFuncoesFiltradas(resultadoFiltro)
-    // }
-
-   
 
     async function receberDadosPessoa(){
-        if (pessoa.id) {
-            const dadosPessoa = await pessoaService.listarDadosId(pessoa.id)
-            setPessoa(dadosPessoa)
+        if (id) {
+            try {
+                console.log("Buscando dados da pessoa com ID:", id);
+                const dadosPessoa = await pessoaService.listarDadosId(id);
+                console.log("Dados brutos recebidos:", dadosPessoa);
+
+                if (dadosPessoa && typeof dadosPessoa === 'object') {
+                    const pessoaFormatada = {
+                        id: dadosPessoa.id?.toString() || "",
+                        nome: dadosPessoa.nome || "",
+                        setor: {
+                            id: dadosPessoa.setor?.id?.toString() || "",
+                            nome: dadosPessoa.setor?.nome || ""
+                        },
+                        foto: dadosPessoa.foto || "",
+                        usuario: dadosPessoa.usuario || "",
+                        senha: dadosPessoa.senha || "",
+                        permissao: dadosPessoa.permissao || "USER"
+                    };
+                    console.log("Dados formatados:", pessoaFormatada);
+                    setPessoa(pessoaFormatada);
+                } else {
+                    console.error("Dados recebidos inválidos:", dadosPessoa);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar dados da pessoa:", error);
+            }
         }
     }
 
-    useEffect(()=>{
-        receberDadosPessoa()
-        buscarTodasFuncoes()
-    }, [])
+    useEffect(() => {
+        console.log("useEffect triggered with ID:", id);
+        receberDadosPessoa();
+        buscarTodosSetores();
+    }, [id]);
 
     async function adicionarSetor(novaSetor : ISetor){
-        
-        if (!todasFuncoes.some(setor => setor.id === novaSetor.id)) {
-            try {
+        try {
+            if (!novaSetor.id) {
                 const novaSetorCriada = await setorService.criarNovoCadastroId(novaSetor);
-
-                setTodasFuncoes([
-                    ...todasFuncoes,
-                    novaSetorCriada
-                ]);
-
-                setPessoa({
-                    ...pessoa,
+                setTodosSetores(prev => [...prev, novaSetorCriada]);
+                setSetoresFiltrados(prev => [...prev, novaSetorCriada]);
+                setPessoa(prev => ({
+                    ...prev,
                     setor: novaSetorCriada
-                });
-            } catch (error) {
-                console.error("Erro ao criar nova função:", error);
+                }));
+            } else {
+                setPessoa(prev => ({
+                    ...prev,
+                    setor: novaSetor
+                }));
             }
-        } else {
-            setPessoa({
-                ...pessoa,
-                setor: novaSetor
-            });
+        } catch (error) {
+            console.error("Erro ao criar novo setor:", error);
         }
     }
 
-        
+    console.log("Estado atual da pessoa:", pessoa);
+    console.log("Renderizando formulário com dados:", pessoa);
 
     return(
         <>
-        <PessoaFormulario dadosExistentes={pessoa} onAdicionarSetor={adicionarSetor} SetoresFiltradas={funcoesFiltradas} />
+            <PessoaFormulario 
+                dadosExistentes={pessoa} 
+                onAdicionarSetor={adicionarSetor} 
+                SetoresFiltradas={setoresFiltrados} 
+            />
         </>
     )
 }

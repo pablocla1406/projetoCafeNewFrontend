@@ -13,8 +13,18 @@ class BebidaService extends ApiService<IBebida>{
         page: number = 1,
         limit: number = 12
     ): Promise<{ data: IBebidaListagem[], totalPages: number }> {
-        const resposta = await api.get<{ data: IBebidaListagem[], totalPages: number }>('/bebidas/listagem', {params: { ...filters, page, limit } });
-        return resposta.data;
+        const resposta = await api.get<{
+            items: IBebidaListagem[],
+            totalItems: number,
+            currentPage: number,
+            totalPages: number,
+            itemsPerPage: number
+        }>('/bebidas/listagem', {params: { ...filters, page, limit } });
+        
+        return {
+            data: resposta.data.items,
+            totalPages: resposta.data.totalPages
+        };
     }
 
 

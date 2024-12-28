@@ -6,7 +6,7 @@ export enum Status {
 export default interface IBebidaListagem {
     id: string,
     nome: string,
-    preco: number,
+    preco: string | number,
     image: string,
     status: Status,
 }

@@ -1,12 +1,15 @@
 import { bebidaService } from "@/service/BebidaService"
 import IBebida from "@/utils/interfaces/IBebida"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import BebidaForm from "@/components/Formularios/FormBebidas/BebidaForm"
 
 export default function BebidaCadastro(){
+    const { id } = useParams();
+    console.log("ID from params:", id);
+
     const [bebida, setBebida] = useState<IBebida>({
-        id: "",
+        id: id || "",
         nome: "",
         descricao: "",
         preco: 0,
@@ -14,25 +17,36 @@ export default function BebidaCadastro(){
         status: "Ativo"
     })
 
-
     async function receberDados(){
-        if(bebida.id){
-            await bebidaService.listarDadosId(bebida.id)
+        if(id){
+            try {
+                console.log("Fetching data for ID:", id);
+                const dadosBebida = await bebidaService.listarDadosId(id)
+                console.log("Raw data received:", dadosBebida);
+                
+                const formattedData = {
+                    id: dadosBebida.id.toString(),
+                    nome: dadosBebida.nome,
+                    descricao: dadosBebida.descricao,
+                    preco: Number(dadosBebida.preco),
+                    image: dadosBebida.image || "",
+                    status: dadosBebida.status
+                };
+                console.log("Formatted data:", formattedData);
+                setBebida(formattedData);
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error)
+            }
         }
-        setBebida(bebida)
     }
 
     useEffect(() => {
+        console.log("useEffect triggered with ID:", id);
         receberDados()
-    }, [])
+    }, [id])
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
-        const {name, value} = event.target
-        setBebida({
-            ...bebida,
-            [name]: value
-        })
-    }
+    console.log("Current bebida state:", bebida);
+    console.log("Rendering BebidaForm with data:", bebida);
 
     return(
         <>

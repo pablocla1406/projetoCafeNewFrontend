@@ -1,11 +1,9 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { CommandInput } from "cmdk";
-import { Check, ChevronsUpDown, Command } from "lucide-react";
-import { useState } from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { CommandEmpty, CommandGroup, CommandItem, CommandList } from "./ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command";
 import { cn } from "@/lib/utils";
-
 
 type Item = {
   id: string;
@@ -20,8 +18,21 @@ type ComboboxDemoProps = {
 
 export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [inputValue, setInputValue] = useState("")
+  const [filteredItems, setFilteredItems] = useState(items)
+
+  useEffect(() => {
+    setFilteredItems(items)
+  }, [items])
+
+  const handleInputChange = (newValue: string) => {
+    setInputValue(newValue)
+    const filtered = items.filter(item => 
+      item.nome.toLowerCase().includes(newValue.toLowerCase())
+    )
+    setFilteredItems(filtered)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -32,55 +43,53 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value
-            ? items.find((item) => item.id === value)?.nome
-            : "Procure a função"}
-          <ChevronsUpDown className="opacity-50" />
+          {selectedItem ? selectedItem.nome : "Selecione o setor"}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command className="w-full">
           <CommandInput
             placeholder="Procure o Setor"
-            className="h-9"
             value={inputValue}
-            onValueChange={setInputValue}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && inputValue) {
-                const newItem = { id: inputValue, nome: inputValue };
-                onCreate(newItem);
-                setValue(inputValue);
-                setOpen(false);
-              }
-            }}
+            onValueChange={handleInputChange}
           />
           <CommandList>
-            <CommandEmpty>Nenhum Setor encontrado. Pressione Enter para criar.</CommandEmpty>
+            <CommandEmpty className="p-4">
+              <p className="mb-2">Nenhum Setor encontrado.</p>
+              <Button
+                onClick={() => {
+                  if (inputValue.trim()) {
+                    const newItem = { nome: inputValue.trim() } as Item;
+                    onCreate(newItem);
+                    setInputValue("");
+                    setOpen(false);
+                  }
+                }}
+                className="w-full"
+                variant="secondary"
+              >
+                Criar Setor: {inputValue}
+              </Button>
+            </CommandEmpty>
             <CommandGroup>
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <CommandItem
                   key={item.id}
                   value={item.id}
-                  onSelect={(currentValue: string) => {
-                    const selectedItem = items.find(f => f.id === currentValue);
-                    if (selectedItem) {
-                      setValue(currentValue === value ? "" : currentValue)
-                      onSelect(selectedItem);
-                    } else {
-                      const newItem = { id: currentValue, nome: currentValue };
-                      onCreate(newItem);
-                      setValue(currentValue);
-                    }
-                    setOpen(false)
+                  onSelect={() => {
+                    setSelectedItem(item);
+                    onSelect(item);
+                    setOpen(false);
                   }}
                 >
-                  {item.nome}
                   <Check
                     className={cn(
-                      "ml-auto",
-                      value === item.id ? "opacity-100" : "opacity-0"
+                      "mr-2 h-4 w-4",
+                      selectedItem?.id === item.id ? "opacity-100" : "opacity-0"
                     )}
                   />
+                  {item.nome}
                 </CommandItem>
               ))}
             </CommandGroup>

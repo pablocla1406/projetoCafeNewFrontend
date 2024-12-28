@@ -7,7 +7,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar"
 import { TituloNavBar } from "./tituloNavBar"
 import { Separator } from "@/components/ui/separator"
@@ -21,15 +20,19 @@ const data = {
     },
     {
       title: "Listagens de Bebida",
-      url: "/bebida-cadastro",
+      url: "/ListagemBebidas",
     },
     {
       title: "Listagens de Pessoa",
-      url: "/listagem-pessoa",
+      url: "/ListagemPessoas",
     },
     {
-      title: "Listagens de Pedido",
-      url: "/pedido-cadastro",
+      title: "Cadastro de Bebida",
+      url: "/cadastroBebida",
+    },
+    {
+      title: "Cadastro de Pessoa",
+      url: "/cadastroPessoa",
     },
   ],
 }

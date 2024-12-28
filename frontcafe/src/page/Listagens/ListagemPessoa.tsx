@@ -33,23 +33,10 @@ export default function ListagemPessoa(){
         await fetchData(1, filters);
     }
 
-
-
     const columnPessoa  = [
         {
             key: 'id',
             header: 'ID',
-        },
-        {
-            key: 'foto',
-            header: 'Foto',
-            render: (value: string) => (
-                <Avatar>
-                    <AvatarImage src={value} alt="Avatar" />
-                    <AvatarFallback>xD</AvatarFallback>
-                </Avatar>
-                
-            )
         },
         {
             key: 'nome',
@@ -71,7 +58,7 @@ export default function ListagemPessoa(){
         <GenericTable
         data={pessoas}
         columns={columnPessoa}
-        href={"pessoas"}
+        href="cadastroPessoa"
         onDelete={handleDelete}
         onFilter={handleFilter}
         currentPage={currentPage}
