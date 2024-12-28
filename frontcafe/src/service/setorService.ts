@@ -3,7 +3,7 @@ import ApiService from "./ApiService";
 
 class SetorService extends ApiService<ISetor> {
     constructor() {
-        super('Setor')
+        super('setores')
     }
 }
 

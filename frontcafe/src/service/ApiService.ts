@@ -23,18 +23,9 @@ class ApiService<T>{
         return resposta.data
     }
 
-    /**
-     * @param {object} filters - Filtros para a busca.
-     * @param {number} [page=1] - Número da página (default: 1).
-     * @param {number} [limit=12] - Limite de itens por página (default: 12).
-     * @returns {Promise<{ data: T[], totalPages: number }>} - Dados filtrados e total de páginas.
-     */
-    async listarDadosComFiltros(filters: object, page: number = 1, limit: number = 12): Promise<{ data: T[], totalPages: number }> {
-        console.log('Requesting data with filters:', filters, 'page:', page, 'limit:', limit);
-        const resposta = await api.get<{ data: T[], totalPages: number }>(`/${this.recurso}`, { params: { ...filters, page, limit } });
-        console.log('Response data:', resposta.data);
-        return resposta.data;
-    }
+
+
+
     async atualizarDadosId(id: string, dadosAtualizados: Partial<T>): Promise<void>{
         await api.put<T>(`/${this.recurso}/${id}`, dadosAtualizados)
     }

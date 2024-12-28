@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { pessoaFormSchema, PessoaFormSchema } from "./schema";
 import { pessoaService } from "@/service/PessoaService";
+import { pessoaFormSchema, PessoaFormSchema } from "./Pessoaschema";
 
 export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
     const form = useForm<PessoaFormSchema>({
@@ -20,10 +20,10 @@ export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
 
     async function onSubmit(data : PessoaFormSchema){
         if(dadosExistentes){
-            await pessoaService.atualizarDadosID(dadosExistentes.id, data)
+            await pessoaService.atualizarDadosId(dadosExistentes.id, data)
         }
         else{
-            await pessoaService.criarNovoCadastroID(data)
+            await pessoaService.criarNovoCadastroId(data)
         }
 
     }

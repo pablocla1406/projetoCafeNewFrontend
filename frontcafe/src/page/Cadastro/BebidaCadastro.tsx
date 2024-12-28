@@ -2,7 +2,7 @@ import { bebidaService } from "@/service/BebidaService"
 import IBebida from "@/utils/interfaces/IBebida"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-
+import BebidaForm from "@/components/Formularios/FormBebidas/BebidaForm"
 
 export default function BebidaCadastro(){
     const [bebida, setBebida] = useState<IBebida>({
@@ -14,23 +14,18 @@ export default function BebidaCadastro(){
         status: "Ativo"
     })
 
-    const navigate = useNavigate()
-
-
 
     async function receberDados(){
         if(bebida.id){
-            await bebidaService.listarDadosID(bebida.id)
+            await bebidaService.listarDadosId(bebida.id)
         }
+        setBebida(bebida)
     }
 
     useEffect(() => {
-        receberDados
+        receberDados()
+    }, [])
 
-    }, [bebida.id])
-
-
-    
     function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>){
         const {name, value} = event.target
         setBebida({
@@ -38,34 +33,10 @@ export default function BebidaCadastro(){
             [name]: value
         })
     }
-    
-
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>){
-        event.preventDefault()
-
-        const {id, ...dadosAtualizados} = bebida
-        
-        if(bebida.id){
-          await bebidaService.atualizarDadosID(id, dadosAtualizados)  
-          alert("Dados Atualizados com Sucesso")
-          navigate('/Bebidas')
-          
-        }
-        else{
-            await bebidaService.criarNovoCadastroID(dadosAtualizados)
-            alert("Dados Cadastrados com Sucesso")
-            navigate('/Bebidas')
-        }
-    }
-
 
     return(
         <>
-           
+            <BebidaForm dados={bebida} />
         </>
-
     )
-
-
-    
 }

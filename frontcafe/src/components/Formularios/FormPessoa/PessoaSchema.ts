@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const setorSchema = z.object({
   id: z.string(),
-  nome: z.string().min(1, { message: "Nome da função é obrigatório" }),
+  nome: z.string().min(1, { message: "Nome do Seor é obrigatório" }),
 });
 
 const permissaoEnum = z.enum(["ADMIN", "USER", "AUX"]);

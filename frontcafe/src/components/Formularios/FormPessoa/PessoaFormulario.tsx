@@ -1,24 +1,24 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
 import HookPessoaForm from "./hookPessoaForm";
-import { PessoaFormSchema } from "./schema";
+import { PessoaFormSchema } from "./Pessoaschema";
 import { ComboboxDemo } from "@/components/ComboboxDemo"; // Import the ComboboxDemo component
 import { ISetor } from "@/utils/interfaces/ISetor";
-import { Button } from "../ui/button";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
   onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
-  SetorsFiltradas: ISetor[];
+  SetoresFiltradas: ISetor[];
 }
 
-export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetorsFiltradas }: PessoaFormularioProps) {
+export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetoresFiltradas }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
         <FormField
           control={form.control}
           name="nome"
@@ -54,6 +54,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
           )}
         ></FormField>
 
+
         <FormField
           control={form.control}
           name="senha"
@@ -71,9 +72,9 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
           name="setor"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Função</FormLabel>
+              <FormLabel>Setor</FormLabel>
               <ComboboxDemo
-                items={SetorsFiltradas} // Pass the todasFuncoes prop
+                items={SetoresFiltradas} // Pass the todasFuncoes prop
                 onSelect={field.onChange}
                 onCreate={onAdicionarSetor} // Use the onAdicionarSetor prop
               />

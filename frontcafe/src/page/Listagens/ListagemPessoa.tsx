@@ -10,27 +10,17 @@ export default function ListagemPessoa(){
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
 
-    async function getPessoas(page: number = 1, filters: object = {}) {
-        console.log('Fetching pessoas with page:', page, 'and filters:', filters);
-        const { data, totalPages } = await pessoaService.listarDadosComFiltros(filters, page, 12);
-        console.log('Fetched data:', data);
-        const formattedData = data.map(pessoa => ({
-            id: pessoa.id,
-            foto: pessoa.foto,
-            nome: pessoa.nome,
-            setor: pessoa.setor
-        }));
-        SetPessoas(formattedData);
+    async function fetchData(page: number = 1, filters: object = {}) {
+        const { data, totalPages } = await pessoaService.listarDadosFiltrados(filters, page, 12);
+
+        SetPessoas(data);
         SetTotalPages(totalPages);
-        console.log('Formatted data:', formattedData);
-        console.log('Total pages:', totalPages);
-        console.log('State updated: pessoas:', formattedData, 'totalPages:', totalPages);
     }
 
     useEffect(() => {
-        console.log('Current page changed:', currentPage);
-        getPessoas(currentPage);
+        fetchData(currentPage);
     }, [currentPage]);
+
 
     async function handleDelete(id: string){
         await pessoaService.deletarDadosId(id);
@@ -40,7 +30,7 @@ export default function ListagemPessoa(){
 
     async function handleFilter(filters: object) {
         SetCurrentPage(1);
-        await getPessoas(1, filters);
+        await fetchData(1, filters);
     }
 
 
