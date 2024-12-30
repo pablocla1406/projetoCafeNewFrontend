@@ -30,11 +30,15 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
 
     async function onSubmit(data : BebidaSchema){
         console.log("Form submitted with data:", data);
+        const formattedData = {
+            ...data,
+            preco: Number(data.preco)
+        };
         if(dadosBebidas){
-            await bebidaService.atualizarDadosId(dadosBebidas.id, data)
+            await bebidaService.atualizarDadosId(dadosBebidas.id, formattedData)
         }
         else{
-            await bebidaService.criarNovoCadastroId(data)
+            await bebidaService.criarNovoCadastroId(formattedData)
         }
     }
 

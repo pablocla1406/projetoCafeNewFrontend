@@ -6,6 +6,7 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -18,7 +19,13 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+      <form onSubmit={handleSubmit(async (data) => {
+        try {
+          await onSubmit(data);
+        } catch (error) {
+          console.error("Erro na submissão:", error);
+        }
+      })} className="space-y-10">
         <FormField
           control={form.control}
           name="nome"
@@ -71,14 +78,30 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
           control={form.control}
           name="setor"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col gap-2">
               <FormLabel>Setor</FormLabel>
-              <ComboboxDemo
-                items={SetoresFiltradas} // Pass the todasFuncoes prop
-                onSelect={field.onChange}
-                onCreate={onAdicionarSetor} // Use the onAdicionarSetor prop
-              />
-              {errors.setor?.message && <FormMessage>{errors.setor.message}</FormMessage>}
+              <div>
+                <ComboboxDemo
+                  items={SetoresFiltradas}
+                  onSelect={(item) => {
+                    if (item?.id && item?.nome) {
+                      const setorData = {
+                        id: String(item.id),
+                        nome: item.nome
+                      };
+                      field.onChange(setorData);
+                      form.setValue("setor", setorData, { shouldValidate: true });
+                    }
+                  }}
+                  onCreate={onAdicionarSetor}
+                  selectedValue={field.value}
+                />
+              </div>
+              {errors.setor?.id?.message && (
+                <span className="text-sm font-medium text-red-500">
+                  {errors.setor.id.message}
+                </span>
+              )}
             </FormItem>
           )}
         ></FormField>
@@ -89,24 +112,57 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
           render={({ field }) => (
             <FormItem>
               <FormLabel>Permissão</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Selecione a Permissão"/>
+              <Select 
+                onValueChange={(value) => {
+                  const permissao = value as "ADMIN" | "USER" | "AUX";
+                  field.onChange(permissao);
+                  form.setValue("permissao", permissao, { shouldValidate: true });
+                }}
+                defaultValue={field.value}
+              >
+                <SelectTrigger 
+                  className="w-[180px] bg-zinc-800 text-white"
+                >
+                  <SelectValue defaultValue={field.value}>
+                    {field.value === 'ADMIN' ? 'Administração' :
+                     field.value === 'USER' ? 'Funcionário' :
+                     field.value === 'AUX' ? 'Auxiliar Admin' :
+                     'Selecione a Permissão'}
+                  </SelectValue>
                 </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Permissões</SelectLabel>
-                        <SelectItem value="ADMIN">Adminstração</SelectItem>
-                        <SelectItem value="USER">Funcionário</SelectItem>
-                        <SelectItem value="AUX">Auxiliar Admin</SelectItem>
-                    </SelectGroup>
+                <SelectContent 
+                  position="popper" 
+                  side="right" 
+                  className="bg-zinc-800 text-white border-zinc-700 min-w-[180px]"
+                >
+                  <SelectGroup>
+                    <SelectLabel className="text-zinc-400">Permissões</SelectLabel>
+                    <SelectItem 
+                      value="ADMIN"
+                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
+                    >
+                      Administração
+                    </SelectItem>
+                    <SelectItem 
+                      value="USER"
+                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
+                    >
+                      Funcionário
+                    </SelectItem>
+                    <SelectItem 
+                      value="AUX"
+                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
+                    >
+                      Auxiliar Admin
+                    </SelectItem>
+                  </SelectGroup>
                 </SelectContent>
               </Select>
               {errors.permissao?.message && <FormMessage>{errors.permissao.message}</FormMessage>}
             </FormItem>
           )}
         ></FormField>
-
+        
         <Button type="submit">Salvar</Button>
         
       </form>

@@ -14,11 +14,12 @@ type ComboboxDemoProps = {
   items: Item[];
   onSelect: (item: Item) => void;
   onCreate: (item: Item) => void;
+  selectedValue?: Item;
 };
 
-export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
+export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: ComboboxDemoProps) {
   const [open, setOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+  const [selectedItem, setSelectedItem] = useState<Item | null>(selectedValue || null)
   const [inputValue, setInputValue] = useState("")
   const [filteredItems, setFilteredItems] = useState(items)
 
@@ -26,12 +27,16 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
     setFilteredItems(items)
   }, [items])
 
-  const handleInputChange = (newValue: string) => {
-    setInputValue(newValue)
-    const filtered = items.filter(item => 
-      item.nome.toLowerCase().includes(newValue.toLowerCase())
-    )
-    setFilteredItems(filtered)
+  useEffect(() => {
+    if (selectedValue?.id && selectedValue?.nome) {
+      setSelectedItem(selectedValue)
+    }
+  }, [selectedValue])
+
+  const handleSelect = (item: Item) => {
+    setSelectedItem(item)
+    onSelect(item)
+    setOpen(false)
   }
 
   return (
@@ -41,21 +46,27 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-between bg-zinc-800 text-white hover:bg-zinc-700 hover:text-white"
         >
-          {selectedItem ? selectedItem.nome : "Selecione o setor"}
+          {selectedItem?.nome || "Escolha o Setor"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command className="w-full">
+      <PopoverContent className="w-full p-0">
+        <Command>
           <CommandInput
             placeholder="Procure o Setor"
             value={inputValue}
-            onValueChange={handleInputChange}
+            onValueChange={(value) => {
+              setInputValue(value)
+              const filtered = items.filter(item => 
+                item.nome.toLowerCase().includes(value.toLowerCase())
+              )
+              setFilteredItems(filtered)
+            }}
           />
           <CommandList>
-            <CommandEmpty className="p-4">
+            <CommandEmpty>
               <p className="mb-2">Nenhum Setor encontrado.</p>
               <Button
                 onClick={() => {
@@ -77,11 +88,7 @@ export function ComboboxDemo({ items, onSelect, onCreate }: ComboboxDemoProps) {
                 <CommandItem
                   key={item.id}
                   value={item.id}
-                  onSelect={() => {
-                    setSelectedItem(item);
-                    onSelect(item);
-                    setOpen(false);
-                  }}
+                  onSelect={() => handleSelect(item)}
                 >
                   <Check
                     className={cn(

@@ -13,6 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from './app-sidebar';
+import { ModeToggle } from '../darkMode&Toggle/toggle-moddle';
 
 
 export default function NavBar() {
@@ -24,26 +25,15 @@ export default function NavBar() {
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Tela Inicial</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/bebidas">Listagens de Bebida</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/pessoas">Listagens de Pessoa</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/pedidos">Listagens de Pedido</BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
+          <BreadcrumbList>
+          <BreadcrumbItem>
+          <ModeToggle/>
+          </BreadcrumbItem>
+          
+          </BreadcrumbList>
           </Breadcrumb>
         </header>
-        <main className="flex-1 overflow-y-auto p-4">
+        <main className="flex-1 overflow-y-auto p-20">
           <Outlet />
         </main>
       </SidebarInset>

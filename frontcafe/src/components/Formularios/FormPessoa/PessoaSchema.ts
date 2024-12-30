@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const setorSchema = z.object({
-  id: z.string(),
-  nome: z.string().min(1, { message: "Nome do Seor é obrigatório" }),
+  id: z.string().or(z.number()).transform(val => String(val)),
+  nome: z.string().min(1, { message: "Nome do Setor é obrigatório" }),
 });
 
-const permissaoEnum = z.enum(["ADMIN", "USER", "AUX"]);
+const permissaoEnum = z.enum(["ADMIN", "USER", "AUX"]) as z.ZodEnum<["ADMIN", "USER", "AUX"]>;
 
 export const pessoaFormSchema = z.object({
     id: z.string(),
