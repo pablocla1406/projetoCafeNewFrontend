@@ -6,16 +6,20 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { Trash2 } from "lucide-react";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
   onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
   SetoresFiltradas: ISetor[];
+  onApagarImagem: (imageName: string) => void
 }
 
-export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetoresFiltradas }: PessoaFormularioProps) {
+export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetoresFiltradas, onApagarImagem }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
+
+  const navigate = useNavigate();
 
   return (
     <Form {...form}>
@@ -41,10 +45,65 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
         <FormField
           control={form.control}
           name="foto"
-          render={({ field }) => (
+          render={({ field: { value, onChange, ...field } }) => (
             <FormItem>
               <FormLabel>Foto</FormLabel>
-              <Input {...field} type="file" />
+              <div className="flex flex-col gap-2">
+                <Input 
+                  type="file" 
+                  accept=""
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      // Validar o tamanho do arquivo (max 5MB)
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert("A imagem deve ter no máximo 5MB");
+                        return;
+                      }
+                      
+                      // Criar preview da imagem
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const preview = document.getElementById('imagePreview') as HTMLImageElement;
+                        if (preview) {
+                          preview.src = reader.result as string;
+                        }
+                        onChange(reader.result as string | Blob);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  {...field}
+                  className="cursor-pointer"
+                />
+                
+                  <Button variant="outline" size="icon" onClick={() => {
+                    const foto = form.getValues('foto');
+                    if (foto && typeof foto === 'string') {
+                      onApagarImagem(foto);
+                    }
+                  }}>
+                  <Trash2 className="h-4 w-4" />
+                    </Button>
+
+
+                {value ? (
+                  <div className="mt-2">
+                    <img
+                      id="imagePreview"
+                      src={typeof value === 'string' ? value : URL.createObjectURL(value)}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-md"
+                    />
+                  </div>
+                ) : (
+                  "Nenhuma imagem selecionada"
+                )
+
+              
+              }
+              </div>
+              {errors.foto?.message && <FormMessage>{errors.foto.message}</FormMessage>}
             </FormItem>
           )}
         ></FormField>
@@ -60,7 +119,6 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
             </FormItem>
           )}
         ></FormField>
-
 
         <FormField
           control={form.control}
@@ -110,20 +168,20 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
           control={form.control}
           name="permissao"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col gap-2">
               <FormLabel>Permissão</FormLabel>
-              <Select 
+              <Select
+                value={field.value}
                 onValueChange={(value) => {
-                  const permissao = value as "ADMIN" | "USER" | "AUX";
-                  field.onChange(permissao);
-                  form.setValue("permissao", permissao, { shouldValidate: true });
+                  if (value) {
+                    const permissao = value as "ADMIN" | "USER" | "AUX";
+                    field.onChange(permissao);
+                    form.setValue("permissao", permissao, { shouldValidate: true });
+                  }
                 }}
-                defaultValue={field.value}
               >
-                <SelectTrigger 
-                  className="w-[180px] bg-zinc-800 text-white"
-                >
-                  <SelectValue defaultValue={field.value}>
+                <SelectTrigger className="w-[180px] bg-zinc-800 text-white">
+                  <SelectValue >
                     {field.value === 'ADMIN' ? 'Administração' :
                      field.value === 'USER' ? 'Funcionário' :
                      field.value === 'AUX' ? 'Auxiliar Admin' :
@@ -137,24 +195,9 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
                 >
                   <SelectGroup>
                     <SelectLabel className="text-zinc-400">Permissões</SelectLabel>
-                    <SelectItem 
-                      value="ADMIN"
-                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
-                    >
-                      Administração
-                    </SelectItem>
-                    <SelectItem 
-                      value="USER"
-                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
-                    >
-                      Funcionário
-                    </SelectItem>
-                    <SelectItem 
-                      value="AUX"
-                      className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700"
-                    >
-                      Auxiliar Admin
-                    </SelectItem>
+                    <SelectItem value="ADMIN" className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700" >Administração</SelectItem>
+                    <SelectItem value="USER" className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700">Funcionário</SelectItem>
+                    <SelectItem value="AUX" className="cursor-pointer hover:bg-zinc-700 focus:bg-zinc-700">Auxiliar Admin</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -162,10 +205,11 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
             </FormItem>
           )}
         ></FormField>
-        
-        <Button type="submit">Salvar</Button>
-        
+        <Button type="submit" onClick={() => navigate("/ListagemPessoas")}>
+          Salvar
+        </Button>
       </form>
     </Form>
   );
+
 }

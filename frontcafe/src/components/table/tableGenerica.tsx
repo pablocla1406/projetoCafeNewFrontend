@@ -112,7 +112,7 @@ export default function GenericTable({
         </div>
         <div className="space-x-2">
           <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-            Previous
+            
           </Button>
           <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
             Next

@@ -3,8 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { pessoaService } from "@/service/PessoaService";
 import { pessoaFormSchema, PessoaFormSchema } from "./PessoaSchema";
 import { useEffect } from "react";
+import { imageService } from "@/service/ImageService";
 
-export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
+export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
     console.log("HookPessoaForm recebeu dados:", dadosExistentes);
 
     const form = useForm<PessoaFormSchema>({
@@ -34,17 +35,56 @@ export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
         }
     }, [dadosExistentes, reset]);
 
-    async function onSubmit(data : PessoaFormSchema){
+    async function uploadImage(file: File, imageType: string, id: string) {
+        return await imageService.uploadImage(file, imageType, id);
+    }
+
+    async function deleteImage() {
+        const imageType: any = 'pessoas'; 
+        const id = form.getValues('id'); 
+        const imageName = form.getValues('foto'); 
+        await imageService.deleteImage(imageType, id, imageName);
+    }
+
+    async function onSubmit(data: PessoaFormSchema) {
         try {
-            console.log("Dados a serem enviados:", data);
-            if (dadosExistentes) {
-                await pessoaService.atualizarDadosId(dadosExistentes.id, data);
+            console.log('Dados a serem enviados:', data);
+            if (dadosExistentes?.id && data.foto && !(typeof data.foto === 'string')) {
+                try {
+                    await deleteImage();
+                } catch (error) {
+                    console.error('Erro ao excluir imagem:', error);
+                    throw error;
+                }
+            }
+
+            // Chama uploadImage quando uma nova imagem é selecionada
+            if (data.foto && !(typeof data.foto === 'string')) {
+                if (!form.getValues('id')) {
+                    console.error('ID não está disponível para upload da imagem.');
+                    throw new Error('ID não está disponível.');
+                }
+                const imageUrl = await uploadImage(data.foto, 'pessoas', form.getValues('id'));
+                data.foto = imageUrl; // Atualiza a URL da imagem no objeto de dados
+            }
+
+            // Continue com o envio dos dados do formulário
+            if(form.getValues('id')) {
+                await pessoaService.atualizarDadosId(Number(form.getValues('id')), {
+                    ...data,
+                    permissao: data.permissao ,
+                    setor: data.setor || { id: Number(data.id), nome: data.nome }
+                });
             } else {
-                await pessoaService.criarNovoCadastroId(data);
+                await pessoaService.criarNovoCadastroId({
+                    ...data,
+                    permissao: data.permissao,
+                    setor: data.setor || { id: Number(data.id), nome: data.nome }
+                });
             }
             console.log("Operação realizada com sucesso!");
         } catch (error) {
-            console.error("Erro ao salvar:", error);
+            console.error('Erro ao enviar dados:', error);
             throw error;
         }
     }
@@ -53,6 +93,8 @@ export default function HookPessoaForm(dadosExistentes ?: PessoaFormSchema){
         form,
         handleSubmit,
         errors,
-        onSubmit
+        onSubmit,
+        uploadImage,
+        deleteImage
     };
 }

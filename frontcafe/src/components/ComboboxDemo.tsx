@@ -19,7 +19,7 @@ type ComboboxDemoProps = {
 
 export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: ComboboxDemoProps) {
   const [open, setOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<Item | null>(selectedValue || null)
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [inputValue, setInputValue] = useState("")
   const [filteredItems, setFilteredItems] = useState(items)
 
@@ -28,8 +28,9 @@ export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: Combo
   }, [items])
 
   useEffect(() => {
-    if (selectedValue?.id && selectedValue?.nome) {
-      setSelectedItem(selectedValue)
+    if (selectedValue && selectedValue.id && selectedValue.nome) {
+      setSelectedItem(selectedValue);
+      setInputValue(selectedValue.nome);
     }
   }, [selectedValue])
 

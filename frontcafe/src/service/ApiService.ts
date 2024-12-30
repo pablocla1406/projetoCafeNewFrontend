@@ -24,9 +24,28 @@ class ApiService<T>{
     }
 
 
+    
+    async listarDadosListagem(
+        filters: object = {},
+        page: number = 1,
+        limit: number = 12
+    ): Promise<{ data: T[], totalPages: number }> {
+        const resposta = await api.get<{
+            items: T[],
+            totalItems: number,
+            currentPage: number,
+            totalPages: number,
+            itemsPerPage: number,
+        }>(`/${this.recurso}/listagem`, {params: { ...filters, page, limit } });
+        
+        return {
+            data: resposta.data.items,
+            totalPages: resposta.data.totalPages
+        };
+    }
 
 
-    async atualizarDadosId(id: string, dadosAtualizados: Partial<T>): Promise<void>{
+    async atualizarDadosId(id: string | number, dadosAtualizados: Partial<T>): Promise<void>{
         await api.put<T>(`/${this.recurso}/${id}`, dadosAtualizados)
     }
 

@@ -1,8 +1,10 @@
 import { bebidaService } from "@/service/BebidaService";
+import { imageService } from "@/service/ImageService";
 import { BebidaSchema } from "./BebidaSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import IBebida from "@/utils/interfaces/IBebida";
 
 export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     console.log("hookBebidaForm received data:", dadosBebidas);
@@ -28,17 +30,43 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
         }
     }, [dadosBebidas, reset]);
 
-    async function onSubmit(data : BebidaSchema){
+    async function onSubmit(data: BebidaSchema) {
         console.log("Form submitted with data:", data);
-        const formattedData = {
-            ...data,
-            preco: Number(data.preco)
-        };
-        if(dadosBebidas){
-            await bebidaService.atualizarDadosId(dadosBebidas.id, formattedData)
-        }
-        else{
-            await bebidaService.criarNovoCadastroId(formattedData)
+        try {
+            // Create a copy of the data without the image field
+            const { image, ...bebidaData } = data;
+            
+            // Format the data for the service
+            const formattedData: Partial<IBebida> = {
+                ...bebidaData,
+                preco: Number(data.preco),
+                // Only include image if it's a string (URL)
+                ...(typeof image === 'string' ? { image } : {})
+            };
+
+            let savedBebida: IBebida;
+            if (dadosBebidas) {
+                const response = await bebidaService.atualizarDadosId(dadosBebidas.id, formattedData);
+                if(!response) throw new Error('Failed to update bebida');
+                savedBebida = response;
+            } else {
+                const response = await bebidaService.criarNovoCadastroId(formattedData);
+                if (!response) throw new Error('Failed to create bebida');
+                savedBebida = response;
+            }
+
+            // Upload image if a new file was selected
+            if (image && image instanceof File) {
+                const imageResponse = await imageService.uploadImage(
+                    image,
+                    'bebidas',
+                    savedBebida.id
+                );
+                console.log('Image uploaded successfully:', imageResponse);
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            throw error;
         }
     }
 

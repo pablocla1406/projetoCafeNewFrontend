@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { setorService } from "@/service/setorService";
 import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormulario";
 import { useParams } from "react-router-dom";
+import { imageService } from "@/service/ImageService";
 
 export default function PessoaCadastro(){
     const { id } = useParams();
@@ -94,6 +95,32 @@ export default function PessoaCadastro(){
         }
     }
 
+    async function handleUploadImage(file: File) {
+        try {
+            const imageUrl = await imageService.uploadImage(file, "pessoas", pessoa.id);
+            setPessoa(prev => ({
+                ...prev,
+                foto: imageUrl
+            }));
+        } catch (error) {
+            console.error("Erro ao enviar imagem:", error);
+        }
+    }
+
+
+    async function handleDeleteImage(pessoaId : string){
+        try {
+            await imageService.deleteImage("pessoas", pessoaId, pessoa.foto);
+            setPessoa(prev => ({
+                ...prev,
+                foto: ""
+            }))
+
+        } catch (error) {
+            
+        }
+    }
+
     console.log("Estado atual da pessoa:", pessoa);
     console.log("Renderizando formulário com dados:", pessoa);
 
@@ -103,6 +130,7 @@ export default function PessoaCadastro(){
                 dadosExistentes={pessoa} 
                 onAdicionarSetor={adicionarSetor} 
                 SetoresFiltradas={setoresFiltrados} 
+                onApagarImagem={handleDeleteImage}
             />
         </>
     )

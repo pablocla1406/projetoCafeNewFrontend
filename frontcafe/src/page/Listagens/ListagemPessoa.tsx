@@ -1,17 +1,17 @@
 import GenericTable from "@/components/table/tableGenerica";
+import { imageService } from "@/service/ImageService";
 import { pessoaService } from "@/service/PessoaService";
-import IPessoaListagem from "@/utils/interfaces/Listagem/IPessoaListagem";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import IPessoa from "@/utils/interfaces/IPessoa";
 import { Badge } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ListagemPessoa(){
-    const [pessoas, SetPessoas] = useState<IPessoaListagem[]>([]);
+    const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
 
     async function fetchData(page: number = 1, filters: object = {}) {
-        const { data, totalPages } = await pessoaService.listarDadosFiltrados(filters, page, 12);
+        const { data, totalPages } = await pessoaService.listarDadosListagem(filters, page, 12);
 
         SetPessoas(data);
         SetTotalPages(totalPages);
@@ -53,6 +53,9 @@ export default function ListagemPessoa(){
 
         }
     ]
+
+
+    
 
     return(
         <GenericTable
