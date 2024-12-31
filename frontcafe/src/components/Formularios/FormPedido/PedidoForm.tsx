@@ -5,7 +5,12 @@ import IBebida from "@/utils/interfaces/IBebida";
 import { useEffect, useState } from "react";
 import { pessoaService } from "@/service/PessoaService";
 import { bebidaService } from "@/service/BebidaService";
-import { Form, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
+import { DatePickerDemo } from "@/components/DatePickerDemo";
 
 
 
@@ -29,6 +34,7 @@ export default function PedidoForm({dados}: PedidoFormProps){
     }, []);
 
     return(
+        <>
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
                 <FormField
@@ -39,7 +45,8 @@ export default function PedidoForm({dados}: PedidoFormProps){
                             <FormLabel>Cliente</FormLabel>
                             <Select onValueChange={field.onChange} value={field.value.id}>
                                 <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Selecione o Cliente"/>
+                                    <SelectValue
+                                     placeholder="Selecione o Cliente" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -63,7 +70,7 @@ export default function PedidoForm({dados}: PedidoFormProps){
                             <FormLabel>Bebida</FormLabel>
                             <Select onValueChange={field.onChange} value={field.value.id}>
                                 <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="Selecione a Bebida"/>
+                                    <SelectValue placeholder="Selecione a Bebida" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -95,40 +102,35 @@ export default function PedidoForm({dados}: PedidoFormProps){
                     control={form.control}
                     name="quantidade"
                     render={({ field }) => (
-                        <FormItem></FormItem>
-                            <FormLabel>Quantidade</FormLabel>
-                            <Input {...field} type="number" placeholder="Digite a Quantidade" />
-                            {errors.quantidade?.message && <FormMessage>{errors.quantidade.message}</FormMessage>}
-                        </FormItem>
-                    )}
-                ></FormField>
-
-                <FormField
-                    control={form.control}
-                    name="total"
-                    render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Total</FormLabel>
-                            <Input {...field} type="number" placeholder="Digite o Total" />
-                            {errors.total?.message && <FormMessage>{errors.total.message}</FormMessage>}
+                        <FormLabel>Quantidade</FormLabel>
+                        <Input {...field} type="number" placeholder="Digite a Quantidade" />
+                        {errors.quantidade?.message && <FormMessage>{errors.quantidade.message}</FormMessage>} 
                         </FormItem>
                     )}
-                ></FormField>
-
-                <FormField
-                    control={form.control}
-                    name="dataCompra"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Data da Compra</FormLabel>
-                            <Input {...field} type="date" />
-                            {errors.dataCompra?.message && <FormMessage>{errors.dataCompra.message}</FormMessage>}
-                        </FormItem>
-                    )}
-                ></FormField>
-
-                <Button type="submit">Salvar</Button>
+                ></FormField><FormField
+                name="total"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Total</FormLabel>
+                        <Input {...field} type="number" placeholder="Digite o Total" />
+                        {errors.total?.message && <FormMessage>{errors.total.message}</FormMessage>}
+                    </FormItem>
+                )}
+            ></FormField><FormField
+                control={form.control}
+                name="dataCompra"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Data da Compra</FormLabel>
+                        <DatePickerDemo/>
+                    </FormItem>
+                )}
+            ></FormField>
+            
+            <BotaoSalvarCadastro href="pedidos"/>
             </form>
         </Form>
+            </>
     )
 }

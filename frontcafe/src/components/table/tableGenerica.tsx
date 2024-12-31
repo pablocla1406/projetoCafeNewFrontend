@@ -2,8 +2,15 @@ import React, { useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { DatePickerWithRange } from '../DatePickerRangeDemo';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface Column {
   key: string;
@@ -48,18 +55,36 @@ export default function GenericTable({
 
   return (
     <div className="border rounded-lg p-4 space-y-4">
-      <div className="flex flex-wrap gap-4 mb-4">
-        {columns.map(function (column) {
-          return (
-            <Input
-              key={column.key}
-              placeholder={`Filter by ${column.header}`}
-              value={filters[column.key] || ''}
-              onChange={(e) => handleFilterChange(column.key, e.target.value)}
-              className="max-w-xs"
-            />
-          );
-        })}
+      <div className="flex items-center gap-4 mb-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">Filtros</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
+            <div className="p-2 flex flex-col gap-2 relative">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="absolute right-1 top-1 h-6 w-6" 
+                onClick={() => document.body.click()}
+              >
+                <XCircle className="h-4 w-4" />
+              </Button>
+              {columns.map((column) => (
+                <div key={column.key} className="space-y-1">
+                  <span className="text-sm font-medium">{column.header}</span>
+                  <Input
+                    placeholder={`Filtrar por ${column.header}`}
+                    value={filters[column.key] || ''}
+                    onChange={(e) => handleFilterChange(column.key, e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                    className="mt-1"
+                  />
+                </div>
+              ))}
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <Table>
         <TableHeader>

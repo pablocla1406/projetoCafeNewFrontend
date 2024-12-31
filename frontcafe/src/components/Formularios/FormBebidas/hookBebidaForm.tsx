@@ -44,8 +44,14 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
                 ...(typeof image === 'string' ? { image } : {})
             };
 
+            // Remove o campo id se for um novo cadastro
+            if (!dadosBebidas?.id) {
+                delete formattedData.id;
+            }
+
             let savedBebida: IBebida;
-            if (dadosBebidas) {
+            // Verifica se é uma atualização (tem dadosBebidas E tem ID)
+            if (dadosBebidas && dadosBebidas.id) {
                 const response = await bebidaService.atualizarDadosId(dadosBebidas.id, formattedData);
                 if(!response) throw new Error('Failed to update bebida');
                 savedBebida = response;

@@ -27,6 +27,10 @@ const data = {
       url: "/ListagemPessoas",
     },
     {
+      title: "Listagens de Pedido",
+      url: "/ListagemPedidos",
+    },
+    {
       title: "Cadastro de Bebida",
       url: "/cadastroBebida",
     },
@@ -34,6 +38,10 @@ const data = {
       title: "Cadastro de Pessoa",
       url: "/cadastroPessoa",
     },
+    {
+      title: "Cadastro de Pedido",
+      url: "/cadastroPedido",
+    }
   ],
 }
 

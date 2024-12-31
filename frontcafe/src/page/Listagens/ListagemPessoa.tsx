@@ -1,8 +1,6 @@
 import GenericTable from "@/components/table/tableGenerica";
-import { imageService } from "@/service/ImageService";
 import { pessoaService } from "@/service/PessoaService";
 import IPessoa from "@/utils/interfaces/IPessoa";
-import { Badge } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ListagemPessoa(){
@@ -11,21 +9,29 @@ export default function ListagemPessoa(){
     const [totalPages, SetTotalPages] = useState(1);
 
     async function fetchData(page: number = 1, filters: object = {}) {
-        const { data, totalPages } = await pessoaService.listarDadosListagem(filters, page, 12);
-
-        SetPessoas(data);
-        SetTotalPages(totalPages);
+        try {
+            const { data, totalPages } = await pessoaService.listarDadosListagem(filters, page, 12);
+            if (data) {
+                SetPessoas(data);
+                SetTotalPages(totalPages);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+        }
     }
 
     useEffect(() => {
         fetchData(currentPage);
-    }, [currentPage]);
-
+    }, [currentPage]); 
 
     async function handleDelete(id: string){
-        await pessoaService.deletarDadosId(id);
-        const dadosAposExclusao = pessoas.filter(pessoa => pessoa.id !== id);
-        SetPessoas(dadosAposExclusao);
+        try {
+            await pessoaService.deletarDadosId(id);
+            const dadosAposExclusao = pessoas.filter(pessoa => pessoa.id !== id);
+            SetPessoas(dadosAposExclusao);
+        } catch (error) {
+            console.error('Erro ao deletar:', error);
+        }
     }
 
     async function handleFilter(filters: object) {
@@ -45,18 +51,18 @@ export default function ListagemPessoa(){
         {
             key: 'setor',
             header: 'Setor',
-            render: (value: string) => (
-            <Badge fontVariant={value === 'Ativado' ? 'default' : 'secondary'}>
-          {value}
-            </Badge>
-            )
-
+            render: (row: IPessoa) => {
+                try {
+                    return row.setor?.nome || 'Não encontrado';
+                } catch (error) {
+                    console.error('Erro ao renderizar setor:', error);
+                    return 'Erro';
+                }
+            }
         }
     ]
 
-
     
-
     return(
         <GenericTable
         data={pessoas}

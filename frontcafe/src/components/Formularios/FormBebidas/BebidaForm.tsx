@@ -6,6 +6,7 @@ import hookBebidaForm from "./hookBebidaForm";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContent, SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import { useState } from "react";
+import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
 
 type BebidaFormProps = {
     dados?: BebidaSchema,
@@ -128,8 +129,8 @@ export default function BebidaForm({dados}: BebidaFormProps){
                         </FormItem>
                     )}
                 />
+                <BotaoSalvarCadastro href="ListagemBebidas"  />
 
-                <Button type="submit">Salvar</Button>
             </form>
         </Form>
     )

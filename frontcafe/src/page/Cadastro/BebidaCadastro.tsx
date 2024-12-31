@@ -6,7 +6,6 @@ import BebidaForm from "@/components/Formularios/FormBebidas/BebidaForm"
 
 export default function BebidaCadastro(){
     const { id } = useParams();
-    console.log("ID from params:", id);
 
     const [bebida, setBebida] = useState<IBebida>({
         id: id || "",
@@ -41,12 +40,10 @@ export default function BebidaCadastro(){
     }
 
     useEffect(() => {
-        console.log("useEffect triggered with ID:", id);
         receberDados()
     }, [id])
 
     console.log("Current bebida state:", bebida);
-    console.log("Rendering BebidaForm with data:", bebida);
 
     return(
         <>

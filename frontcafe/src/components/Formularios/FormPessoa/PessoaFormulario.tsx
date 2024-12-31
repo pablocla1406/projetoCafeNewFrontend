@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
+import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -205,9 +206,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
             </FormItem>
           )}
         ></FormField>
-        <Button type="submit" onClick={() => navigate("/ListagemPessoas")}>
-          Salvar
-        </Button>
+        <BotaoSalvarCadastro href="ListagemPessoas"  />
       </form>
     </Form>
   );
