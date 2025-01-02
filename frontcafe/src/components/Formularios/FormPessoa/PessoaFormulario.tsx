@@ -6,21 +6,19 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
   onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
-  SetoresFiltradas: ISetor[];
+  setoresFiltrados: ISetor[];
   onApagarImagem: (imageName: string) => void
 }
 
-export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, SetoresFiltradas, onApagarImagem }: PessoaFormularioProps) {
+export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, setoresFiltrados, onApagarImagem }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
 
-  const navigate = useNavigate();
 
   return (
     <Form {...form}>
@@ -141,7 +139,8 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, Se
               <FormLabel>Setor</FormLabel>
               <div>
                 <ComboboxDemo
-                  items={SetoresFiltradas}
+                  placeholder="Selecione o Setor"
+                  items={setoresFiltrados}
                   onSelect={(item) => {
                     if (item?.id && item?.nome) {
                       const setorData = {

@@ -27,6 +27,10 @@ export default function PessoaCadastro(){
     const [todosSetores, setTodosSetores] = useState<ISetor[]>([])
     const [setoresFiltrados, setSetoresFiltrados] = useState<ISetor[]>([])
 
+    useEffect(() => {
+        buscarTodosSetores();
+    }, []);
+
     async function buscarTodosSetores() {
         try {
             const todosOsSetores = await setorService.listarDados()
@@ -71,7 +75,6 @@ export default function PessoaCadastro(){
     useEffect(() => {
         console.log("useEffect triggered with ID:", id);
         receberDadosPessoa();
-        buscarTodosSetores();
     }, [id]);
 
     async function adicionarSetor(novaSetor : ISetor){
@@ -129,7 +132,7 @@ export default function PessoaCadastro(){
             <PessoaFormulario 
                 dadosExistentes={pessoa} 
                 onAdicionarSetor={adicionarSetor} 
-                SetoresFiltradas={setoresFiltrados} 
+                setoresFiltrados={setoresFiltrados} 
                 onApagarImagem={handleDeleteImage}
             />
         </>

@@ -4,7 +4,7 @@ export default interface IBebida{
     nome: string,
     descricao: string,
     preco: number,
-    image: string,
+    image?: string | File,
     status: "Ativo" | "Inativado"
     
 

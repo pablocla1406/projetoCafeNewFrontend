@@ -15,9 +15,16 @@ type ComboboxDemoProps = {
   onSelect: (item: Item) => void;
   onCreate: (item: Item) => void;
   selectedValue?: Item;
+  placeholder: string;
 };
 
-export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: ComboboxDemoProps) {
+export function ComboboxDemo({
+  items,
+  onSelect,
+  onCreate,
+  selectedValue,
+  placeholder,
+}: ComboboxDemoProps) {
   const [open, setOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
   const [inputValue, setInputValue] = useState("")
@@ -49,14 +56,14 @@ export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: Combo
           aria-expanded={open}
           className="w-full justify-between bg-zinc-800 text-white hover:bg-zinc-700 hover:text-white"
         >
-          {selectedItem?.nome || "Escolha o Setor"}
+          {selectedItem?.nome || placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
           <CommandInput
-            placeholder="Procure o Setor"
+            placeholder={placeholder}
             value={inputValue}
             onValueChange={(value) => {
               setInputValue(value)
@@ -68,7 +75,7 @@ export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: Combo
           />
           <CommandList>
             <CommandEmpty>
-              <p className="mb-2">Nenhum Setor encontrado.</p>
+              <p className="mb-2">Nenhum Cadastro Encontrado.</p>
               <Button
                 onClick={() => {
                   if (inputValue.trim()) {
@@ -81,7 +88,7 @@ export function ComboboxDemo({ items, onSelect, onCreate, selectedValue }: Combo
                 className="w-full"
                 variant="secondary"
               >
-                Criar Setor: {inputValue}
+                Criar Cadastro: {inputValue}
               </Button>
             </CommandEmpty>
             <CommandGroup>

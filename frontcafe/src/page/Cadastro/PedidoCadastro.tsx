@@ -1,12 +1,19 @@
 import PedidoForm from "@/components/Formularios/FormPedido/PedidoForm";
+import { bebidaService } from "@/service/BebidaService";
 import { pedidoService } from "@/service/PedidoService";
+import { pessoaService } from "@/service/PessoaService";
+import IBebida from "@/utils/interfaces/IBebida";
 import IPedido from "@/utils/interfaces/IPedido";
+import IPessoa from "@/utils/interfaces/IPessoa";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function PedidoCadastro() {
     const {id} = useParams()
 
+    const [clientesFiltrados, setClientesFiltrados] = useState<IPessoa[]>([])
+    const [bebidasFiltradas, setBebidasFiltradas] = useState<IBebida[]>([])
+    
     const [pedido, setPedido] = useState<IPedido>({
         id: id || "",
         cliente: { id: "", nome: "", setor: { id: "", nome: "" }, foto: "", usuario: "", senha: "", permissao: "USER" },
@@ -17,6 +24,21 @@ export default function PedidoCadastro() {
         dataCompra: new Date()
     })
 
+    async function buscarClienteseBebidas(){
+        const clientes = await pessoaService.listarDados()
+        const bebidas = await bebidaService.listarDados()
+
+        setBebidasFiltradas(bebidas)
+        setClientesFiltrados(clientes)
+    }
+    
+
+    useEffect(() => {
+        buscarClienteseBebidas()
+    }, [])
+
+
+    
     async function receberDadosPedido(){
         if(id){
             try {
@@ -45,7 +67,10 @@ export default function PedidoCadastro() {
     }, [id])
 
     return(
-        <PedidoForm dados={pedido} />
+        <PedidoForm 
+        dados={pedido} 
+        clientesFiltrados={clientesFiltrados}
+        bebidasFiltradas={bebidasFiltradas} />
     )
 
 

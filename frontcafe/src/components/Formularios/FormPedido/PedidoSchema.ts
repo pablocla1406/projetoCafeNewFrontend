@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { pessoaFormSchema } from "../FormPessoa/Pessoaschema";
+import { pessoaFormSchema } from "../FormPessoa/PessoaSchema";
 import { BebidaSchema } from "../FormBebidas/BebidaSchema";
 
 export const PedidoSchema = z.object({
