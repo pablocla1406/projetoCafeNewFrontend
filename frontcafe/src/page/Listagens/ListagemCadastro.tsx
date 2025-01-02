@@ -38,13 +38,19 @@ export default function ListagemCadastro() {
     // }
 
     const collumnsPedidos = [
-        {key: "id", header: "ID"},
-        {key: "cliente", header: "Cliente"},
-        {key: "bebida", header: "Bebida"},
-        {key: "unitario", header: "Preço Unitário"},
-        {key: "quantidade", header: "Quantidade"},
-        {key: "total", header: "Total"},
-        {key: "dataCompra", header: "Data Compra"},
+        {key: "id", header: "ID", filterable: true},
+        {key: "cliente", header: "Cliente", filterable: true},
+        {key: "bebida", header: "Bebida", filterable: true},
+        {key: "unitario", header: "Preço Unitário", filterable: false},
+        {key: "quantidade", header: "Quantidade", filterable: false},
+        {key: "total", header: "Total", filterable: false},
+        {key: "data_compra",
+        header: "Data Compra", 
+        render: (value: string | number) => {
+            const date = new Date(value as string);
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        },
+        filterable: false},
     ]
 
     return(

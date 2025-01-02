@@ -43,22 +43,17 @@ export default function ListagemPessoa(){
         {
             key: 'id',
             header: 'ID',
+            filterable: true,
         },
         {
             key: 'nome',
             header: 'Nome',
+            filterable: true,
         },
         {
             key: 'setor',
             header: 'Setor',
-            render: (row: IPessoa) => {
-                try {
-                    return row.setor?.nome || 'Não encontrado';
-                } catch (error) {
-                    console.error('Erro ao renderizar setor:', error);
-                    return 'Erro';
-                }
-            }
+            filterable: true,
         }
     ]
 

@@ -36,14 +36,17 @@ export default function ListagemBebida(){
         {
             key: 'id',
             header: 'ID',
+            filterable: true
         },
         {
             key: 'nome',
             header:'Nome',
+            filterable: true
         },
         {
             key: 'preco',
             header: 'Preço',
+            filterable: false,
             render: (value: string | number) => {
                 const numericValue = typeof value === 'string' ? parseFloat(value) : value;
                 return `R$ ${numericValue.toFixed(2)}`;
@@ -52,6 +55,7 @@ export default function ListagemBebida(){
         {
             key: 'status',
             header: 'Status',
+            filterable: true
         }
     ]
 

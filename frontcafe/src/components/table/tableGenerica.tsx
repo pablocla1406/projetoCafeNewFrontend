@@ -15,6 +15,7 @@ import {
 interface Column {
   key: string;
   header: string;
+  filterable?: boolean;
   render?: (value: any) => React.ReactNode;
 }
 
@@ -70,7 +71,8 @@ export default function GenericTable({
               >
                 <XCircle className="h-4 w-4" />
               </Button>
-              {columns.map((column) => (
+              
+              {columns.filter(column => column.filterable).map((column) => (
                 <div key={column.key} className="space-y-1">
                   <span className="text-sm font-medium">{column.header}</span>
                   <Input
