@@ -49,9 +49,17 @@ export default function GenericTable({
   }, [data, columns]);
 
   function handleFilterChange(key: string, value: string) {
-    const newFilters = { ...filters, [key]: value };
+    console.log('Filter change:', key, value);
+    const newFilters = { ...filters };
+    
+    if (value.trim() === '') {
+      delete newFilters[key];
+    } else {
+      newFilters[key] = value;
+    }
+    
+    console.log('New filters:', newFilters);
     setFilters(newFilters);
-    console.log('Filters updated:', newFilters);
     onFilter(newFilters);
   }
 

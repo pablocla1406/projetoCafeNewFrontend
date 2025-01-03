@@ -1,16 +1,20 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { pessoaService } from "@/service/PessoaService";
+import { debounce } from "@/utils/functions/debounce";
 import IPessoa from "@/utils/interfaces/IPessoa";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ListagemPessoa(){
     const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
+    const [filters, SetFilters] = useState<Record<string, string>>({});
 
-    async function fetchData(page: number = 1, filters: object = {}) {
+    async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         try {
-            const { data, totalPages } = await pessoaService.listarDadosListagem(filters, page, 12);
+            console.log('Fetching with filters:', currentFilters);
+            const { data, totalPages } = await pessoaService.listarDadosListagem(currentFilters, page, 12);
+            console.log('Received data:', data);
             if (data) {
                 SetPessoas(data);
                 SetTotalPages(totalPages);
@@ -21,8 +25,9 @@ export default function ListagemPessoa(){
     }
 
     useEffect(() => {
-        fetchData(currentPage);
-    }, [currentPage]); 
+        console.log('useEffect triggered with filters:', filters);
+        fetchData(currentPage, filters);
+    }, [currentPage, filters]); 
 
     async function handleDelete(id: string){
         try {
@@ -34,10 +39,22 @@ export default function ListagemPessoa(){
         }
     }
 
-    async function handleFilter(filters: object) {
-        SetCurrentPage(1);
-        await fetchData(1, filters);
-    }
+    const handleFilter = React.useCallback(
+        (newFilters: Record<string, string>) => {
+            console.log('handleFilter called with:', newFilters);
+            SetCurrentPage(1);
+            SetFilters(newFilters);
+        },
+        []
+    );
+
+    const debouncedFilter = React.useCallback(
+        debounce((newFilters: Record<string, string>) => {
+            console.log('debounced filter executing with:', newFilters);
+            handleFilter(newFilters);
+        }, 300),
+        [handleFilter]
+    );
 
     const columnPessoa  = [
         {
@@ -64,7 +81,7 @@ export default function ListagemPessoa(){
         columns={columnPessoa}
         href="cadastroPessoa"
         onDelete={handleDelete}
-        onFilter={handleFilter}
+        onFilter={debouncedFilter}
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
