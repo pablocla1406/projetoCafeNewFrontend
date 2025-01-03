@@ -1,23 +1,25 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { bebidaService } from "@/service/BebidaService";
+import { debounce } from "@/utils/functions/debounce";
 import IBebida from "@/utils/interfaces/IBebida";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ListagemBebida(){
     const [bebidas, SetBebidas] = useState<IBebida[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
+    const [filters, SetFilters] = useState<Record<string, string>>({});
 
-    async function fetchData(page: number = 1, filters: object = {}) {
-        const { data, totalPages } = await bebidaService.listarDadosListagem(filters, page, 12);
+    async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
+        const { data, totalPages } = await bebidaService.listarDadosListagem(currentFilters, page, 12);
 
         SetBebidas(data);
         SetTotalPages(totalPages);
     }
 
     useEffect(() => {
-        fetchData(currentPage);
-    }, [currentPage]);
+        fetchData(currentPage, filters);
+    }, [currentPage, filters]);
 
 
     async function handleDelete(id: string){
@@ -26,11 +28,22 @@ export default function ListagemBebida(){
         SetBebidas(dadosAposExclusao);
     }
 
-    async function handleFilter(filters: object) {
-        SetCurrentPage(1);
-        await fetchData(1, filters);
-    }
+    const handleFilter = React.useCallback(
+        (newFilters: Record<string, string>) => {
+            console.log('handleFilter called with:', newFilters);
+            SetCurrentPage(1);
+            SetFilters(newFilters);
+        },
+        []
+    );
 
+    const debouncedFilter = React.useCallback(
+        debounce((newFilters: Record<string, string>) => {
+            console.log('debounced filter executing with:', newFilters);
+            handleFilter(newFilters);
+        }, 300),
+        [handleFilter]
+    );
 
     const columnsBebidas = [
         {
@@ -64,12 +77,12 @@ export default function ListagemBebida(){
         <GenericTable
         data={bebidas}
         columns={columnsBebidas}
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={SetCurrentPage}
-        onDelete={handleDelete}
-        onFilter={handleFilter}
         href="cadastroBebida"
+        onDelete={handleDelete}
+        onFilter={debouncedFilter}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={SetCurrentPage}
         />
 
 

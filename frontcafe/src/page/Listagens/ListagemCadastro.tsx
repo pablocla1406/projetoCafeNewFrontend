@@ -27,15 +27,14 @@ export default function ListagemCadastro() {
         SetPedidos(dadosAposExclusao);
     }
 
-    const handleFilter = React.useCallback((newFilters: object) => {
-        SetCurrentPage(1);
-        setFilters(prev => ({ ...prev, ...newFilters }));
-    }, []);
-
-    // async function handleFilter(filters: object) {
-    //     SetCurrentPage(1);
-    //     await fetchData(1, filters);
-    // }
+   const handleFilter = React.useCallback(
+        debounce((NewFilters: object) => {
+            SetCurrentPage(1);
+            setFilters(prev => ({ ...prev, ...NewFilters }));
+            fetchData(1, NewFilters);
+        }, 700),
+        []
+    );
 
     const collumnsPedidos = [
         {key: "id", header: "ID", filterable: true},
