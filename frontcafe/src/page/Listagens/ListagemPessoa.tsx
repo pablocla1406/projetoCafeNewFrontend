@@ -1,6 +1,5 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { pessoaService } from "@/service/PessoaService";
-import { debounce } from "@/utils/functions/debounce";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import React, { useEffect, useState } from "react";
 
@@ -8,9 +7,9 @@ export default function ListagemPessoa(){
     const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
-    const [filters, SetFilters] = useState<Record<string, string>>({});
+    const [filters, SetFilters] = useState<object>({});
 
-    async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
+    async function fetchData(page: number = 1, currentFilters: object = {}) {
         try {
             console.log('Fetching with filters:', currentFilters);
             const { data, totalPages } = await pessoaService.listarDadosListagem(currentFilters, page, 12);
@@ -40,7 +39,7 @@ export default function ListagemPessoa(){
     }
 
     const handleFilter = React.useCallback(
-        (newFilters: Record<string, string>) => {
+        (newFilters: object) => {
             console.log('handleFilter called with:', newFilters);
             SetCurrentPage(1);
             SetFilters(newFilters);
@@ -49,10 +48,12 @@ export default function ListagemPessoa(){
     );
 
     const debouncedFilter = React.useCallback(
-        debounce((newFilters: Record<string, string>) => {
-            console.log('debounced filter executing with:', newFilters);
-            handleFilter(newFilters);
-        }, 300),
+        (newFilters: object) => {
+            const handler = setTimeout(() => {
+                handleFilter(newFilters);
+            }, 700);
+            return () => clearTimeout(handler);
+        },
         [handleFilter]
     );
 

@@ -11,14 +11,16 @@ import NavBar from './components/navBar/NavBar.tsx'
 import ListagemBebida from './page/Listagens/ListagemBebida.tsx'
 import PedidoCadastro from './page/Cadastro/PedidoCadastro.tsx'
 import ListagemCadastro from './page/Listagens/ListagemCadastro.tsx'
+import LoginPage from './page/Login.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <App>
         <Routes>
+          <Route path='/login' element={<LoginPage />} />
           <Route path='/' element={<NavBar />}>
-            <Route index element={<Home />} />
+            <Route path='/Home' element={<Home />} />
             <Route path='/cadastroBebida' element={<BebidaCadastro />} />
             <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
             <Route path='/cadastroPedido' element={<PedidoCadastro/>}/>

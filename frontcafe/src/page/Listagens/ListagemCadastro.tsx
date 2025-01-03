@@ -8,11 +8,10 @@ export default function ListagemCadastro() {
     const [pedidos, SetPedidos] = useState<IPedido[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState<Record<string, string>>({});
 
-    async function fetchData(page: number = 1, currentFilters: object = {}) {
+    const fetchData = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
         const { data, totalPages } = await pedidoService.listarDadosListagem(currentFilters, page, 12);
-
         SetPedidos(data);
         SetTotalPages(totalPages);
     }
@@ -27,13 +26,23 @@ export default function ListagemCadastro() {
         SetPedidos(dadosAposExclusao);
     }
 
-   const handleFilter = React.useCallback(
-        debounce((NewFilters: object) => {
+    const handleFilter = React.useCallback(
+        (newFilters: Record<string, string>) => {
             SetCurrentPage(1);
-            setFilters(prev => ({ ...prev, ...NewFilters }));
-            fetchData(1, NewFilters);
-        }, 700),
+            setFilters(newFilters);
+        },
         []
+    );
+
+    const debouncedFilter = React.useCallback(
+        (newFilters: Record<string, string>) => {
+            const handler = setTimeout(() => {
+                handleFilter(newFilters);
+            }, 700);
+
+            return () => clearTimeout(handler);
+        },
+        [handleFilter]
     );
 
     const collumnsPedidos = [
@@ -55,17 +64,17 @@ export default function ListagemCadastro() {
     return(
         <div className="space-y-4">
             <div className="flex justify-end">
-                <DatePickerWithRange onFilter={handleFilter} />
+                <DatePickerWithRange onFilter={debouncedFilter} />
             </div>
             <GenericTable
                 data={pedidos}
                 columns={collumnsPedidos}
                 onDelete={handleDelete}
-                onFilter={handleFilter}
+                onFilter={debouncedFilter}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 href="cadastroPedido"
-                onPageChange={(page: number) => SetCurrentPage(page)}
+                onPageChange={SetCurrentPage}
             />
         </div>
     )

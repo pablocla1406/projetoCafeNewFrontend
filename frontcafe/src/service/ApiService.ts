@@ -26,7 +26,7 @@ class ApiService<T>{
 
     
     async listarDadosListagem(
-        filters: Record<string, string> = {},
+        filters: object = {},
         page: number = 1,
         limit: number = 12
     ): Promise<{ data: T[], totalPages: number }> {

@@ -16,7 +16,7 @@ const data = {
   navMain: [
     {
       title: "Tela Inicial",
-      url: "/",
+      url: "/Home",
     },
     {
       title: "Listagens de Bebida",
