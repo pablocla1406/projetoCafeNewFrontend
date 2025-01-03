@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
 
 interface Column {
   key: string;
@@ -133,18 +134,94 @@ export default function GenericTable({
           )}
         </TableBody>
       </Table>
-      <div className="flex justify-between items-center mt-4">
-        <div>
-          Page {currentPage} of {totalPages}
-        </div>
-        <div className="space-x-2">
-          <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
+      <div className="flex justify-end items-center mt-4">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) {
+                    onPageChange(currentPage - 1);
+                  }
+                }} 
+                className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+              />
+            </PaginationItem>
             
-          </Button>
-          <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-            Next
-          </Button>
-        </div>
+            <PaginationItem>
+              <PaginationLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onPageChange(1);
+                }}
+                isActive={currentPage === 1}
+                className="cursor-pointer"
+              >
+                1
+              </PaginationLink>
+            </PaginationItem>
+
+            {totalPages > 3 && currentPage > 2 && (
+              <PaginationItem>
+                <PaginationEllipsis/>
+              </PaginationItem>
+            )}
+
+            {currentPage !== 1 && currentPage !== totalPages && (
+              <PaginationItem>
+                <PaginationLink 
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPageChange(currentPage);
+                  }}
+                  isActive 
+                  className="cursor-pointer"
+                >
+                  {currentPage}
+                </PaginationLink>
+              </PaginationItem>
+            )}
+
+            {totalPages > 3 && currentPage < totalPages - 1 && (
+              <PaginationItem>
+                <PaginationEllipsis/>
+              </PaginationItem>
+            )}
+
+            {totalPages > 1 && (
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPageChange(totalPages);
+                  }}
+                  isActive={currentPage === totalPages}
+                  className="cursor-pointer"
+                >
+                  {totalPages}
+                </PaginationLink>
+              </PaginationItem>
+            )}
+
+            <PaginationItem>
+              <PaginationNext 
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) {
+                    onPageChange(currentPage + 1);
+                  }
+                }} 
+                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
