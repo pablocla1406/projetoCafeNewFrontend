@@ -64,22 +64,23 @@ export default function GenericTable({
   }
 
   return (
-    <div className="border rounded-lg p-4 space-y-4">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
+      <div className="items-center gap-4 mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Filtros</Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
             <div className="p-2 flex flex-col gap-2 relative">
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="absolute right-1 top-1 h-6 w-6" 
-                onClick={() => document.body.click()}
-              >
-                <XCircle className="h-4 w-4" />
-              </Button>
+              <DropdownMenuItem asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="absolute right-1 top-1 h-6 w-6 hover:bg-muted-foreground hover:cursor-pointer" 
+                >
+                  <XCircle className="h-4 w-4" />
+                </Button>
+              </DropdownMenuItem>
               
               {columns.filter(column => column.filterable).map((column) => (
                 <div key={column.key} className="space-y-1">
@@ -97,51 +98,53 @@ export default function GenericTable({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {columns.map(function (column) {
-              return <TableHead key={column.key}>{column.header}</TableHead>;
-            })}
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data && data.length > 0 ? (
-            data.map(function (row) {
-              return (
-                <TableRow key={row.id}>
-                  {columns.map(function (column) {
-                    return (
-                      <TableCell key={column.key}>
-                        {column.render ? column.render(row[column.key]) : row[column.key]}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="icon">
-                        <Link to={`/${href}/${row.id}`} className="flex items-center">
-                          <Pencil className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="outline" size="icon" onClick={() => onDelete(row.id)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })
-          ) : (
+      <div className="w-full max-w-7xl">
+        <Table className='w-full'>
+          <TableHeader>
             <TableRow>
-              <TableCell colSpan={columns.length + 1} className="text-center">
-                Não há mais um item cadastrado
-              </TableCell>
+              {columns.map(function (column) {
+                return <TableHead key={column.key}>{column.header}</TableHead>;
+              })}
+              <TableHead>Actions</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data && data.length > 0 ? (
+              data.map(function (row) {
+                return (
+                  <TableRow key={row.id}>
+                    {columns.map(function (column) {
+                      return (
+                        <TableCell key={column.key}>
+                          {column.render ? column.render(row[column.key]) : row[column.key]}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="icon">
+                          <Link to={`/${href}/${row.id}`} className="flex items-center">
+                            <Pencil className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button variant="outline" size="icon" onClick={() => onDelete(row.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length + 1} className="text-center">
+                  Não há mais um item cadastrado
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <div className="flex justify-end items-center mt-4">
         <Pagination>
           <PaginationContent>

@@ -29,8 +29,8 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
           console.error("Erro na submissão:", error);
         }
       })} className="flex min-h-screen items-center justify-center p-4">
-        <div className="w-[1200px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
-        <h1 className="text-3xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
+        <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
+        <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
         <div className="space-y-6">
             <FormField
               control={form.control}
@@ -41,7 +41,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   <Input 
                     {...field} 
                     placeholder="Digite o Nome" 
-                    className="w-2/4 h-11 px-3 py-2 bg-zinc-900 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
+                    className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                   />
                   {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                 </FormItem>
@@ -62,7 +62,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                         const file = e.target.files?.[0];
                         if (file) onChange(file);
                       }}
-                      className="w-full h-15 px-3 py-2 bg-zinc-900 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
+                      className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
                     />
                     {value && typeof value === 'string' && (
                       <div className="flex items-center gap-2 mt-2">
@@ -94,7 +94,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Usuário</FormLabel>
-                    <Input {...field} placeholder="Digite o Usuário" className="w-full h-11 px-3 py-2 bg-zinc-900 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                    <Input {...field} placeholder="Digite o Usuário" className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.usuario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.usuario.message}</FormMessage>}
                   </FormItem>
                 )}
@@ -105,7 +105,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Senha</FormLabel>
-                    <Input {...field} placeholder="Digite a Senha" className="w-full h-11 px-3 py-2 bg-zinc-900 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                    <Input {...field} placeholder="Digite a Senha" className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
                   </FormItem>
                 )}
@@ -158,7 +158,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                       }
                     }}
                   >
-                    <SelectTrigger className="w-full h-11 bg-zinc-900 text-white border-zinc-700">
+                    <SelectTrigger className="w-full h-11 text-white border-zinc-700">
                       <SelectValue>
                         {field.value === 'ADMIN' ? 'Administração' :
                          field.value === 'USER' ? 'Funcionário' :

@@ -19,7 +19,7 @@ export default function BotaoSalvarCadastro({href}: BotaoSalvarCadastroProps) {
     });
 
     return (
-        <Button type="submit" variant="default" onClick={onClickHandler} disabled={Object.keys(errors).length > 0}>
+        <Button className="w-full text-1xl" type="submit" variant="default" onClick={onClickHandler} disabled={Object.keys(errors).length > 0}>
             Salvar
         </Button>
     );

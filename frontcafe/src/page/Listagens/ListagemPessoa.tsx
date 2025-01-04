@@ -1,5 +1,6 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { pessoaService } from "@/service/PessoaService";
+import debounce from "@/utils/functions/debounce";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import React, { useEffect, useState } from "react";
 
@@ -7,9 +8,9 @@ export default function ListagemPessoa(){
     const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
-    const [filters, SetFilters] = useState<object>({});
+    const [filters, SetFilters] = useState<Record<string, string>>({});
 
-    async function fetchData(page: number = 1, currentFilters: object = {}) {
+    async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         try {
             console.log('Fetching with filters:', currentFilters);
             const { data, totalPages } = await pessoaService.listarDadosListagem(currentFilters, page, 12);
@@ -38,24 +39,15 @@ export default function ListagemPessoa(){
         }
     }
 
+
     const handleFilter = React.useCallback(
-        (newFilters: object) => {
-            console.log('handleFilter called with:', newFilters);
+        debounce((newFilters: Record<string, string>) => {
             SetCurrentPage(1);
             SetFilters(newFilters);
-        },
+        }, 800),
         []
     );
 
-    const debouncedFilter = React.useCallback(
-        (newFilters: object) => {
-            const handler = setTimeout(() => {
-                handleFilter(newFilters);
-            }, 700);
-            return () => clearTimeout(handler);
-        },
-        [handleFilter]
-    );
 
     const columnPessoa  = [
         {
@@ -82,7 +74,7 @@ export default function ListagemPessoa(){
         columns={columnPessoa}
         href="cadastroPessoa"
         onDelete={handleDelete}
-        onFilter={debouncedFilter}
+        onFilter={handleFilter}
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={SetCurrentPage}

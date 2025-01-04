@@ -3,6 +3,7 @@ import { DatePickerWithRange } from "@/components/DatePickerRangeDemo";
 import { pedidoService } from "@/service/PedidoService";
 import IPedido from "@/utils/interfaces/IPedido";
 import React, { useEffect, useState } from "react";
+import debounce from "@/utils/functions/debounce";
 
 export default function ListagemCadastro() {
     const [pedidos, SetPedidos] = useState<IPedido[]>([]);
@@ -27,22 +28,11 @@ export default function ListagemCadastro() {
     }
 
     const handleFilter = React.useCallback(
-        (newFilters: Record<string, string>) => {
+        debounce((newFilters: Record<string, string>) => {
             SetCurrentPage(1);
             setFilters(newFilters);
-        },
+        }, 800),
         []
-    );
-
-    const debouncedFilter = React.useCallback(
-        (newFilters: Record<string, string>) => {
-            const handler = setTimeout(() => {
-                handleFilter(newFilters);
-            }, 700);
-
-            return () => clearTimeout(handler);
-        },
-        [handleFilter]
     );
 
     const collumnsPedidos = [
@@ -56,6 +46,7 @@ export default function ListagemCadastro() {
         header: "Data Compra", 
         render: (value: string | number) => {
             const date = new Date(value as string);
+            date.setDate(date.getDate() + 1); // Adjusting the date to show one day ahead
             return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
         },
         filterable: false},
@@ -64,13 +55,13 @@ export default function ListagemCadastro() {
     return(
         <div className="space-y-4">
             <div className="flex justify-end">
-                <DatePickerWithRange onFilter={debouncedFilter} />
+                <DatePickerWithRange onFilter={handleFilter} />
             </div>
             <GenericTable
                 data={pedidos}
                 columns={collumnsPedidos}
                 onDelete={handleDelete}
-                onFilter={debouncedFilter}
+                onFilter={handleFilter}
                 currentPage={currentPage}
                 totalPages={totalPages}
                 href="cadastroPedido"

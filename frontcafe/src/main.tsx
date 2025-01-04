@@ -7,11 +7,11 @@ import Home from './page/Home.tsx'
 import BebidaCadastro from './page/Cadastro/BebidaCadastro.tsx'
 import ListagemPessoa from './page/Listagens/ListagemPessoa.tsx'
 import PessoaCadastro from './page/Cadastro/PessoaCadastro.tsx'
-import NavBar from './components/navBar/NavBar.tsx'
 import ListagemBebida from './page/Listagens/ListagemBebida.tsx'
 import PedidoCadastro from './page/Cadastro/PedidoCadastro.tsx'
 import ListagemCadastro from './page/Listagens/ListagemCadastro.tsx'
 import LoginPage from './page/Login.tsx'
+import NavBar from './components/navBar/NavBar.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

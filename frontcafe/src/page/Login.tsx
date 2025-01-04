@@ -1,63 +1,33 @@
-import { LoginForm } from "@/components/Formularios/FormularioLogin"
+import LoginForm from "@/components/Formularios/FormLogin/LoginForm"
 import { GalleryVerticalEnd } from "lucide-react"
-
-
-
-
 
 export default function LoginPage() {
 
   return (
-
-    <div className="grid min-h-screen lg:grid-cols-2 ">
-
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-
-        <div className="flex justify-center gap-2 md:justify-start">
-
-          <a href="#" className="flex items-center gap-2 font-medium">
-
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-
-              <GalleryVerticalEnd className="size-4" />
-
+    <main className="grid min-h-screen grid-cols-2">
+      <div className="flex flex-col items-center justify-center bg-background px-4 py-8 dark:bg-gray-900">
+        <div className="w-full max-w-[480px] space-y-6">
+          <div className="flex items-center gap-3 pb-20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <GalleryVerticalEnd className="size-6" />
             </div>
-
-            <span>Appel Cafe</span>
-
-          </a>
-
-        </div>
-
-        <div className="flex flex-1 items-center justify-center">
-
-          <div className="w-full max-w-xs">
-
-            <LoginForm />
-
+            <span className="text-2xl font-semibold text-foreground dark:text-white">Appel Cafe</span>
           </div>
-
+          
+          <div className="w-full">
+            <LoginForm/>
+          </div>
         </div>
-
       </div>
-
-      <div className="relative hidden bg-muted lg:block">
-
+      
+      <div className="relative">
         <img
-
-          src="/placeholder.svg"
-
-          alt="Image"
-
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-
+          src="/src/lib/images/IMG_20241208_133943.jpg"
+          alt="Coffee Shop Background"
+          className="h-full w-full object-cover"
         />
-
       </div>
-
-    </div>
-
+    </main>
   )
 
 }
-

@@ -1,5 +1,6 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { bebidaService } from "@/service/BebidaService";
+import debounce from "@/utils/functions/debounce";
 import IBebida from "@/utils/interfaces/IBebida";
 import React, { useEffect, useState } from "react";
 
@@ -27,13 +28,11 @@ export default function ListagemBebida(){
         SetBebidas(dadosAposExclusao);
     }
 
-
-   const handleFilter = React.useCallback(
-        (newFilters: Record<string, string>) => {
-            console.log('handleFilter called with:', newFilters);
+    const handleFilter = React.useCallback(
+        debounce((newFilters: Record<string, string>) => {
             SetCurrentPage(1);
             SetFilters(newFilters);
-        },
+        }, 800),
         []
     );
 

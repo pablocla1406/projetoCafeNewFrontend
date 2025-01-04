@@ -30,14 +30,17 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
         <>
             <Form {...form}>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
+                <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
+                <div className="space-y-6">
                     <FormField
                         control={form.control}
                         name="cliente"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Cliente</FormLabel>
+                                <FormLabel className=" dark:text-gray-200 text-lg">Cliente</FormLabel>
                                 <ComboboxReadOnly<IPessoa>
-                                placeholder="Selecione o Cliente"
+                                    placeholder="Selecione o Cliente"
                                 items={clientesFiltrados}
                                 onSelect={(item) => {
                                     if(isPessoa(item)){
@@ -57,27 +60,27 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                                 }}
                                 selectedValue={field.value}                            
                                 />
-                                {errors.cliente?.message && <FormMessage>{errors.cliente.message}</FormMessage>}
+                                {errors.cliente?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.cliente.message}</FormMessage>}
                             </FormItem>
                         )}
-                    ></FormField>
+                        ></FormField>
 
                     <FormField
                         control={form.control}
                         name="bebida"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Bebida</FormLabel>
+                                <FormLabel className=" dark:text-gray-200 text-lg">Bebida</FormLabel>
                                 <ComboboxReadOnly<IBebida>
-                                placeholder="Selecione a Bebida"
-                                items={bebidasFiltradas}
-                                onSelect={(item) => {
-                                    if(isBebida(item)){
-                                        const dataBebida: IBebida = {
-                                            id: String(item.id),
-                                            nome: item.nome,
-                                            descricao: item.descricao,
-                                            preco: item.preco,
+                                    placeholder="Selecione a Bebida"
+                                    items={bebidasFiltradas}
+                                    onSelect={(item) => {
+                                        if(isBebida(item)){
+                                            const dataBebida: IBebida = {
+                                                id: String(item.id),
+                                                nome: item.nome,
+                                                descricao: item.descricao,
+                                                preco: item.preco,
                                             image: item.image,
                                             status: item.status
                                         }
@@ -88,18 +91,19 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                                 }}
                                 selectedValue={field.value}                            
                                 />
-                                {errors.bebida?.message && <FormMessage>{errors.bebida.message}</FormMessage>}
+                                {errors.bebida?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.bebida.message}</FormMessage>}
                             </FormItem>
                         )}
-                    ></FormField>
+                        ></FormField>
 
                     <FormField
                         control={form.control}
                         name="unitario"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Preço Unitário</FormLabel>
+                                <FormLabel className=" dark:text-gray-200 text-lg">Preço Unitário</FormLabel>
                                 <Input
+                                className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                                     type="number"
                                     placeholder="Digite o preço unitário"
                                     {...field}
@@ -112,11 +116,11 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                                             form.setValue("total", value * quantidade, { shouldValidate: true });
                                         }
                                     }}
-                                />
-                                {errors.unitario?.message && <FormMessage>{errors.unitario.message}</FormMessage>}
+                                    />
+                                {errors.unitario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.unitario.message}</FormMessage>}
                             </FormItem>
                         )}
-                    ></FormField>
+                        ></FormField>
 
                     <FormField
                         control={form.control}
@@ -125,6 +129,7 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                             <FormItem>
                                 <FormLabel>Quantidade</FormLabel>
                                 <Input
+                                className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                                     type="number"
                                     placeholder="Digite a quantidade"
                                     {...field}
@@ -137,28 +142,29 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                                             form.setValue("total", value * unitario, { shouldValidate: true });
                                         }
                                     }}
-                                />
-                                {errors.quantidade?.message && <FormMessage>{errors.quantidade.message}</FormMessage>}
+                                    />
+                                {errors.quantidade?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.quantidade.message}</FormMessage>}
                             </FormItem>
                         )}
-                    ></FormField>
+                        ></FormField>
 
                     <FormField
                         control={form.control}
                         name="total"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Total</FormLabel>
+                                <FormLabel className=" dark:text-gray-200 text-lg">Total</FormLabel>
                                 <Input
+                                className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                                     type="number"
                                     placeholder="Total"
                                     disabled
                                     {...field}
-                                />
-                                {errors.total?.message && <FormMessage>{errors.total.message}</FormMessage>}
+                                    />
+                                {errors.total?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.total.message}</FormMessage>}
                             </FormItem>
                         )}
-                    ></FormField>
+                        ></FormField>
 
                     <FormField
                         control={form.control}
@@ -171,13 +177,15 @@ export default function PedidoForm({dados, clientesFiltrados, bebidasFiltradas}:
                                     setDate={(date) => {
                                         field.onChange(date);
                                     }}
-                                />
-                                {errors.dataCompra?.message && <FormMessage>{errors.dataCompra.message}</FormMessage>}
+                                    />
+                                {errors.dataCompra?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.dataCompra.message}</FormMessage>}
                             </FormItem>
                         )}
-                    />
+                        />
 
                     <BotaoSalvarCadastro href="listagemPedidos" />
+                        </div>
+                        </div>
                 </form>
             </Form>
         </>
