@@ -1,14 +1,11 @@
 import IBebida from "./IBebida";
-import IPessoa from "./IPessoa";
 
 export default interface IPedido{
     id: string,
-    cliente: IPessoa,
-    bebida: IBebida,
+    cliente: string,
+    bebida: string,
     unitario: number,
     quantidade: number,
     total: number,
-    dataCompra: Date,
-
-
+    data_compra: Date,
 }

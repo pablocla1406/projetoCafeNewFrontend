@@ -113,6 +113,7 @@ export function ComboboxDemo({
                   key={item.id}
                   value={item.id}
                   onSelect={() => handleSelect(item)}
+                  className="cursor-pointer"
                 >
                   <Check
                     className={cn(

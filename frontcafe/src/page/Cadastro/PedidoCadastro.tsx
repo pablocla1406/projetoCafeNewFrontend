@@ -7,31 +7,58 @@ import { PedidoSchema } from "@/components/Formularios/FormPedido/PedidoSchema";
 import PedidoForm from "@/components/Formularios/FormPedido/PedidoForm";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import IBebida from "@/utils/interfaces/IBebida";
+import IPedido from "@/utils/interfaces/IPedido";
 
 export default function PedidoCadastro() {
     const { id } = useParams();
-    const [pedido, setPedido] = useState<PedidoSchema | undefined>();
+    const [pedido, setPedido] = useState<IPedido>({
+        id: id || "",
+        cliente: {
+            id: "",
+            nome: "",
+            setor: {
+                id: "",
+                nome: ""
+            },
+            foto: "",
+            usuario: "",
+            senha: "",
+            permissao: "USER"
+        },
+        bebida: {
+            id: "",
+            nome: "",
+            preco: 0,
+            descricao: "",
+            image: "",
+            status: "Ativo"
+        },
+        unitario: 0,
+        quantidade: 0,
+        total: 0,
+        data_compra: new Date()
+    });
+    
     const [clientes, setClientes] = useState<IPessoa[]>([]);
     const [bebidas, setBebidas] = useState<IBebida[]>([]);
 
-    useEffect(() => {
-        Promise.all([
-            pessoaService.listarDados(),
-            bebidaService.listarDados()
-        ]).then(([clientesData, bebidasData]) => {
+    async function fetchData() {
+        try {
+            const clientesData = await pessoaService.listarDados();
+            const bebidasData = await bebidaService.listarDados();
+            
             setClientes(clientesData);
             setBebidas(bebidasData);
-        }).catch(error => {
-            console.error("Erro ao carregar dados:", error);
-        });
+        } catch (error) {
+            console.error("Erro ao buscar dados:", error);
+        }
+    }
+    useEffect(() => {
+        fetchData();
+       
     }, []);
 
-    useEffect(() => {
-        if(id) {
-            receberDadosPedido();
-        }
-    }, [id]);
-
+    
     async function receberDadosPedido() {
         if(id) {
             try {
@@ -58,14 +85,18 @@ export default function PedidoCadastro() {
             }
         }
     }
+    useEffect(() => {
+            receberDadosPedido();
+        
+    }, [id]);
 
+
+    
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen py-12 bg-gray-100 dark:bg-zinc-900">
             <PedidoForm
                 dadosExistentes={pedido}
                 clientes={clientes}
                 bebidas={bebidas}
             />
-        </div>
-    );
+        );
 }

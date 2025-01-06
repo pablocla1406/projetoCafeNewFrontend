@@ -19,57 +19,90 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
   return (
     <Form {...form}>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
-                <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
+          <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
           <div className="space-y-6">
             <FormField
               control={form.control}
               name="cliente"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg">Cliente</FormLabel>
-                  <ComboboxReadOnly
-                    items={clientes}
-                    onSelect={(item) => {
-                      field.onChange(item.nome);
-                    }}
-                    selectedValue={clientes.find(c => c.nome === field.value)}
-                    placeholder="Selecione o Cliente"
-                  />
-                  {errors.cliente?.message && (
-                    <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">
-                      {errors.cliente.message}
-                    </FormMessage>
-                  )}
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const selectedCliente = typeof field.value === 'string' 
+                  ? clientes.find(c => c.nome === field.value)
+                  : field.value;
+
+                return (
+                  <FormItem className="space-y-1">
+                    <FormLabel className={`text-lg ${errors.cliente ? 'text-red-500' : ''}`}>
+                      Cliente {errors.cliente && '*'}
+                    </FormLabel>
+                    <ComboboxReadOnly
+                      items={clientes}
+                      onSelect={(item) => {
+                        const clienteObj = {
+                          id: item.id,
+                          nome: item.nome,
+                          setor: item.setor,
+                          foto: item.foto || "",
+                          usuario: item.usuario,
+                          senha: item.senha,
+                          permissao: item.permissao
+                        };
+                        field.onChange(clienteObj);
+                      }}
+                      selectedValue={selectedCliente}
+                      placeholder="Selecione o Cliente"
+                    />
+                    {errors.cliente && (
+                      <FormMessage className="text-red-500">
+                        Cliente é obrigatório
+                      </FormMessage>
+                    )}
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
               control={form.control}
               name="bebida"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg">Bebida</FormLabel>
-                  <ComboboxReadOnly
-                    items={bebidas}
-                    onSelect={(item) => {
-                      field.onChange(item.nome);
-                      form.setValue("unitario", Number(item.preco));
-                      const quantidade = form.getValues("quantidade");
-                      form.setValue("total", Number(item.preco) * quantidade);
-                    }}
-                    selectedValue={bebidas.find(b => b.nome === field.value)}
-                    placeholder="Selecione a Bebida"
-                  />
-                  {errors.bebida?.message && (
-                    <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">
-                      {errors.bebida.message}
-                    </FormMessage>
-                  )}
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const selectedBebida = typeof field.value === 'string'
+                  ? bebidas.find(b => b.nome === field.value)
+                  : field.value;
+
+                return (
+                  <FormItem className="space-y-1">
+                    <FormLabel className={`text-lg ${errors.bebida ? 'text-red-500' : ''}`}>
+                      Bebida {errors.bebida && '*'}
+                    </FormLabel>
+                    <ComboboxReadOnly
+                      items={bebidas}
+                      onSelect={(item) => {
+                        const bebidaObj = {
+                          id: item.id,
+                          nome: item.nome,
+                          preco: Number(item.preco),
+                          descricao: item.descricao,
+                          image: item.image || "",
+                          status: item.status
+                        };
+                        field.onChange(bebidaObj);
+                        form.setValue("unitario", Number(item.preco));
+                        const quantidade = form.getValues("quantidade");
+                        form.setValue("total", Number(item.preco) * quantidade);
+                      }}
+                      selectedValue={selectedBebida}
+                      placeholder="Selecione a Bebida"
+                    />
+                    {errors.bebida && (
+                      <FormMessage className="text-red-500">
+                        Bebida é obrigatória
+                      </FormMessage>
+                    )}
+                  </FormItem>
+                );
+              }}
             />
 
             <div className="flex gap-4">
@@ -78,29 +111,31 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
                 name="unitario"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                                <FormLabel className=" text-lg">Preço Unitário</FormLabel>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                                        R$
-                                    </span>
-                    <Input
-                                        className="w-full h-11 pl-8 pr-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                        type="number"
-                                        min="0"
-                                        step="0.01"
-                                        placeholder="Digite o preço unitário"
-                                        {...field}
-                                        onChange={(e) => {
-                                            const value = Number(e.target.value);
-                                            field.onChange(value);
-                                            const quantidade = form.getValues("quantidade");
-                                            form.setValue("total", value * quantidade);
-                                        }}
-                                        />
-                                        </div>
-                    {errors.unitario?.message && (
-                      <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">
-                        {errors.unitario.message}
+                    <FormLabel className={`text-lg ${errors.unitario ? 'text-red-500' : ''}`}>
+                      Preço Unitário {errors.unitario && '*'}
+                    </FormLabel>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        R$
+                      </span>
+                      <Input
+                        className="w-full h-11 pl-8 pr-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Digite o preço unitário"
+                        {...field}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          field.onChange(value);
+                          const quantidade = form.getValues("quantidade");
+                          form.setValue("total", value * quantidade);
+                        }}
+                      />
+                    </div>
+                    {errors.unitario && (
+                      <FormMessage className="text-red-500">
+                        Preço unitário é obrigatório
                       </FormMessage>
                     )}
                   </FormItem>
@@ -112,12 +147,14 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
                 name="quantidade"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="text-lg">Quantidade</FormLabel>
+                    <FormLabel className={`text-lg ${errors.quantidade ? 'text-red-500' : ''}`}>
+                      Quantidade {errors.quantidade && '*'}
+                    </FormLabel>
                     <Input
-                                className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
+                      className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                       type="number"
-                                    placeholder="Digite a quantidade"
-                                    {...field}
+                      placeholder="Digite a quantidade"
+                      {...field}
                       onChange={(e) => {
                         const value = Number(e.target.value);
                         field.onChange(value);
@@ -125,13 +162,17 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
                         form.setValue("total", unitario * value);
                       }}
                     />
-                                {errors.quantidade?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.quantidade.message}</FormMessage>}
+                    {errors.quantidade && (
+                      <FormMessage className="text-red-500">
+                        Quantidade é obrigatória
+                      </FormMessage>
+                    )}
                   </FormItem>
                 )}
-                        ></FormField>
-                    </div>
+              />
+            </div>
 
-                    <div className="flex gap-4">
+            <div className="flex gap-4">
 
 
               <FormField
@@ -139,21 +180,23 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
                 name="total"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                                <FormLabel className=" dark:text-gray-200 text-lg">Total</FormLabel>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                                        R$
-                                    </span>
-                    <Input
-                                        className="w-full h-11 pl-8 pr-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                        type="number"
-                                        min="0"
-                                        step="0.01"
-                                        placeholder="Total"
-                                        disabled
-                      {...field}
-                                    />
-                                </div>
+                    <FormLabel className={`text-lg ${errors.total ? 'text-red-500' : ''}`}>
+                      Total {errors.total && '*'}
+                    </FormLabel>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                        R$
+                      </span>
+                      <Input
+                        className="w-full h-11 pl-8 pr-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Total"
+                        disabled
+                        {...field}
+                      />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -161,19 +204,25 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
             <FormField
               control={form.control}
-            name="data_compra"
+              name="data_compra"
               render={({ field }) => (
-                            <FormItem className="flex-1">
-                                <FormLabel className=" text-lg">Data da Compra</FormLabel>
-                                <div className="w-full">
-                                    <DatePickerDemo
-                                        date={field.value} 
-                                        setDate={(date) => {
-                                            field.onChange(date);
-                                        }}
-                                    />
-                                </div>
-                                {errors.data_compra?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.dataCompra.message}</FormMessage>}
+                <FormItem className="flex-1">
+                  <FormLabel className={`text-lg ${errors.data_compra ? 'text-red-500' : ''}`}>
+                    Data da Compra {errors.data_compra && '*'}
+                  </FormLabel>
+                  <div className="w-full">
+                    <DatePickerDemo
+                      date={field.value}
+                      setDate={(date) => {
+                        field.onChange(date);
+                      }}
+                    />
+                  </div>
+                  {errors.data_compra && (
+                    <FormMessage className="text-red-500">
+                      Data da compra é obrigatória
+                    </FormMessage>
+                  )}
                 </FormItem>
               )}
             />

@@ -7,19 +7,11 @@ import { cn } from "@/lib/utils";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import IBebida from "@/utils/interfaces/IBebida";
 
-// Helper type guard functions
-function isPessoa(item: IPessoa | IBebida): item is IPessoa {
-  return 'foto' in item && 'permissao' in item;
-}
-
-function isBebida(item: IPessoa | IBebida): item is IBebida {
-  return 'descricao' in item && 'preco' in item;
-}
 
 type ComboboxReadOnlyProps<T extends IPessoa | IBebida> = {
   items: T[];
   onSelect: (item: T) => void;
-  selectedValue?: T;
+  selectedValue?: T | undefined;
   placeholder: string;
 };
 
@@ -30,7 +22,7 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
   placeholder,
 }: ComboboxReadOnlyProps<T>) {
   const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<T | null>(null);
+  const [selectedItem, setSelectedItem] = useState<T | undefined>(undefined);
   const [inputValue, setInputValue] = useState("");
   const [filteredItems, setFilteredItems] = useState(items);
 
@@ -42,6 +34,9 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
     if (selectedValue) {
       setSelectedItem(selectedValue);
       setInputValue(selectedValue.nome);
+    } else {
+      setSelectedItem(undefined);
+      setInputValue("");
     }
   }, [selectedValue]);
 
