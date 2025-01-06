@@ -17,7 +17,9 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
             foto: dadosExistentes?.foto || "",
             usuario: dadosExistentes?.usuario || "",
             senha: dadosExistentes?.senha || "",
-            setor: dadosExistentes?.setor || { id: "", nome: "" },
+            setor: typeof dadosExistentes?.setor === 'string' 
+                ? { id: "", nome: dadosExistentes.setor }
+                : dadosExistentes?.setor || { id: "", nome: "" },
             permissao: dadosExistentes?.permissao || "USER"
         }
     });
@@ -27,10 +29,16 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
     useEffect(() => {
         console.log("Form reset with data:", dadosExistentes);
         if (dadosExistentes) {
+            const formattedSetor = typeof dadosExistentes.setor === 'string'
+                ? { id: "", nome: dadosExistentes.setor }
+                : dadosExistentes.setor || { id: "", nome: "" };
+            
+            console.log("Formatted setor:", formattedSetor);
+            
             reset({
                 ...dadosExistentes,
                 permissao: dadosExistentes.permissao || "USER",
-                setor: dadosExistentes.setor || { id: "", nome: "" }
+                setor: formattedSetor
             });
         }
     }, [dadosExistentes, reset]);

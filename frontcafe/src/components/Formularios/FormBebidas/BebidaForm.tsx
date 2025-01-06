@@ -24,14 +24,18 @@ export default function BebidaForm({dados, onApagarImagem}: BebidaFormProps){
                 <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
                     <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Bebidas</h1>
                 <div className="space-y-6">
+                
+
+            <div className="flex gap-4"> 
 
                 <FormField
                     control={form.control}
                     name="nome"
                     render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Nome</FormLabel>
-                            <Input {...field} placeholder="Digite o Nome" className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                        <FormItem className="flex-1">
+                            <FormLabel className="text-lg">Nome</FormLabel>
+                            <Input {...field} placeholder="Digite o Nome"
+                             className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                             {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                         </FormItem>
                     )}
@@ -41,36 +45,68 @@ export default function BebidaForm({dados, onApagarImagem}: BebidaFormProps){
                     control={form.control}
                     name="descricao"
                     render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Descrição</FormLabel>
-                            <Input {...field} placeholder="Digite a Descrição" className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"/>
+                        <FormItem className="flex-1">
+                            <FormLabel className="text-lg">Descrição</FormLabel>
+                            <Input {...field} placeholder="Digite a Descrição"
+                            className="w-full h-20 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                             {errors.descricao?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.descricao.message}</FormMessage>}
                         </FormItem>
                     )}
                     />
 
+</div>
+
+            <div className="flex gap-4">
                 <FormField
                     control={form.control}
                     name="preco"
-                    render={({ field: { onChange, ...field } }) => (
-                        <FormItem>
-                            <FormLabel>Preço</FormLabel>
-                            <Input 
-                                {...field}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    onChange(value === '' ? '' : Number(value));
-                                }}
-                                type="number" 
-                                step="0.01"
-                                min="0"
-                                placeholder="0,00"
-                                className=""/>
+                    render={({ field: { onChange, value, ...field } }) => (
+                        <FormItem className="flex-1">
+                            <FormLabel className="text-lg">Preço</FormLabel>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                                    R$
+                                </span>
+                                <Input 
+                                    {...field}
+                                    value={value}
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        onChange(value === '' ? '' : Number(value));
+                                    }}
+                                    className="w-full h-11 pl-8 pr-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+                            </div>
                             {errors.preco?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.preco.message}</FormMessage>}
                         </FormItem>
                     )}
                     />
 
+            <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                    <FormItem className="flex-1">
+                        <FormLabel className="text-lg">Status</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white">
+                            <SelectValue placeholder="Selecione o Status"/>
+                        </SelectTrigger>
+                        <SelectContent >
+                            <SelectGroup>
+                                <SelectLabel className="dark:bg-zinc-900 dark:text-white">Status</SelectLabel>
+                                <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer" value="Ativo">Ativo</SelectItem>
+                                <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer" value="Inativo">Inativo</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                        </Select>
+                    </FormItem>
+                )}
+                />
+
+</div>
                 <FormField
                     control={form.control}
                     name="image"
@@ -110,27 +146,6 @@ export default function BebidaForm({dados, onApagarImagem}: BebidaFormProps){
                     )}
                     />
 
-                <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Status</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Selecione o Status"/>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Status</SelectLabel>
-                                    <SelectItem value="Ativo">Ativo</SelectItem>
-                                    <SelectItem value="Inativo">Inativo</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                            </Select>
-                        </FormItem>
-                    )}
-                    />
                 <BotaoSalvarCadastro href="ListagemBebidas"  />
 
                     </div>

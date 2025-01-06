@@ -30,23 +30,26 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
   placeholder,
 }: ComboboxReadOnlyProps<T>) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(selectedValue?.id || "");
+  const [selectedItem, setSelectedItem] = useState<T | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [filteredItems, setFilteredItems] = useState(items);
+
+  useEffect(() => {
+    setFilteredItems(items);
+  }, [items]);
 
   useEffect(() => {
     if (selectedValue) {
-      setValue(selectedValue.id);
+      setSelectedItem(selectedValue);
+      setInputValue(selectedValue.nome);
     }
   }, [selectedValue]);
 
   const handleSelect = (item: T) => {
-    setValue(item.id);
+    setSelectedItem(item);
+    setInputValue(item.nome);
+    onSelect(item);
     setOpen(false);
-    
-    if (isPessoa(item)) {
-      onSelect(item as T);
-    } else if (isBebida(item)) {
-      onSelect(item as T);
-    }
   };
 
   return (
@@ -58,33 +61,44 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
           aria-expanded={open}
           className="w-full justify-between h-11 px-3 py-2  border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
         >
-          {value
-            ? items.find((item) => item.id === value)?.nome
-            : placeholder}
+          {selectedItem?.nome || placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="w-full p-0 z-50">
         <Command>
-          <CommandInput placeholder={placeholder} />
-          <CommandEmpty>Nenhum item encontrado.</CommandEmpty>
-          <CommandGroup>
-            {items.map((item) => (
-              <CommandItem
-                key={item.id}
-                value={item.id}
-                onSelect={() => handleSelect(item)}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === item.id ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {item.nome}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandInput
+            placeholder={placeholder}
+            value={inputValue}
+            onValueChange={(value) => {
+              setInputValue(value);
+              const filtered = items.filter((item) =>
+                item.nome.toLowerCase().includes(value.toLowerCase())
+              );
+              setFilteredItems(filtered);
+            }}
+          />
+          <CommandList>
+            <CommandEmpty>Nenhum item encontrado.</CommandEmpty>
+            <CommandGroup>
+              {filteredItems.map((item) => (
+                <CommandItem
+                  key={item.id}
+                  value={item.id}
+                  onSelect={() => handleSelect(item)}
+                  className="cursor-pointer"
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedItem?.id === item.id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {item.nome}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

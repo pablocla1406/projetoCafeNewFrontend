@@ -46,22 +46,28 @@ export default function PessoaCadastro(){
             try {
                 console.log("Buscando dados da pessoa com ID:", id);
                 const dadosPessoa = await pessoaService.listarDadosId(id);
-                console.log("Dados brutos recebidos:", dadosPessoa);
+                console.log("=== DEBUG: Dados brutos da API ===", {
+                    dadosPessoa,
+                    tipo: typeof dadosPessoa,
+                    setor: dadosPessoa.setor,
+                    tipoSetor: typeof dadosPessoa.setor
+                });
 
                 if (dadosPessoa && typeof dadosPessoa === 'object') {
                     const pessoaFormatada = {
                         id: dadosPessoa.id?.toString() || "",
                         nome: dadosPessoa.nome || "",
-                        setor: {
-                            id: dadosPessoa.setor?.id?.toString() || "",
-                            nome: dadosPessoa.setor?.nome || ""
-                        },
+                        setor: dadosPessoa.setor,  
                         foto: dadosPessoa.foto || "",
                         usuario: dadosPessoa.usuario || "",
                         senha: dadosPessoa.senha || "",
                         permissao: dadosPessoa.permissao || "USER"
                     };
-                    console.log("Dados formatados:", pessoaFormatada);
+                    console.log("=== DEBUG: Pessoa Formatada ===", {
+                        pessoaFormatada,
+                        setor: pessoaFormatada.setor,
+                        tipoSetor: typeof pessoaFormatada.setor
+                    });
                     setPessoa(pessoaFormatada);
                 } else {
                     console.error("Dados recebidos inválidos:", dadosPessoa);
@@ -109,7 +115,6 @@ export default function PessoaCadastro(){
             console.error("Erro ao enviar imagem:", error);
         }
     }
-
 
     async function handleDeleteImage(pessoaId : string){
         try {

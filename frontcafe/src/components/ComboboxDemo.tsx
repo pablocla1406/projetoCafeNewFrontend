@@ -35,16 +35,32 @@ export function ComboboxDemo({
   }, [items])
 
   useEffect(() => {
-    if (selectedValue && selectedValue.id && selectedValue.nome) {
-      setSelectedItem(selectedValue);
-      setInputValue(selectedValue.nome);
+    if (selectedValue) {
+      console.log("ComboboxDemo received selectedValue:", selectedValue);
+      // If we have a selectedValue with just the nome, find the matching item
+      if (selectedValue.nome) {
+        const matchingItem = items.find(item => 
+          item.nome.toLowerCase() === selectedValue.nome.toLowerCase()
+        );
+        if (matchingItem) {
+          console.log("Found matching item:", matchingItem);
+          setSelectedItem(matchingItem);
+          setInputValue(matchingItem.nome);
+        } else {
+          console.log("No matching item found, using selectedValue:", selectedValue);
+          setSelectedItem(selectedValue);
+          setInputValue(selectedValue.nome);
+        }
+      }
     }
-  }, [selectedValue])
+  }, [selectedValue, items])
 
   const handleSelect = (item: Item) => {
-    setSelectedItem(item)
-    onSelect(item)
-    setOpen(false)
+    console.log("ComboboxDemo handleSelect:", item);
+    setSelectedItem(item);
+    setInputValue(item.nome);
+    onSelect(item);
+    setOpen(false);
   }
 
   return (

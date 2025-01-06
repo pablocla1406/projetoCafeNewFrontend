@@ -22,13 +22,8 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
   return (
 
     <Form {...form}>
-      <form onSubmit={handleSubmit(async (data) => {
-        try {
-          await onSubmit(data);
-        } catch (error) {
-          console.error("Erro na submissão:", error);
-        }
-      })} className="flex min-h-screen items-center justify-center p-4">
+      <form onSubmit={handleSubmit(onSubmit)} 
+      className="space-y-10">
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
         <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
         <div className="space-y-6">
@@ -37,7 +32,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
               name="nome"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Nome</FormLabel>
+                  <FormLabel className=" text-lg">Nome</FormLabel>
                   <Input 
                     {...field} 
                     placeholder="Digite o Nome" 
@@ -45,15 +40,13 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   />
                   {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                 </FormItem>
-              )}
-            />
-
+              )}/>
             <FormField
               control={form.control}
               name="foto"
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Foto</FormLabel>
+                  <FormLabel className=" text-lg">Foto</FormLabel>
                   <div className="flex flex-col gap-2">
                     <Input 
                       type="file"
@@ -84,70 +77,72 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                     )}
                   </div>
                 </FormItem>
-              )}
-            />
-
+              )}/>
             <div className="flex gap-4">
               <FormField
                 control={form.control}
                 name="usuario"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Usuário</FormLabel>
-                    <Input {...field} placeholder="Digite o Usuário" className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                    <FormLabel className=" text-lg">Usuário</FormLabel>
+                    <Input {...field} placeholder="Digite o Usuário" 
+                    className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.usuario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.usuario.message}</FormMessage>}
                   </FormItem>
-                )}
-              />
+                )}/>
               <FormField
                 control={form.control}
                 name="senha"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Senha</FormLabel>
+                    <FormLabel className=" text-lg">Senha</FormLabel>
                     <Input {...field} placeholder="Digite a Senha" className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
                   </FormItem>
-                )}
-              />
+                )}/>
             </div>
-
             <FormField
               control={form.control}
               name="setor"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Setor</FormLabel>
-                  <div className="w-full">
-                    <ComboboxDemo
-                      placeholder="Selecione o Setor"
-                      items={setoresFiltrados}
-                      onSelect={(item) => {
-                        if (item?.id && item?.nome) {
-                          const setorData = {
-                            id: String(item.id),
-                            nome: item.nome
-                          };
-                          field.onChange(setorData);
-                          form.setValue("setor", setorData, { shouldValidate: true });
-                        }
-                      }}
-                      onCreate={onAdicionarSetor}
-                      selectedValue={field.value}
-                    />
-                  </div>
-                  {errors.setor?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.setor?.message}</FormMessage>}
-
-                </FormItem>
-              )}
+              render={({ field }) => {
+                console.log("FormField setor value:", field.value);
+                const setorValue = field.value && typeof field.value === 'object' 
+                  ? field.value 
+                  : { id: "", nome: field.value || "" };
+                
+                return (
+                  <FormItem>
+                    <FormLabel className=" text-lg">Setor</FormLabel>
+                    <div className="w-full">
+                      <ComboboxDemo
+                        placeholder="Selecione o Setor"
+                        items={setoresFiltrados}
+                        onSelect={(item) => {
+                          console.log("ComboboxDemo onSelect:", item);
+                          if (item) {
+                            const setorData = {
+                              id: String(item.id),
+                              nome: item.nome
+                            };
+                            field.onChange(setorData);
+                            form.setValue("setor", setorData, { shouldValidate: true });
+                          }
+                        }}
+                        onCreate={onAdicionarSetor}
+                        selectedValue={setorValue}
+                      />
+                    </div>
+                    {errors.setor?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.setor?.message}</FormMessage>}
+                  </FormItem>
+                );
+              }}
             />
-
             <FormField
               control={form.control}
               name="permissao"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Permissão</FormLabel>
+                  <FormLabel className=" text-lg">Permissão</FormLabel>
                   <Select
                     value={field.value}
                     onValueChange={(value) => {
@@ -181,9 +176,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   </Select>
                   {errors.permissao?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.permissao.message}</FormMessage>}
                 </FormItem>
-              )}
-            />
-
+              )}/>
             <div className="pt-6 flex items-center justify-center w-full">
               <BotaoSalvarCadastro href="ListagemPessoas" />
             </div>
