@@ -59,7 +59,12 @@ module.exports = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+			fontFamily: {
+				'sans': ['Inter', 'sans-serif'],
+				'serif': ['ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+				'mono': ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'Courier New', 'monospace'],
+			}
   		}
   	}
   },

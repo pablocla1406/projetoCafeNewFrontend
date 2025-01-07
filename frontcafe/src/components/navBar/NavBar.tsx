@@ -13,7 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from './app-sidebar';
-import { ModeToggle } from '../darkMode&Toggle/toggle-moddle';
+import DialogConfig from '../DialogConfig';
 
 
 export default function NavBar() {
@@ -27,8 +27,8 @@ export default function NavBar() {
           <Breadcrumb>
           <BreadcrumbList>
           <BreadcrumbItem>
+          <DialogConfig/>
           
-          <ModeToggle/>
           </BreadcrumbItem>
           
           </BreadcrumbList>
