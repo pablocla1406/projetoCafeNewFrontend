@@ -22,29 +22,32 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
   placeholder,
 }: ComboboxReadOnlyProps<T>) {
   const [open, setOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<T | undefined>(undefined);
-  const [inputValue, setInputValue] = useState("");
+  const [selectedItem, setSelectedItem] = useState<T | undefined>(selectedValue);
+  const [inputValue, setInputValue] = useState(selectedValue?.nome || "");
   const [filteredItems, setFilteredItems] = useState(items);
 
+  // Atualiza a lista filtrada sempre que os itens ou inputValue mudam
   useEffect(() => {
-    setFilteredItems(items);
-  }, [items]);
+    setFilteredItems(
+      items.filter((item) =>
+        item.nome.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    );
+  }, [inputValue, items]);
 
+  // Sincroniza selectedValue com selectedItem e inputValue ao receber props
   useEffect(() => {
     if (selectedValue) {
       setSelectedItem(selectedValue);
-      setInputValue(selectedValue.nome);
-    } else {
-      setSelectedItem(undefined);
-      setInputValue("");
+      setInputValue(selectedValue.nome || "");
     }
   }, [selectedValue]);
 
   const handleSelect = (item: T) => {
     setSelectedItem(item);
     setInputValue(item.nome);
-    onSelect(item);
-    setOpen(false);
+    onSelect(item); // Propaga o item selecionado para o componente pai
+    setOpen(false); // Fecha o Popover
   };
 
   return (
@@ -54,9 +57,9 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between h-11 px-3 py-2  border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
+          className="w-full justify-between h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
         >
-          {selectedItem?.nome || placeholder}
+          {selectedItem?.nome || inputValue || placeholder} {/* Fallback para exibição */}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -65,13 +68,7 @@ export function ComboboxReadOnly<T extends IPessoa | IBebida>({
           <CommandInput
             placeholder={placeholder}
             value={inputValue}
-            onValueChange={(value) => {
-              setInputValue(value);
-              const filtered = items.filter((item) =>
-                item.nome.toLowerCase().includes(value.toLowerCase())
-              );
-              setFilteredItems(filtered);
-            }}
+            onValueChange={(value) => setInputValue(value)}
           />
           <CommandList>
             <CommandEmpty>Nenhum item encontrado.</CommandEmpty>

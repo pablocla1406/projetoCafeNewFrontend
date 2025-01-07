@@ -39,16 +39,18 @@ export default function PedidoCadastro() {
         data_compra: new Date()
     });
     
-    const [clientes, setClientes] = useState<IPessoa[]>([]);
-    const [bebidas, setBebidas] = useState<IBebida[]>([]);
+    const [todosclientes, setTodosClientes] = useState<IPessoa[]>([]);
+    const [clientesFiltrados, setClientesFiltrados] = useState<IPessoa[]>([]);
+    const [bebidasFiltradas, setBebidasFiltradas] = useState<IBebida[]>([]);
+    const [todasBebidas, setTodasBebidas] = useState<IBebida[]>([]);
 
     async function fetchData() {
         try {
             const clientesData = await pessoaService.listarDados();
             const bebidasData = await bebidaService.listarDados();
             
-            setClientes(clientesData);
-            setBebidas(bebidasData);
+            setClientesFiltrados(clientesData);
+            setBebidasFiltradas(bebidasData);
         } catch (error) {
             console.error("Erro ao buscar dados:", error);
         }
@@ -95,8 +97,8 @@ export default function PedidoCadastro() {
     return (
             <PedidoForm
                 dadosExistentes={pedido}
-                clientes={clientes}
-                bebidas={bebidas}
+                clientes={clientesFiltrados}
+                bebidas={bebidasFiltradas}
             />
         );
 }
