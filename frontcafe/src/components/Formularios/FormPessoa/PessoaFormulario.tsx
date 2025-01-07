@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
+import BotaoVoltarCadastro from "@/components/BotaoVoltarCadastro";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -25,6 +26,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
       <form onSubmit={handleSubmit(onSubmit)} 
       className="space-y-10">
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
+        <BotaoVoltarCadastro href="ListagemPedidos"/>
         <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
         <div className="space-y-6">
             <FormField

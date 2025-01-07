@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { pedidoService } from "@/service/PedidoService";
 import { pessoaService } from "@/service/PessoaService";
 import { bebidaService } from "@/service/BebidaService";
-import { PedidoSchema } from "@/components/Formularios/FormPedido/PedidoSchema";
 import PedidoForm from "@/components/Formularios/FormPedido/PedidoForm";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import IBebida from "@/utils/interfaces/IBebida";
@@ -39,35 +38,37 @@ export default function PedidoCadastro() {
         data_compra: new Date()
     });
     
-    const [todosclientes, setTodosClientes] = useState<IPessoa[]>([]);
     const [clientesFiltrados, setClientesFiltrados] = useState<IPessoa[]>([]);
     const [bebidasFiltradas, setBebidasFiltradas] = useState<IBebida[]>([]);
-    const [todasBebidas, setTodasBebidas] = useState<IBebida[]>([]);
 
     async function fetchData() {
         try {
             const clientesData = await pessoaService.listarDados();
             const bebidasData = await bebidaService.listarDados();
-            
-            setClientesFiltrados(clientesData);
+
+            // Normalizar os clientes para incluir setor como objeto
+            const clientesNormalizados = clientesData.map((cliente: IPessoa) => ({
+                ...cliente,
+                setor: {
+                    id: String(cliente.setor.id),
+                    nome: cliente.setor.nome
+                } 
+            }));
+
+            setClientesFiltrados(clientesNormalizados);
             setBebidasFiltradas(bebidasData);
         } catch (error) {
             console.error("Erro ao buscar dados:", error);
         }
     }
-    useEffect(() => {
-        fetchData();
-       
-    }, []);
 
-    
     async function receberDadosPedido() {
-        if(id) {
+        if (id) {
             try {
                 const dadosPedido = await pedidoService.listarDadosId(id);
                 console.log("=== DEBUG: Dados do Pedido ===", dadosPedido);
                 
-                if(dadosPedido && typeof dadosPedido === 'object') {
+                if (dadosPedido && typeof dadosPedido === 'object') {
                     const formattedData = {
                         id: dadosPedido.id.toString(),
                         cliente: dadosPedido.cliente,
@@ -87,18 +88,20 @@ export default function PedidoCadastro() {
             }
         }
     }
+
     useEffect(() => {
-            receberDadosPedido();
-        
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        receberDadosPedido();
     }, [id]);
 
-
-    
     return (
-            <PedidoForm
-                dadosExistentes={pedido}
-                clientes={clientesFiltrados}
-                bebidas={bebidasFiltradas}
-            />
-        );
+        <PedidoForm
+            dadosExistentes={pedido}
+            clientes={clientesFiltrados}
+            bebidas={bebidasFiltradas}
+        />
+    );
 }

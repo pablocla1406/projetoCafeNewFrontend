@@ -33,42 +33,10 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     async function onSubmit(data: BebidaSchema) {
         console.log("Form submitted with data:", data);
         try {
-            // Create a copy of the data without the image field
-            const { image, ...bebidaData } = data;
-            
-            // Format the data for the service
-            const formattedData: Partial<IBebida> = {
-                ...bebidaData,
-                preco: Number(data.preco),
-                // Only include image if it's a string (URL)
-                ...(typeof image === 'string' ? { image } : {})
-            };
-
-            // Remove o campo id se for um novo cadastro
-            if (!dadosBebidas?.id) {
-                delete formattedData.id;
-            }
-
-            let savedBebida: IBebida;
-            // Verifica se é uma atualização (tem dadosBebidas E tem ID)
-            if (dadosBebidas && dadosBebidas.id) {
-                const response = await bebidaService.atualizarDadosId(dadosBebidas.id, formattedData);
-                if(!response) throw new Error('Failed to update bebida');
-                savedBebida = response;
+            if (data.id) {
+                await bebidaService.atualizarDadosId(Number(data.id), data);
             } else {
-                const response = await bebidaService.criarNovoCadastroId(formattedData);
-                if (!response) throw new Error('Failed to create bebida');
-                savedBebida = response;
-            }
-
-            // Upload image if a new file was selected
-            if (image && image instanceof File) {
-                const imageResponse = await imageService.uploadImage(
-                    image,
-                    'bebidas',
-                    savedBebida.id
-                );
-                console.log('Image uploaded successfully:', imageResponse);
+                await bebidaService.criarNovoCadastroId(data);
             }
         } catch (error) {
             console.error('Error submitting form:', error);

@@ -27,6 +27,7 @@ export default function NavBar() {
           <Breadcrumb>
           <BreadcrumbList>
           <BreadcrumbItem>
+          
           <ModeToggle/>
           </BreadcrumbItem>
           

@@ -14,6 +14,7 @@ import IPessoa from "@/utils/interfaces/IPessoa";
 import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
 
 import { DatePickerDemo } from "@/components/DatePickerDemo";
+import BotaoVoltarCadastro from "@/components/BotaoVoltarCadastro";
 
 
 type PedidoFormProps = {
@@ -40,6 +41,7 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
 
+          <BotaoVoltarCadastro href="ListagemPedidos"/>
           <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
 
           <div className="space-y-6">
@@ -52,10 +54,11 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
               render={({ field }) => {
 
-                const selectedCliente = field.value && typeof field.value === 'object'
+                const clienteValue = field.value && typeof field.value === 'object'
                 ? field.value
-                : {id: '', nome: '', setor: '', foto: '', usuario: '', senha: '', permissao: ''};
+                : {id: '', nome: '', setor: { id: '', nome: ''}, foto: '', usuario: '', senha: '', permissao: ''};
 
+                console.log("clienteValue:", clienteValue, "field.value:", field.value, "clientes:", clientes);
 
                 return (
 
@@ -63,7 +66,7 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                     <FormLabel className={`text-lg ${errors.cliente ? 'text-red-500' : ''}`}>
 
-                      Cliente {errors.cliente && '*'}
+                      Cliente 
 
                     </FormLabel>
 
@@ -75,22 +78,21 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                       onSelect={(item) => {
 
-                        if (item && 'nome' in item && 'setor' in item && 'foto' in item && 'usuario' in item && 'senha' in item && 'permissao' in item) {
-                          const clienteObj = {
-                            id: String(item.id),
-                            nome: item.nome,
-                            setor: item.setor,
-                            foto: item.foto,
-                            usuario: item.usuario,
-                            senha: item.senha,
-                            permissao: item.permissao
-                          };
-                          field.onChange(clienteObj);
+                        if (item) {
+                          field.onChange({
+                            ...item,
+                            id: item.id.toString(),
+                            setor: 'setor' in item ? {
+                              ...item.setor,
+                              id: item.setor.id.toString()
+                            } : { id: '', nome: '' },
+                            permissao: ('permissao' in item ? item.permissao : 'USER') as "USER" | "ADMIN" | "AUX"
+                          });
                         }
                       }}
                       
 
-                      selectedValue={selectedCliente}
+                      selectedValue={clienteValue}
                       
 
                       placeholder="Selecione o Cliente"

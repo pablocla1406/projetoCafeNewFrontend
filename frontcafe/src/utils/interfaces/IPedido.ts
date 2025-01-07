@@ -1,14 +1,11 @@
-import IBebida from "./IBebida";
+import { ISetor } from "./ISetor";
 
 export default interface IPedido{
     id: string,
     cliente: {
         id: string;
         nome: string;
-        setor: {
-            id: string;
-            nome: string;
-        };
+        setor: ISetor
         foto?: string;
         usuario: string;
         senha: string;
