@@ -12,6 +12,7 @@ import PedidoCadastro from './page/Cadastro/PedidoCadastro.tsx'
 import ListagemCadastro from './page/Listagens/ListagemCadastro.tsx'
 import LoginPage from './page/Login.tsx'
 import NavBar from './components/navBar/NavBar.tsx'
+import { PrivateRoute } from './components/PrivateRoute.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,17 +20,38 @@ createRoot(document.getElementById('root')!).render(
       <App>
         <Routes>
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/' element={<NavBar />}>
-            <Route path='/Home' element={<Home />} />
-            <Route path='/cadastroBebida' element={<BebidaCadastro />} />
-            <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
-            <Route path='/cadastroPedido' element={<PedidoCadastro/>}/>
-            <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
-            <Route path='/cadastroPessoa/:id' element={<PessoaCadastro />} />
-            <Route path='/cadastroPedido/:id' element={<PedidoCadastro/>}/>
-            <Route path='/ListagemBebidas' element={<ListagemBebida />} />
-            <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
-            <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
+          <Route element={<PrivateRoute />}>
+            <Route element={<NavBar />}>
+              <Route path='/Home' element={<Home />} />
+              
+              {/* Rotas que requerem permissão de ADMIN */}
+              <Route element={<PrivateRoute requiredPermission="ADMIN" />}>
+                <Route path='/cadastroBebida' element={<BebidaCadastro />} />
+                <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
+                <Route path='/cadastroPedido' element={<PedidoCadastro/>}/>
+                <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
+                <Route path='/cadastroPessoa/:id' element={<PessoaCadastro />} />
+                <Route path='/cadastroPedido/:id' element={<PedidoCadastro/>}/>
+                <Route path='/ListagemBebidas' element={<ListagemBebida />} />
+                <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
+              </Route>
+
+              <Route element={<PrivateRoute requiredPermission="AUX" />}>
+                <Route path='/cadastroBebida' element={<BebidaCadastro />} />
+                <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
+                <Route path='/cadastroPedido' element={<PedidoCadastro/>}/>
+                <Route path='/cadastroPedido/:id' element={<PedidoCadastro/>}/>
+                <Route path='/ListagemBebidas' element={<ListagemBebida />} />
+                <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
+              </Route>
+
+              {/* Rotas que requerem permissão de USER ou ADMIN */}
+              <Route element={<PrivateRoute requiredPermission="USER" />}>
+                <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
+                <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
+                <Route path='/ListagemBebidas' element={<ListagemBebida />} />
+              </Route>
+            </Route>
           </Route>
         </Routes>
       </App>

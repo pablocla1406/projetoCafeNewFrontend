@@ -2,6 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginSchema, LoginSchema } from "./schemaLogin";
 import api from "@/service/api";
+import ILoginResponse from "@/utils/interfaces/ILoginResponse";
+
+
+
 
 export default function HookLogin() {
     const form = useForm<LoginSchema>({
@@ -16,16 +20,30 @@ export default function HookLogin() {
 
 
     async function onSubmit(data: LoginSchema) {
-        await api.post('/auth/login', data)
-        .then((response) => {
-            console.log('Login efetuado com sucesso:', response.data);
-        })
-        .catch((error) => {
-            console.error('Erro ao efetuar login:', error);
-        });
+        try{
+
+            const response = await api.post<ILoginResponse>('/auth/login', data)
+            
+            const {token, pessoa} = response.data
+            
+            localStorage.setItem('token', token)
+            localStorage.setItem('pessoa', JSON.stringify(pessoa))
+            localStorage.setItem('permissao', pessoa.permissao)
+            
+            const expirantionTime = new Date().getTime() + (24 * 60 * 60 * 1000)
+            
+            localStorage.setItem('expirationTime', expirantionTime.toString())
+            
+       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+       
+       window.location.href = '/Home'
     }
-
-
+        catch(error){
+            console.error('Error submitting form:', error);
+            throw error;
+        }
+    }
+    
     
     return {
         form,

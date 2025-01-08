@@ -8,7 +8,6 @@ import { FormMessage } from "@/components/ui/form"
 
 export default function LoginForm() {
     const { form, handleSubmit, errors, onSubmit } = HookLogin()
-    const navigate = useNavigate();
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -51,7 +50,7 @@ export default function LoginForm() {
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
 
                 </div>
-                <Button type="submit" onClick={() => {navigate("/Home")}}>Entrar</Button>
+                <Button type="submit">Entrar</Button>
                 </div>
         </form>
     )

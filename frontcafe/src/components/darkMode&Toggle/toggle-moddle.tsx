@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils"
 interface ModeToggleProps {
     tempConfig: {
         theme: Theme;
+        font: string;
     };
-    setTempConfig: (config: { theme: Theme }) => void;
+    setTempConfig: (config: { theme: Theme; font: string }) => void;
 }
 
 export function ModeToggle({ tempConfig, setTempConfig }: ModeToggleProps) {
