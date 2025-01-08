@@ -34,7 +34,7 @@ export default function HookLogin() {
 
             localStorage.setItem('nome', pessoa.nome)
             localStorage.setItem('usuario', pessoa.usuario)
-            localStorage.setItem('foto', pessoa.foto)
+            localStorage.setItem('imagem', pessoa.imagem)
             
 
 

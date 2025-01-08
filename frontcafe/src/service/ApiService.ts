@@ -62,6 +62,7 @@ class ApiService<T>{
         const resposta = await api.patch<T>(`/${this.recurso}/${id}/restore`)
         return resposta.data
     }
+
 }
 
 export default ApiService

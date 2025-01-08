@@ -6,7 +6,7 @@ export default interface IPedido{
         id: string;
         nome: string;
         setor: ISetor
-        foto?: string;
+        imagem?: string;
         usuario: string;
         senha: string;
         permissao: "ADMIN" | "USER" | "AUX";

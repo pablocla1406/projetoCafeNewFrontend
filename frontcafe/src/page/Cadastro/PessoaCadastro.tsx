@@ -1,145 +1,77 @@
-import { pessoaService } from "@/service/PessoaService";
-import { ISetor } from "@/utils/interfaces/ISetor";
-import IPessoa from "@/utils/interfaces/IPessoa";
 import { useEffect, useState } from "react";
-import { setorService } from "@/service/setorService";
-import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormulario";
 import { useParams } from "react-router-dom";
-import { imageService } from "@/service/ImageService";
+import { pessoaService } from "@/service/PessoaService";
+import { setorService } from "@/service/setorService";
+import { PessoaFormSchema } from "@/components/Formularios/FormPessoa/PessoaSchema";
+import { ISetor } from "@/utils/interfaces/ISetor";
+import { toast } from "sonner";
+import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormulario";
 
-export default function PessoaCadastro(){
+export default function PessoaCadastro() {
     const { id } = useParams();
-    console.log("ID from params:", id);
-
-    const [pessoa, setPessoa] = useState<IPessoa>({
-        id: id || "",
-        nome: "",
-        setor: {
-            id: "",
-            nome: ""
-        },
-        foto: "",
-        usuario: "",
-        senha: "",
-        permissao: "USER"
-    });
-
-    const [todosSetores, setTodosSetores] = useState<ISetor[]>([])
-    const [setoresFiltrados, setSetoresFiltrados] = useState<ISetor[]>([])
+    const [dadosExistentes, setDadosExistentes] = useState<PessoaFormSchema | undefined>(undefined);
+    const [setoresFiltrados, setSetoresFiltrados] = useState<ISetor[]>([]);
 
     useEffect(() => {
-        buscarTodosSetores();
-    }, []);
-
-    async function buscarTodosSetores() {
-        try {
-            const todosOsSetores = await setorService.listarDados()
-            console.log("Setores recebidos:", todosOsSetores);
-            setSetoresFiltrados(todosOsSetores)
-        } catch (error) {
-            console.error("Erro ao buscar setores:", error);
-        }
-    }
-
-    async function receberDadosPessoa(){
-        if (id) {
-            try {
-                console.log("Buscando dados da pessoa com ID:", id);
-                const dadosPessoa = await pessoaService.listarDadosId(id);
-                console.log("=== DEBUG: Dados brutos da API ===", {
-                    dadosPessoa,
-                    tipo: typeof dadosPessoa,
-                    setor: dadosPessoa.setor,
-                    tipoSetor: typeof dadosPessoa.setor
-                });
-
-                if (dadosPessoa && typeof dadosPessoa === 'object') {
-                    const pessoaFormatada = {
-                        id: dadosPessoa.id?.toString() || "",
-                        nome: dadosPessoa.nome || "",
-                        setor: dadosPessoa.setor,  
-                        foto: dadosPessoa.foto || "",
-                        usuario: dadosPessoa.usuario || "",
-                        senha: dadosPessoa.senha || "",
-                        permissao: dadosPessoa.permissao || "USER"
-                    };
-                    console.log("=== DEBUG: Pessoa Formatada ===", {
-                        pessoaFormatada,
-                        setor: pessoaFormatada.setor,
-                        tipoSetor: typeof pessoaFormatada.setor
-                    });
-                    setPessoa(pessoaFormatada);
-                } else {
-                    console.error("Dados recebidos inválidos:", dadosPessoa);
+        async function carregarDados() {
+            if (id) {
+                try {
+                    const dados = await pessoaService.listarDadosId(id);
+                    setDadosExistentes(dados);
+                } catch (error) {
+                    console.error("Erro ao carregar dados:", error);
+                    toast.error("Erro ao carregar dados da pessoa");
                 }
-            } catch (error) {
-                console.error("Erro ao buscar dados da pessoa:", error);
             }
         }
-    }
-
-    useEffect(() => {
-        console.log("useEffect triggered with ID:", id);
-        receberDadosPessoa();
+        carregarDados();
     }, [id]);
 
-    async function adicionarSetor(novaSetor : ISetor){
-        try {
-            if (!novaSetor.id) {
-                const novaSetorCriada = await setorService.criarNovoCadastroId(novaSetor);
-                setTodosSetores(prev => [...prev, novaSetorCriada]);
-                setSetoresFiltrados(prev => [...prev, novaSetorCriada]);
-                setPessoa(prev => ({
-                    ...prev,
-                    setor: novaSetorCriada
-                }));
-            } else {
-                setPessoa(prev => ({
-                    ...prev,
-                    setor: novaSetor
-                }));
+    useEffect(() => {
+        async function carregarSetores() {
+            try {
+                const setores = await setorService.listarDados();
+                setSetoresFiltrados(setores);
+            } catch (error) {
+                console.error("Erro ao carregar setores:", error);
+                toast.error("Erro ao carregar lista de setores");
             }
-        } catch (error) {
-            console.error("Erro ao criar novo setor:", error);
         }
-    }
+        carregarSetores();
+    }, []);
 
-    async function handleUploadImage(file: File) {
+    async function handleAdicionarSetor(novoSetor: ISetor) {
         try {
-            const imageUrl = await imageService.uploadImage(file, "pessoas", pessoa.id);
-            setPessoa(prev => ({
-                ...prev,
-                foto: imageUrl
-            }));
+            const setorCriado = await setorService.criarNovoCadastroId(novoSetor);
+            setSetoresFiltrados(prevSetores => [...prevSetores, setorCriado]);
+            toast.success("Setor adicionado com sucesso!");
+            return setorCriado;
         } catch (error) {
-            console.error("Erro ao enviar imagem:", error);
+            console.error("Erro ao adicionar setor:", error);
+            toast.error("Erro ao adicionar novo setor");
+            return null;
         }
-    }
+    };
 
-    async function handleDeleteImage(pessoaId : string){
-        try {
-            await imageService.deleteImage("pessoas", pessoaId, pessoa.foto);
-            setPessoa(prev => ({
-                ...prev,
-                foto: ""
-            }))
-
-        } catch (error) {
-            
+    const handleApagarImagem = async (imageName: string) => {
+        if (id) {
+            try {
+                await pessoaService.deleteImagem(id);
+                setDadosExistentes(prev => prev ? { ...prev, imagem: null } : undefined);
+                toast.success("Imagem removida com sucesso!");
+            } catch (error) {
+                console.error("Erro ao apagar imagem:", error);
+                toast.error("Erro ao remover imagem");
+            }
         }
-    }
+    };
 
-    console.log("Estado atual da pessoa:", pessoa);
-    console.log("Renderizando formulário com dados:", pessoa);
-
-    return(
-        <>
-            <PessoaFormulario 
-                dadosExistentes={pessoa} 
-                onAdicionarSetor={adicionarSetor} 
-                setoresFiltrados={setoresFiltrados} 
-                onApagarImagem={handleDeleteImage}
-            />
-        </>
-    )
+    return (
+        <PessoaFormulario
+            dadosExistentes={dadosExistentes}
+            onAdicionarSetor={handleAdicionarSetor}
+            setoresFiltrados={setoresFiltrados}
+            onApagarImagem={handleApagarImagem}
+        />
+    );
 }

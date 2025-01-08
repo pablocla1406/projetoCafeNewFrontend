@@ -3,7 +3,7 @@ import { z } from "zod";
 const pessoaSchemaDoPedido = z.object({
     id: z.string(),
     nome: z.string(),
-    foto: z.string().url().optional(),
+    imagem: z.string().url().optional(),
     usuario: z.string(),
     senha: z.string(),
     setor: z.object({

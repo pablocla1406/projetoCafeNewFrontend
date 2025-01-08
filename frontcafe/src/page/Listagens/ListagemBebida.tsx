@@ -31,8 +31,7 @@ export default function ListagemBebida(){
     async function handleDeleteUndo(BebidaExcluidaId: string) {
         try {
             await bebidaService.restaurarRegistro(BebidaExcluidaId);
-            const dadosAposRestauracao = bebidas.filter(bebida => bebida.id !== BebidaExcluidaId);
-            SetBebidas(dadosAposRestauracao);
+            fetchData(currentPage, filters); // Refresh the page data
         } catch (error) {
             console.error(error);
         }
@@ -84,7 +83,7 @@ export default function ListagemBebida(){
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
-        onUndoDelete={handleDeleteUndo} 
+        onDeleteUndo={handleDeleteUndo} 
         />
 
 

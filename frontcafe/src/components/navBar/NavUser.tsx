@@ -34,15 +34,15 @@ export function NavUser() {
   const [userData, setUserData] = useState({
     nome: '',
     usuario: '',
-    foto: ''
+    imagem: ''
   })
 
   useEffect(() => {
     const nome = localStorage.getItem('nome') || ''
     const usuario = localStorage.getItem('usuario') || ''
-    const foto = localStorage.getItem('foto') || ''
+    const imagem = localStorage.getItem('imagem') || ''
     
-    setUserData({ nome, usuario, foto })
+    setUserData({ nome, usuario, imagem })
   }, [])
 
   const handleLogout = () => {
@@ -53,7 +53,7 @@ export function NavUser() {
 
     localStorage.removeItem('nome')
     localStorage.removeItem('usuario')
-    localStorage.removeItem('foto')
+    localStorage.removeItem('imagem')
     localStorage.removeItem('expirationTime')
 
     // Redirecionar para a página de login
@@ -70,7 +70,7 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={userData.foto ? userData.foto : ""} alt={userData.nome ? userData.nome : "Raduken"} />
+                <AvatarImage src={userData.imagem ? userData.imagem : ""} alt={userData.nome ? userData.nome : "Raduken"} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -89,7 +89,7 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={userData.foto} alt={userData.nome ? userData.nome : "Raduken"} />
+                  <AvatarImage src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">

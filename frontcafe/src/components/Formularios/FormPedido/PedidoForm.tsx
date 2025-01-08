@@ -56,7 +56,7 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                 const clienteValue = field.value && typeof field.value === 'object'
                 ? field.value
-                : {id: '', nome: '', setor: { id: '', nome: ''}, foto: '', usuario: '', senha: '', permissao: ''};
+                : {id: '', nome: '', setor: { id: '', nome: ''}, imagem: '', usuario: '', senha: '', permissao: ''};
 
                 console.log("clienteValue:", clienteValue, "field.value:", field.value, "clientes:", clientes);
 

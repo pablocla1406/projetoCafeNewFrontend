@@ -5,7 +5,7 @@ interface ILoginResponse {
         usuario: string;
         permissao: string;
         setor: string;
-        foto: string;
+        imagem: string;
     };
     token: string;
     tipo: string;

@@ -29,16 +29,28 @@ export default function ListagemPessoa(){
         fetchData(currentPage, filters);
     }, [currentPage, filters]); 
 
+
+
+
     async function handleDelete(id: string){
         try {
             await pessoaService.deletarDadosId(id);
-            const dadosAposExclusao = pessoas.filter(pessoa => pessoa.id !== id);
-            SetPessoas(dadosAposExclusao);
+            fetchData(currentPage, filters);
         } catch (error) {
             console.error('Erro ao deletar:', error);
         }
     }
 
+
+    async function handleDeleteUndo(PessoaExcluidaId: string) {
+        try {
+            await pessoaService.restaurarRegistro(PessoaExcluidaId);
+            const dadosAposRestauracao = pessoas.filter(pessoa => pessoa.id !== PessoaExcluidaId);
+            SetPessoas(dadosAposRestauracao);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const handleFilter = React.useCallback(
         debounce((newFilters: Record<string, string>) => {
@@ -74,6 +86,7 @@ export default function ListagemPessoa(){
         columns={columnPessoa}
         href="cadastroPessoa"
         onDelete={handleDelete}
+        onDeleteUndo={handleDeleteUndo}
         onFilter={handleFilter}
         currentPage={currentPage}
         totalPages={totalPages}

@@ -19,7 +19,7 @@ export default function PedidoCadastro() {
                 id: "",
                 nome: ""
             },
-            foto: "",
+            imagem: "",
             usuario: "",
             senha: "",
             permissao: "USER"

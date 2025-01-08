@@ -27,6 +27,15 @@ export default function ListagemCadastro() {
         SetPedidos(dadosAposExclusao);
     }
 
+    async function handleDeleteUndo(PedidoExcluidoId: string) {
+        try {
+            await pedidoService.restaurarRegistro(PedidoExcluidoId);
+            fetchData(currentPage, filters);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleFilter = React.useCallback(
         debounce((newFilters: Record<string, string>) => {
             SetCurrentPage(1);
@@ -61,6 +70,7 @@ export default function ListagemCadastro() {
                 data={pedidos}
                 columns={collumnsPedidos}
                 onDelete={handleDelete}
+                onDeleteUndo={handleDeleteUndo}
                 onFilter={handleFilter}
                 currentPage={currentPage}
                 totalPages={totalPages}

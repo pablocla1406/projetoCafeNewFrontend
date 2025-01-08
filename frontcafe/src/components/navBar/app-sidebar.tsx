@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronDown } from "lucide-react"
+import { AlignJustify, ChevronDown, Coffee, HandCoins, Users } from "lucide-react"
 
 import {
   Sidebar,
@@ -27,6 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
+                  <AlignJustify className="mr-2 h-4 w-4" />
                   Menu Inicial
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
@@ -39,39 +40,46 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               </AccordionItem>
               <AccordionItem value="item-2" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
-                  Listagens
+                    <Coffee className="mr-2 h-4 w-4"/>
+                  Bebidas
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/ListagemBebidas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
-                      Listagem de Bebidas
-                    </Link>
-                    <Link to="/ListagemPessoas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
-                      Listagem de Pessoas
-                    </Link>
-                    <Link to="/ListagemPedidos" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
-                      Listagem de Pedidos
-                    </Link>
+                    <Link to="/ListagemBebidas" className="block py-2 text-sm  transition-colors hover:cursor-pointer"></Link>
                   </div>
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
-                  Cadastros
+                <Users className="mr-2 h-4 w-4"/>
+                  Pessoas
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/cadastroBebida" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
-                      Cadastro de Bebidas
+                    <Link to="/ListagemPessoas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                      Listagem de Pessoas
                     </Link>
                     <Link to="/cadastroPessoa" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Cadastro de Pessoas
                     </Link>
-                    <Link to="/cadastroPedido" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
-                      Cadastro de Pedidos
-                    </Link>
                   </div>
                 </AccordionContent>
+                  <AccordionItem value="item-4" className="group">
+                    <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
+                    <HandCoins className="mr-2 h-4 w-4"/>
+                      Pedidos
+                    </AccordionTrigger>
+                    <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                      <div className="px-4 pb-4 space-y-2">
+                        <Link to="/ListagemPedidos" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                          Listagem de Pedidos
+                        </Link>
+                        <Link to="/cadastroPedido" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                          Cadastro de Pedidos
+                        </Link>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
               </AccordionItem>
             </Accordion>
           </SidebarMenu>

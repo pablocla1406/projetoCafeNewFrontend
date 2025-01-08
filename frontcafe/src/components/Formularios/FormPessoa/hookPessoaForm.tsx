@@ -1,99 +1,73 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { pessoaService } from "@/service/PessoaService";
-import { pessoaFormSchema, PessoaFormSchema } from "./PessoaSchema";
-import { useEffect } from "react";
-import { imageService } from "@/service/ImageService";
+import { PessoaFormSchema } from "./PessoaSchema";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { pessoaFormSchema } from "./PessoaSchema";
 
 export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
-    console.log("HookPessoaForm recebeu dados:", dadosExistentes);
+    const navigate = useNavigate();
 
     const form = useForm<PessoaFormSchema>({
         resolver: zodResolver(pessoaFormSchema),
-        mode: "onChange",
         defaultValues: {
-            id: dadosExistentes?.id || "",
             nome: dadosExistentes?.nome || "",
-            foto: dadosExistentes?.foto || "",
+            imagem: dadosExistentes?.imagem || null,
             usuario: dadosExistentes?.usuario || "",
             senha: dadosExistentes?.senha || "",
-            setor: typeof dadosExistentes?.setor === 'string' 
-                ? { id: "", nome: dadosExistentes.setor }
-                : dadosExistentes?.setor || { id: "", nome: "" },
-            permissao: dadosExistentes?.permissao || "USER"
+            setor: dadosExistentes?.setor || { id: "", nome: "" },
+            permissao: dadosExistentes?.permissao || "USER",
+            id: dadosExistentes?.id || "",
+            tempFileName: dadosExistentes?.tempFileName || "",
         }
     });
 
-    const { handleSubmit, formState: { errors }, reset, setValue } = form;
-
-    useEffect(() => {
-        console.log("Form reset with data:", dadosExistentes);
-        if (dadosExistentes) {
-            const formattedSetor = typeof dadosExistentes.setor === 'string'
-                ? { id: "", nome: dadosExistentes.setor }
-                : dadosExistentes.setor || { id: "", nome: "" };
-            
-            console.log("Formatted setor:", formattedSetor);
-            
-            reset({
-                ...dadosExistentes,
-                permissao: dadosExistentes.permissao || "USER",
-                setor: formattedSetor
-            });
-        }
-    }, [dadosExistentes, reset]);
-
-    async function uploadImage(file: File, imageType: string, id: string) {
-        return await imageService.uploadImage(file, imageType, id);
-    }
-
-    async function deleteImage() {
-        const imageType: any = 'pessoas'; 
-        const id = form.getValues('id'); 
-        const imageName = form.getValues('foto'); 
-        await imageService.deleteImage(imageType, id, imageName);
-    }
+    const { formState: { errors }, handleSubmit } = form;
 
     async function onSubmit(data: PessoaFormSchema) {
         try {
-            console.log('Dados a serem enviados:', data);
-            if (dadosExistentes?.id && data.foto && !(typeof data.foto === 'string')) {
+            let imagemUrl = null;
+            
+            // Se houver uma imagem para upload
+            if (data.imagem instanceof File) {
                 try {
-                    await deleteImage();
+                    if (dadosExistentes?.id) {
+                        // Upload de imagem para pessoa existente
+                        const uploadResponse = await pessoaService.uploadImagem(dadosExistentes.id, data.imagem);
+                        imagemUrl = uploadResponse.previewUrl;
+                    } else {
+                        // Upload de imagem para novo cadastro
+                        const uploadResponse = await pessoaService.uploadImagemCadastro(data.imagem);
+                        imagemUrl = uploadResponse.previewUrl;
+                        data.tempFileName = uploadResponse.tempFileName;
+                    }
                 } catch (error) {
-                    console.error('Erro ao excluir imagem:', error);
-                    throw error;
+                    console.error('Erro no upload da imagem:', error);
+                    toast.error('Erro ao fazer upload da imagem');
+                    return;
                 }
             }
 
-            // Chama uploadImage quando uma nova imagem é selecionada
-            if (data.foto && !(typeof data.foto === 'string')) {
-                if (!form.getValues('id')) {
-                    console.error('ID não está disponível para upload da imagem.');
-                    throw new Error('ID não está disponível.');
-                }
-                const imageUrl = await uploadImage(data.foto, 'pessoas', form.getValues('id'));
-                data.foto = imageUrl; // Atualiza a URL da imagem no objeto de dados
-            }
+            // Prepara os dados para envio
+            const dadosParaEnvio = {
+                ...data,
+                imagem: imagemUrl || data.imagem,
+                setorId: data.setor.id
+            };
 
-            // Continue com o envio dos dados do formulário
-            if(form.getValues('id')) {
-                await pessoaService.atualizarDadosId(Number(form.getValues('id')), {
-                    ...data,
-                    permissao: data.permissao ,
-                    setor: data.setor || { id: Number(data.id), nome: data.nome }
-                });
+            if (dadosExistentes?.id) {
+                await pessoaService.atualizarDadosId(dadosExistentes.id, dadosParaEnvio);
+                toast.success('Pessoa atualizada com sucesso!');
             } else {
-                await pessoaService.criarNovoCadastroId({
-                    ...data,
-                    permissao: data.permissao,
-                    setor: data.setor || { id: Number(data.id), nome: data.nome }
-                });
+                await pessoaService.criarNovoCadastroId(dadosParaEnvio);
+                toast.success('Pessoa cadastrada com sucesso!');
             }
-            console.log("Operação realizada com sucesso!");
+
+            navigate('/ListagemPessoas');
         } catch (error) {
-            console.error('Erro ao enviar dados:', error);
-            throw error;
+            console.error('Erro ao salvar pessoa:', error);
+            toast.error('Erro ao salvar os dados');
         }
     }
 
@@ -101,8 +75,6 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
         form,
         handleSubmit,
         errors,
-        onSubmit,
-        uploadImage,
-        deleteImage
+        onSubmit
     };
 }

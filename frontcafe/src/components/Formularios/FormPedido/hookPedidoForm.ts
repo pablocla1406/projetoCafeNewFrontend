@@ -16,7 +16,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                 id: "",
                 nome: "",
                 setor: { id: "", nome: "" },
-                foto: "",
+                imagem: "",
                 usuario: "",
                 senha: "",
                 permissao: "USER"
@@ -47,7 +47,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                         id: "",
                         nome: dadosExistentes.cliente,
                         setor: { id: "", nome: "" },
-                        foto: "",
+                        imagem: "",
                         usuario: "",
                         senha: "",
                         permissao: "USER" as const
@@ -78,7 +78,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                         id: "",
                         nome: data.cliente,
                         setor: { id: "", nome: "" },
-                        foto: "",
+                        imagem: "",
                         usuario: "",
                         senha: "",
                         permissao: "USER" as const

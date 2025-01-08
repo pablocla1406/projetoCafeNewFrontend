@@ -45,7 +45,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
               )}/>
             <FormField
               control={form.control}
-              name="foto"
+              name="imagem"
               render={({ field: { value, onChange, ...field } }) => (
                 <FormItem>
                   <FormLabel className=" text-lg">Foto</FormLabel>
