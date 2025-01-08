@@ -6,47 +6,13 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { TituloNavBar } from "./tituloNavBar"
 import { Separator } from "@/components/ui/separator"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion"
 import { Link } from "react-router-dom"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
+import { NavUser } from "./NavUser"
 
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Tela Inicial",
-      url: "/Home",
-    },
-    {
-      title: "Listagens de Bebida",
-      url: "/ListagemBebidas",
-    },
-    {
-      title: "Listagens de Pessoa",
-      url: "/ListagemPessoas",
-    },
-    {
-      title: "Listagens de Pedido",
-      url: "/ListagemPedidos",
-    },
-    {
-      title: "Cadastro de Bebida",
-      url: "/cadastroBebida",
-    },
-    {
-      title: "Cadastro de Pessoa",
-      url: "/cadastroPessoa",
-    },
-    {
-      title: "Cadastro de Pedido",
-      url: "/cadastroPedido",
-    }
-  ],
-}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -62,11 +28,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <AccordionItem value="item-1" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
                   Menu Inicial
-                  <ChevronDown className="h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200" />
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4">
-                    <Link to="/Home" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/Home" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Tela Inicial
                     </Link>
                   </div>
@@ -75,17 +40,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <AccordionItem value="item-2" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
                   Listagens
-                  <ChevronDown className="h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200" />
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/ListagemBebidas" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/ListagemBebidas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Listagem de Bebidas
                     </Link>
-                    <Link to="/ListagemPessoas" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/ListagemPessoas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Listagem de Pessoas
                     </Link>
-                    <Link to="/ListagemPedidos" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/ListagemPedidos" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Listagem de Pedidos
                     </Link>
                   </div>
@@ -94,17 +58,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <AccordionItem value="item-3" className="group">
                 <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
                   Cadastros
-                  <ChevronDown className="h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200" />
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/CadastroBebidas" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/cadastroBebida" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Cadastro de Bebidas
                     </Link>
-                    <Link to="/CadastroPessoas" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/cadastroPessoa" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Cadastro de Pessoas
                     </Link>
-                    <Link to="/CadastroPedidos" className="block py-2 text-sm text-gray-600 transition-colors hover:text-gray-900">
+                    <Link to="/cadastroPedido" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
                       Cadastro de Pedidos
                     </Link>
                   </div>
@@ -113,6 +76,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </Accordion>
           </SidebarMenu>
         </SidebarContent>
+      </div>
+      <div className="mt-auto">
+        <NavUser />
       </div>
       {/* <SidebarRail /> */}
     </Sidebar>

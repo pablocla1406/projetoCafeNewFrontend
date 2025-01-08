@@ -29,7 +29,15 @@ export default function HookLogin() {
             localStorage.setItem('token', token)
             localStorage.setItem('pessoa', JSON.stringify(pessoa))
             localStorage.setItem('permissao', pessoa.permissao)
+
+
+
+            localStorage.setItem('nome', pessoa.nome)
+            localStorage.setItem('usuario', pessoa.usuario)
+            localStorage.setItem('foto', pessoa.foto)
             
+
+
             const expirantionTime = new Date().getTime() + (24 * 60 * 60 * 1000)
             
             localStorage.setItem('expirationTime', expirantionTime.toString())

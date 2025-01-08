@@ -33,7 +33,7 @@ export function ModeToggle({ tempConfig, setTempConfig }: ModeToggleProps) {
                     <Label
                         htmlFor="light"
                         className={cn(
-                            "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                            "flex flex-col items-center justify-between rounded-md border-2 border-muted hover:cursor-pointer bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
                         )}
                     >
                         <Sun className="mb-3 h-6 w-6" />
@@ -49,7 +49,7 @@ export function ModeToggle({ tempConfig, setTempConfig }: ModeToggleProps) {
                     <Label
                         htmlFor="dark"
                         className={cn(
-                            "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                            "flex flex-col items-center justify-between rounded-md border-2 border-muted hover:cursor-pointer bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
                         )}
                     >
                         <Moon className="mb-3 h-6 w-6" />

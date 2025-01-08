@@ -28,6 +28,16 @@ export default function ListagemBebida(){
         SetBebidas(dadosAposExclusao);
     }
 
+    async function handleDeleteUndo(BebidaExcluidaId: string) {
+        try {
+            await bebidaService.restaurarRegistro(BebidaExcluidaId);
+            const dadosAposRestauracao = bebidas.filter(bebida => bebida.id !== BebidaExcluidaId);
+            SetBebidas(dadosAposRestauracao);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const handleFilter = React.useCallback(
         debounce((newFilters: Record<string, string>) => {
             SetCurrentPage(1);
@@ -74,6 +84,7 @@ export default function ListagemBebida(){
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
+        onUndoDelete={handleDeleteUndo} 
         />
 
 

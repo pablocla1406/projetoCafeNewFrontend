@@ -9,13 +9,19 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { ModeToggle } from "./darkMode&Toggle/toggle-moddle";
+import { ModeToggle } from "@/components/darkMode&Toggle/toggle-moddle";
 import { useState, useEffect } from "react";
 import { useTheme } from "@/components/darkMode&Toggle/themeprovider"
 import { useFont } from "@/hooks/useFont";
 import DefinirFonte from "./DefinirFonte";
 
-export default function DialogConfig() {
+interface dialogConfigProps {
+    style: string;
+    showButton?: boolean;
+    children?: React.ReactNode;
+}
+
+export default function DialogConfig({style, showButton = true, children}: dialogConfigProps) {
     const { theme, setTheme } = useTheme();
     const { font, setFont } = useFont();
     const [open, setOpen] = useState(false);
@@ -42,9 +48,11 @@ export default function DialogConfig() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" size="icon" className="h-9 w-9 px-0">
-                    <Settings className="h-5 w-5" />
-                </Button>
+                {showButton ? (
+                    <Button variant="outline" size="icon" className="h-9 w-9 px-0">
+                        <Settings className={style} />
+                    </Button>
+                ) : children}
             </DialogTrigger>
             <DialogContent className="w-[90vw] max-w-[500px]">
                 <DialogHeader>

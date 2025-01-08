@@ -7,8 +7,8 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
-import BotaoVoltarCadastro from "@/components/BotaoVoltarCadastro";
+import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
+import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;

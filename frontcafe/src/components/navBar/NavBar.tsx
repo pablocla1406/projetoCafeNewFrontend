@@ -13,7 +13,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { AppSidebar } from './app-sidebar';
-import DialogConfig from '../DialogConfig';
+import DialogConfig from './DialogConfig';
 
 
 export default function NavBar() {
@@ -29,7 +29,7 @@ export default function NavBar() {
           <BreadcrumbList>
 
           <BreadcrumbItem>
-          <DialogConfig/>
+          <DialogConfig style="h-5 w-5" />
           
           </BreadcrumbItem>
           

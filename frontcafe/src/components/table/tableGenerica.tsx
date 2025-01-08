@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
+import { toast } from 'sonner';
+import { Progress } from './progress';
 
 interface Column {
   key: string;
@@ -25,6 +27,7 @@ interface GenericTableProps {
   columns: Column[];
   href: string;
   onDelete: (id: string) => void;
+  onDeleteUndo: (id: string) => void;
   onFilter: (filters: Record<string, string>) => void;
   currentPage: number;
   totalPages: number;
@@ -36,6 +39,7 @@ export default function GenericTable({
   columns,
   href,
   onDelete,
+  onDeleteUndo,
   onFilter,
   currentPage,
   totalPages,
@@ -127,7 +131,27 @@ export default function GenericTable({
                             <Pencil className="h-4 w-4" />
                           </Link>
                         </Button>
-                        <Button variant="outline" size="icon" onClick={() => onDelete(row.id)}>
+                        <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={() => {
+                          onDelete(row.id);
+                          toast("Seu arquivo foi excluido com sucesso!", {
+                            description: (
+                              <div className="mt-2">
+                                <Progress className="w-full h-2" />
+                                <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
+                              </div>
+                            ),
+                            duration: 4000,
+                            action: {
+                              label: 'Desfazer',
+                              onClick: () => {
+                                onDeleteUndo(row.id);
+                              }
+                            }
+                          });
+                        }}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>

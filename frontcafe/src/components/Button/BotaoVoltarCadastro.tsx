@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
-import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
 interface BotaoVoltarCadastroProps {
     href: string;
@@ -11,7 +11,7 @@ export default function BotaoVoltarCadastro({href}: BotaoVoltarCadastroProps) {
     const navigate = useNavigate();
 
     return (
-        <Button 
+        <Button
             variant="outline" 
             onClick={(e) => {
                 e.preventDefault();

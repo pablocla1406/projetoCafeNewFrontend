@@ -5,10 +5,9 @@ import { BebidaSchema } from "./BebidaSchema";
 import hookBebidaForm from "./hookBebidaForm";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SelectContent, SelectGroup, SelectLabel } from "@radix-ui/react-select";
-import { useState } from "react";
-import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
 import { Trash2 } from "lucide-react";
-import BotaoVoltarCadastro from "@/components/BotaoVoltarCadastro";
+import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
+import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 
 type BebidaFormProps = {
     dados?: BebidaSchema,
@@ -89,6 +88,8 @@ export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
                                                             onChange(2.30);
+                                                        } else {
+                                                            onChange('');
                                                         }
                                                     }}
                                                     className="w-4 h-4"

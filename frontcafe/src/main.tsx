@@ -12,19 +12,21 @@ import PedidoCadastro from './page/Cadastro/PedidoCadastro.tsx'
 import ListagemCadastro from './page/Listagens/ListagemCadastro.tsx'
 import LoginPage from './page/Login.tsx'
 import NavBar from './components/navBar/NavBar.tsx'
-import { PrivateRoute } from './components/PrivateRoute.tsx'
+import { PrivateRoute } from './components/Formularios/FormLogin/PrivateRoute.tsx'
+import { Toaster } from 'sonner'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <Toaster />
       <App>
         <Routes>
+          {/* Original routes with validation (commented out for now)
           <Route path='/login' element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<NavBar />}>
               <Route path='/Home' element={<Home />} />
               
-              {/* Rotas que requerem permissão de ADMIN */}
               <Route element={<PrivateRoute requiredPermission="ADMIN" />}>
                 <Route path='/cadastroBebida' element={<BebidaCadastro />} />
                 <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
@@ -45,13 +47,27 @@ createRoot(document.getElementById('root')!).render(
                 <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
               </Route>
 
-              {/* Rotas que requerem permissão de USER ou ADMIN */}
               <Route element={<PrivateRoute requiredPermission="USER" />}>
                 <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
                 <Route path='/ListagemPedidos' element={<ListagemCadastro/>}/>
                 <Route path='/ListagemBebidas' element={<ListagemBebida />} />
-              </Route>
             </Route>
+          </Route>
+          */}
+
+          {/* Temporary routes without login validation */}
+          <Route element={<NavBar />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/cadastroBebida" element={<BebidaCadastro />} />
+            <Route path="/cadastroPessoa" element={<PessoaCadastro />} />
+            <Route path="/cadastroPedido" element={<PedidoCadastro />} />
+            <Route path="/cadastroBebida/:id" element={<BebidaCadastro />} />
+            <Route path="/cadastroPessoa/:id" element={<PessoaCadastro />} />
+            <Route path="/cadastroPedido/:id" element={<PedidoCadastro />} />
+            <Route path="/ListagemBebidas" element={<ListagemBebida />} />
+            <Route path="/ListagemPedidos" element={<ListagemCadastro />} />
+            <Route path="/ListagemPessoas" element={<ListagemPessoa />} />
           </Route>
         </Routes>
       </App>

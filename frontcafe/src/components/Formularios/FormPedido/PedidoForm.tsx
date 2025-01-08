@@ -11,10 +11,10 @@ import IBebida from "@/utils/interfaces/IBebida";
 
 import IPessoa from "@/utils/interfaces/IPessoa";
 
-import BotaoSalvarCadastro from "@/components/BotaoSalvarCadastro";
+import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 
 import { DatePickerDemo } from "@/components/DatePickerDemo";
-import BotaoVoltarCadastro from "@/components/BotaoVoltarCadastro";
+import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 
 
 type PedidoFormProps = {

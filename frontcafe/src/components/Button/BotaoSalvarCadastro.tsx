@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
 import { useFormContext } from "react-hook-form";
+import { Button } from "../ui/button";
 
 interface BotaoSalvarCadastroProps {
     href: string,

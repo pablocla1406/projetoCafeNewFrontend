@@ -57,6 +57,11 @@ class ApiService<T>{
     async deletarDadosId(id: string): Promise<void>{
         await api.delete<T>(`/${this.recurso}/${id}`)
     }
+
+    async restaurarRegistro(id: string): Promise<T> {
+        const resposta = await api.patch<T>(`/${this.recurso}/${id}/restore`)
+        return resposta.data
+    }
 }
 
 export default ApiService
