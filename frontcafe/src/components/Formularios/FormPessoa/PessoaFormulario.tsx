@@ -9,24 +9,39 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
+import { useState } from "react";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
   onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
   setoresFiltrados: ISetor[];
-  onApagarImagem: (imageName: string) => void
 }
 
-export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, setoresFiltrados, onApagarImagem }: PessoaFormularioProps) {
+export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, setoresFiltrados,  }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
+  const {imagePreview, setImagePreview} = useState<string | null>(null);
 
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const preview = reader.result as string;
+        setImagePreview(preview);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
   return (
 
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} 
       className="space-y-10">
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
-        <BotaoVoltarCadastro href="ListagemPedidos"/>
+        <BotaoVoltarCadastro href="ListagemPessoas"/>
         <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
         <div className="space-y-6">
             <FormField
@@ -46,29 +61,26 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
             <FormField
               control={form.control}
               name="imagem"
-              render={({ field: { value, onChange, ...field } }) => (
+              render={({ field: { value  } }) => (
                 <FormItem>
                   <FormLabel className=" text-lg">Foto</FormLabel>
                   <div className="flex flex-col gap-2">
                     <Input 
                       type="file"
                       accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) onChange(file);
-                      }}
+                      onChange={handleImageChange}
                       className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
                     />
-                    {value && typeof value === 'string' && (
+                    {imagePreview || value && (
                       <div className="flex items-center gap-2 mt-2">
-                        <img src={value} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
+                        <img src={imagePreview || value} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
                         <Button
                           type="button"
                           variant="destructive"
                           size="sm"
                           onClick={() => {
-                            onApagarImagem(value);
-                            onChange(null);
+                            setImagePreview(null);
+                            form.setValue("imagem", null);
                           }}
                           className="flex items-center gap-1"
                         >

@@ -67,6 +67,7 @@ export default function ListagemCadastro() {
                 <DatePickerWithRange onFilter={handleFilter} />
             </div>
             <GenericTable
+                cadHref="cadastroPedido"
                 data={pedidos}
                 columns={collumnsPedidos}
                 onDelete={handleDelete}

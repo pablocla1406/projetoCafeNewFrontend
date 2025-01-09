@@ -13,13 +13,12 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
         resolver: zodResolver(pessoaFormSchema),
         defaultValues: {
             nome: dadosExistentes?.nome || "",
-            imagem: dadosExistentes?.imagem || null,
+            imagem: dadosExistentes?.imagem || "",
             usuario: dadosExistentes?.usuario || "",
-            senha: dadosExistentes?.senha || "",
+            senha: dadosExistentes?.senha || "",    
             setor: dadosExistentes?.setor || { id: "", nome: "" },
             permissao: dadosExistentes?.permissao || "USER",
             id: dadosExistentes?.id || "",
-            tempFileName: dadosExistentes?.tempFileName || "",
         }
     });
 
@@ -27,35 +26,25 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
 
     async function onSubmit(data: PessoaFormSchema) {
         try {
-            let imagemUrl = null;
-            
-            // Se houver uma imagem para upload
+            let imagemBase64: string | null = null;
+    
+            // Verifique se a imagem é do tipo File antes de processar
             if (data.imagem instanceof File) {
-                try {
-                    if (dadosExistentes?.id) {
-                        // Upload de imagem para pessoa existente
-                        const uploadResponse = await pessoaService.uploadImagem(dadosExistentes.id, data.imagem);
-                        imagemUrl = uploadResponse.previewUrl;
-                    } else {
-                        // Upload de imagem para novo cadastro
-                        const uploadResponse = await pessoaService.uploadImagemCadastro(data.imagem);
-                        imagemUrl = uploadResponse.previewUrl;
-                        data.tempFileName = uploadResponse.tempFileName;
-                    }
-                } catch (error) {
-                    console.error('Erro no upload da imagem:', error);
-                    toast.error('Erro ao fazer upload da imagem');
-                    return;
-                }
+                imagemBase64 = await new Promise<string>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(data.imagem as Blob); // Garantido que é um File
+                });
             }
-
+    
             // Prepara os dados para envio
             const dadosParaEnvio = {
                 ...data,
-                imagem: imagemUrl || data.imagem,
-                setorId: data.setor.id
+                imagem: imagemBase64 || (typeof data.imagem === 'string' ? data.imagem : null), // Usa a imagem convertida ou a string existente
+                setorId: data.setor.id, // Ajusta o campo para o formato esperado no backend
             };
-
+    
             if (dadosExistentes?.id) {
                 await pessoaService.atualizarDadosId(dadosExistentes.id, dadosParaEnvio);
                 toast.success('Pessoa atualizada com sucesso!');
@@ -63,13 +52,16 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
                 await pessoaService.criarNovoCadastroId(dadosParaEnvio);
                 toast.success('Pessoa cadastrada com sucesso!');
             }
-
+    
             navigate('/ListagemPessoas');
         } catch (error) {
             console.error('Erro ao salvar pessoa:', error);
             toast.error('Erro ao salvar os dados');
         }
     }
+    
+    
+    
 
     return {
         form,

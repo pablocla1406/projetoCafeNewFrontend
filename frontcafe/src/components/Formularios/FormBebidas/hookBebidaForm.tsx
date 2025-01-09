@@ -1,10 +1,8 @@
 import { bebidaService } from "@/service/BebidaService";
-import { imageService } from "@/service/ImageService";
 import { BebidaSchema } from "./BebidaSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import IBebida from "@/utils/interfaces/IBebida";
 
 export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     console.log("hookBebidaForm received data:", dadosBebidas);

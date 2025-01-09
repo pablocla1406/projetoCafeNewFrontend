@@ -16,7 +16,6 @@ export const pessoaFormSchema = z.object({
         z.string().nullable(),
         z.instanceof(File),
     ]).optional(),
-    tempFileName: z.string().optional(),
     usuario: z.string()
         .min(3, { message: "O usuário deve ter pelo menos 3 caracteres" })
         .max(50, { message: "O usuário deve ter no máximo 50 caracteres" }),

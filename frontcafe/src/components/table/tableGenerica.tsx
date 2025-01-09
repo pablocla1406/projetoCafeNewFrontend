@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Pencil, Trash2, XCircle } from 'lucide-react';
+import { CirclePlus, Pencil, Trash2, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { DatePickerWithRange } from '../DatePickerRangeDemo';
 import {
@@ -32,6 +32,7 @@ interface GenericTableProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  cadHref: string;
 }
 
 export default function GenericTable({
@@ -44,6 +45,7 @@ export default function GenericTable({
   currentPage,
   totalPages,
   onPageChange,
+  cadHref
 }: GenericTableProps) {
   const [filters, setFilters] = React.useState<Record<string, string>>({});
 
@@ -71,14 +73,25 @@ export default function GenericTable({
     <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
       <div className="items-center gap-4 mb-4">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Filtros</Button>
-          </DropdownMenuTrigger>
+          <div className="flex justify-end items-center space-x-2">
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Filtros</Button>
+            </DropdownMenuTrigger>
+            <Button variant="outline">
+              <Link to={`/${cadHref}`} className="flex items-center">
+                <CirclePlus className="h-4 w-4 mr-1" />
+                Cadastrar
+              </Link>
+            </Button>
+          </div>
+
+
+
           <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
             <div className="p-2 flex flex-col gap-2 relative">
               <DropdownMenuItem asChild>
                 <Button 
-                  variant="ghost" 
+                  variant="outline" 
                   size="icon"
                   className="absolute right-1 top-1 h-6 w-6 hover:bg-muted-foreground hover:cursor-pointer" 
                 >

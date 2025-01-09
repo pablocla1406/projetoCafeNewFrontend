@@ -81,6 +81,7 @@ export default function ListagemPessoa(){
     
     return(
         <GenericTable
+        cadHref="cadastroPessoa"
         data={pessoas}
         columns={columnPessoa}
         href="cadastroPessoa"

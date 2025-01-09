@@ -75,6 +75,7 @@ export default function ListagemBebida(){
 
     return(
         <GenericTable
+        cadHref="cadastroBebida"
         data={bebidas}
         columns={columnsBebidas}
         href="cadastroBebida"

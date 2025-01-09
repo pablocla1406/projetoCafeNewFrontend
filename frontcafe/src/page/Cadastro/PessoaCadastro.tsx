@@ -17,7 +17,28 @@ export default function PessoaCadastro() {
             if (id) {
                 try {
                     const dados = await pessoaService.listarDadosId(id);
-                    setDadosExistentes(dados);
+
+                    // Encontrar o setor correspondente na lista de setores
+                    const setorEncontrado = setoresFiltrados.find(s => s.nome === dados.setor.toString());
+
+                    const dadosFormatados: PessoaFormSchema = {
+                        id: dados.id.toString(),
+                        nome: dados.nome,
+                        imagem: dados.imagem || "",
+                        usuario: dados.usuario,
+                        senha: dados.senha || "",
+                        setor: setorEncontrado ? {
+                            id: setorEncontrado.id.toString(),
+                            nome: setorEncontrado.nome.toString()
+                        } : {
+                            id: "",
+                            nome: dados.setor.toString()
+                        },
+                        permissao: dados.permissao,
+                    };
+
+                    setDadosExistentes(dadosFormatados);
+
                 } catch (error) {
                     console.error("Erro ao carregar dados:", error);
                     toast.error("Erro ao carregar dados da pessoa");
@@ -25,7 +46,7 @@ export default function PessoaCadastro() {
             }
         }
         carregarDados();
-    }, [id]);
+    }, [id, setoresFiltrados]);
 
     useEffect(() => {
         async function carregarSetores() {
@@ -53,25 +74,11 @@ export default function PessoaCadastro() {
         }
     };
 
-    const handleApagarImagem = async (imageName: string) => {
-        if (id) {
-            try {
-                await pessoaService.deleteImagem(id);
-                setDadosExistentes(prev => prev ? { ...prev, imagem: null } : undefined);
-                toast.success("Imagem removida com sucesso!");
-            } catch (error) {
-                console.error("Erro ao apagar imagem:", error);
-                toast.error("Erro ao remover imagem");
-            }
-        }
-    };
-
     return (
         <PessoaFormulario
             dadosExistentes={dadosExistentes}
             onAdicionarSetor={handleAdicionarSetor}
             setoresFiltrados={setoresFiltrados}
-            onApagarImagem={handleApagarImagem}
         />
     );
 }
