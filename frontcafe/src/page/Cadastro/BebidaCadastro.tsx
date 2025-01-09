@@ -47,7 +47,7 @@ export default function BebidaCadastro(){
 
     return(
         <>
-            <BebidaForm dados={bebida} />
+            <BebidaForm dados={bebida} onApagarImagem={() => {}}/>
         </>
     )
 }

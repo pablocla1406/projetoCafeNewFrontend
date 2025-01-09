@@ -45,8 +45,7 @@ export default function ListagemPessoa(){
     async function handleDeleteUndo(PessoaExcluidaId: string) {
         try {
             await pessoaService.restaurarRegistro(PessoaExcluidaId);
-            const dadosAposRestauracao = pessoas.filter(pessoa => pessoa.id !== PessoaExcluidaId);
-            SetPessoas(dadosAposRestauracao);
+            fetchData(currentPage, filters);
         } catch (error) {
             console.error(error);
         }

@@ -31,8 +31,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   Menu Inicial
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                  <div className="px-4 pb-4">
-                    <Link to="/Home" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                  <div className="px-2 pb-2">
+                    <Link to="/Home" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
                       Tela Inicial
                     </Link>
                   </div>
@@ -45,7 +45,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/ListagemBebidas" className="block py-2 text-sm  transition-colors hover:cursor-pointer"></Link>
+                    <Link to="/ListagemBebidas" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
+                      Listagem de Bebidas
+                    </Link>
+                    <Link to="/cadastroBebida" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
+                      Cadastro de Bebidas
+                    </Link>
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -56,10 +61,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <div className="px-4 pb-4 space-y-2">
-                    <Link to="/ListagemPessoas" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                    <Link to="/ListagemPessoas" className="block py-2 text-sm text-center  transition-colors hover:cursor-pointer">
                       Listagem de Pessoas
                     </Link>
-                    <Link to="/cadastroPessoa" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                    <Link to="/cadastroPessoa" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
                       Cadastro de Pessoas
                     </Link>
                   </div>
@@ -71,10 +76,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </AccordionTrigger>
                     <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                       <div className="px-4 pb-4 space-y-2">
-                        <Link to="/ListagemPedidos" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                        <Link to="/ListagemPedidos" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
                           Listagem de Pedidos
                         </Link>
-                        <Link to="/cadastroPedido" className="block py-2 text-sm  transition-colors hover:cursor-pointer">
+                        <Link to="/cadastroPedido" className="block py-2 text-sm text-center transition-colors hover:cursor-pointer">
                           Cadastro de Pedidos
                         </Link>
                       </div>
