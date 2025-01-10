@@ -9,8 +9,17 @@ import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormular
 
 export default function PessoaCadastro() {
     const { id } = useParams();
-    const [dadosExistentes, setDadosExistentes] = useState<PessoaFormSchema | undefined>(undefined);
     const [setoresFiltrados, setSetoresFiltrados] = useState<ISetor[]>([]);
+
+    const [pessoa, setPessoa] = useState<PessoaFormSchema>({
+        id: "",
+        nome: "",
+        imagem: "",
+        usuario: "",
+        senha: "",
+        setor: { id: "", nome: "" },
+        permissao: "USER"
+    });
 
     useEffect(() => {
         async function carregarDados() {
@@ -28,7 +37,7 @@ export default function PessoaCadastro() {
                         usuario: dados.usuario,
                         senha: dados.senha || "",
                         setor: setorEncontrado ? {
-                            id: setorEncontrado.id.toString(),
+                            id: setorEncontrado.id?.toString(),
                             nome: setorEncontrado.nome.toString()
                         } : {
                             id: "",
@@ -37,7 +46,7 @@ export default function PessoaCadastro() {
                         permissao: dados.permissao,
                     };
 
-                    setDadosExistentes(dadosFormatados);
+                    setPessoa(dadosFormatados);
 
                 } catch (error) {
                     console.error("Erro ao carregar dados:", error);
@@ -76,7 +85,7 @@ export default function PessoaCadastro() {
 
     return (
         <PessoaFormulario
-            dadosExistentes={dadosExistentes}
+            dadosExistentes={pessoa}
             onAdicionarSetor={handleAdicionarSetor}
             setoresFiltrados={setoresFiltrados}
         />

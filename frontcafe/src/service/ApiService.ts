@@ -45,8 +45,9 @@ class ApiService<T>{
     }
 
 
-    async atualizarDadosId(id: string | number, dadosAtualizados: Partial<T>): Promise<void>{
-        await api.put<T>(`/${this.recurso}/${id}`, dadosAtualizados)
+    async atualizarDadosId(id: string | number, dadosAtualizados: Partial<T>): Promise<T>{
+        const resposta = await api.put<T>(`/${this.recurso}/${id}`, dadosAtualizados)
+        return resposta.data
     }
 
     async criarNovoCadastroId(dadosCadastro: Partial<T>): Promise<T>{

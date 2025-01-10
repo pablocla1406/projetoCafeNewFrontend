@@ -6,10 +6,12 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, User } from "lucide-react";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import { useState } from "react";
+import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -19,22 +21,46 @@ type PessoaFormularioProps = {
 
 export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, setoresFiltrados,  }: PessoaFormularioProps) {
   const { form, handleSubmit, errors, onSubmit } = HookPessoaForm(dadosExistentes);
-  const {imagePreview, setImagePreview} = useState<string | null>(null);
-
+  
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const preview = reader.result as string;
-        setImagePreview(preview);
-      };
-      reader.readAsDataURL(file);
+      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (validImageTypes.includes(file.type)) {
+        const reader = new FileReader();
+        reader.onload = () => setImagePreview(reader.result as string);
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+        toast.error("O arquivo selecionado não é uma imagem válida");
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      }
     } else {
       setImagePreview(null);
+      toast.error("Erro ao carregar a imagem");
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = '';
+      }
     }
   };
+
+
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+    form.setValue("imagem", null);  // Importante manter isso para atualizar o formulário
+    // Reset the file input value
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  };
+
   return (
 
     <Form {...form}>
@@ -58,6 +84,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                 </FormItem>
               )}/>
+
             <FormField
               control={form.control}
               name="imagem"
@@ -71,16 +98,23 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                       onChange={handleImageChange}
                       className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
                     />
-                    {imagePreview || value && (
+                    {(imagePreview || value) && (
                       <div className="flex items-center gap-2 mt-2">
-                        <img src={imagePreview || value} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
+                        <Avatar className="w-16 h-16">
+                          <AvatarImage 
+                            src={imagePreview || (typeof value === "string" ? value : value instanceof File ? URL.createObjectURL(value) : "")} 
+                            alt="Preview" 
+                          />
+                          <AvatarFallback>
+                            <User className="w-8 h-8" />
+                          </AvatarFallback>
+                        </Avatar>
                         <Button
                           type="button"
                           variant="destructive"
                           size="sm"
                           onClick={() => {
-                            setImagePreview(null);
-                            form.setValue("imagem", null);
+                            handleRemoveImage();
                           }}
                           className="flex items-center gap-1"
                         >
@@ -92,6 +126,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   </div>
                 </FormItem>
               )}/>
+
             <div className="flex gap-4">
               <FormField
                 control={form.control}
@@ -104,6 +139,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                     {errors.usuario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.usuario.message}</FormMessage>}
                   </FormItem>
                 )}/>
+
               <FormField
                 control={form.control}
                 name="senha"
@@ -114,7 +150,9 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
                   </FormItem>
                 )}/>
+
             </div>
+
             <FormField
               control={form.control}
               name="setor"
@@ -151,6 +189,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 );
               }}
             />
+
             <FormField
               control={form.control}
               name="permissao"
@@ -191,6 +230,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   {errors.permissao?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.permissao.message}</FormMessage>}
                 </FormItem>
               )}/>
+
             <div className="pt-6 flex items-center justify-center w-full">
               <BotaoSalvarCadastro href="ListagemPessoas" />
             </div>
