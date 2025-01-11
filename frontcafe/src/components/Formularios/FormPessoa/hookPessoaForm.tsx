@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { pessoaFormSchema } from "./PessoaSchema";
 import { useEffect } from "react";
+import { compressImage } from "@/utils/functions/image/comprimirImage";
 
 export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
     const navigate = useNavigate();
@@ -31,46 +32,55 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
         }
     }, [dadosExistentes, reset]);
 
-
-
     
 
     async function onSubmit(data: PessoaFormSchema) {
         try {
             console.log('Iniciando submissão do formulário:', data);
-            let imagemBase64: string | null = null;
+            let imagemFinal: `data:image/${string};base64,${string}` | null = null;
     
-            // Verifique se a imagem é do tipo File antes de processar
+            // Processa a imagem se for um arquivo
             if (data.imagem instanceof File) {
                 console.log('Processando imagem do tipo File');
-                imagemBase64 = await new Promise<string>((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result as string);
-                    reader.onerror = (error) => {
-                        console.error('Erro ao ler arquivo:', error);
-                        reject(error);
-                    };
-                    reader.readAsDataURL(data.imagem as Blob);
-                });
+                try {
+                    const imagemComprimida = await compressImage(data.imagem);
+                    imagemFinal = imagemComprimida as `data:image/${string};base64,${string}`;
+                } catch (error) {
+                    console.error('Erro ao comprimir imagem:', error);
+                    toast.error('Erro ao processar a imagem');
+                    return;
+                }
+            } else if (typeof data.imagem === 'string' && data.imagem.startsWith('data:image/')) {
+                imagemFinal = data.imagem as `data:image/${string};base64,${string}`;
             }
     
-            // Prepara os dados para envio
-            const dadosParaEnvio = {
-                ...data,
-                imagem: imagemBase64 || (typeof data.imagem === 'string' ? data.imagem : null),
-                setorId: data.setor.id,
+            // Dados base que são comuns para POST e PUT
+            const dadosBase = {
+                nome: data.nome,
+                imagem: imagemFinal,
+                usuario: data.usuario,
+                senha: data.senha,
+                setor: {
+                    id: data.setor.id.toString(),
+                    nome: data.setor.nome
+                },
+                permissao: data.permissao
             };
 
-            console.log('Dados preparados para envio:', dadosParaEnvio);
-    
+            console.log('Dados formatados para envio:', dadosBase);
+
             if (dadosExistentes?.id) {
                 console.log('Atualizando pessoa existente');
-                await pessoaService.atualizarDadosId(dadosExistentes.id, dadosParaEnvio);
+                const dadosPut = {
+                    ...dadosBase,
+                    id: dadosExistentes.id
+                };
+                await pessoaService.atualizarDadosId(dadosExistentes.id, dadosPut);
                 toast.success('Pessoa atualizada com sucesso!');
                 navigate('/ListagemPessoas');
             } else {
                 console.log('Criando nova pessoa');
-                await pessoaService.criarNovoCadastroId(dadosParaEnvio);
+                await pessoaService.criarNovoCadastroId(dadosBase);
                 toast.success('Pessoa cadastrada com sucesso!');
                 navigate('/ListagemPessoas');
             }
@@ -80,9 +90,6 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
             toast.error('Erro ao salvar os dados');
         }
     }
-    
-    
-    
 
     return {
         form,

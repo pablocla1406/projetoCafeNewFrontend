@@ -6,12 +6,15 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Trash2, User } from "lucide-react";
-import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
+import { CircleUserRound, Trash2, User } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
+import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro"; // Import the BotaoSalvarCadastro component
 import { useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { handleImageChange } from "@/utils/functions/image/handleImage";
+import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
+import { Separator } from "@/components/ui/separator";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -24,43 +27,6 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
   
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      if (validImageTypes.includes(file.type)) {
-        const reader = new FileReader();
-        reader.onload = () => setImagePreview(reader.result as string);
-        reader.readAsDataURL(file);
-      } else {
-        setImagePreview(null);
-        toast.error("O arquivo selecionado não é uma imagem válida");
-        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-        if (fileInput) {
-          fileInput.value = '';
-        }
-      }
-    } else {
-      setImagePreview(null);
-      toast.error("Erro ao carregar a imagem");
-      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
-      }
-    }
-  };
-
-
-  const handleRemoveImage = () => {
-    setImagePreview(null);
-    form.setValue("imagem", null);  // Importante manter isso para atualizar o formulário
-    // Reset the file input value
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.value = '';
-    }
-  };
-
   return (
 
     <Form {...form}>
@@ -69,6 +35,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
         <BotaoVoltarCadastro href="ListagemPessoas"/>
         <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pessoa</h1>
+        <Separator orientation="horizontal" className="my-2" />
         <div className="space-y-6">
             <FormField
               control={form.control}
@@ -95,7 +62,11 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                     <Input 
                       type="file"
                       accept="image/*"
-                      onChange={handleImageChange}
+                      onChange={(e) => handleImageChange({ 
+                        event: e, 
+                        setImagePreview, 
+                        form 
+                      })}
                       className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
                     />
                     {(imagePreview || value) && (
@@ -106,7 +77,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                             alt="Preview" 
                           />
                           <AvatarFallback>
-                            <User className="w-8 h-8" />
+                            <CircleUserRound className="w-4 h-4" />
                           </AvatarFallback>
                         </Avatar>
                         <Button
@@ -114,7 +85,10 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                           variant="destructive"
                           size="sm"
                           onClick={() => {
-                            handleRemoveImage();
+                            handleRemoveImage({ 
+                              setImagePreview,
+                              form 
+                            });
                           }}
                           className="flex items-center gap-1"
                         >
@@ -154,41 +128,54 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
             </div>
 
             <FormField
-              control={form.control}
-              name="setor"
-              render={({ field }) => {
-                console.log("FormField setor value:", field.value);
-                const setorValue = field.value && typeof field.value === 'object' 
-                  ? field.value 
-                  : { id: "", nome: field.value || "" };
-                
-                return (
-                  <FormItem>
-                    <FormLabel className=" text-lg">Setor</FormLabel>
-                    <div className="w-full">
-                      <ComboboxDemo
-                        placeholder="Selecione o Setor"
-                        items={setoresFiltrados}
-                        onSelect={(item) => {
-                          console.log("ComboboxDemo onSelect:", item);
-                          if (item) {
-                            const setorData = {
-                              id: String(item.id),
-                              nome: item.nome
-                            };
-                            field.onChange(setorData);
-                            form.setValue("setor", setorData, { shouldValidate: true });
-                          }
-                        }}
-                        onCreate={onAdicionarSetor}
-                        selectedValue={setorValue}
-                      />
-                    </div>
-                    {errors.setor?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.setor?.message}</FormMessage>}
-                  </FormItem>
-                );
-              }}
-            />
+  control={form.control}
+  name="setor"
+  render={({ field }) => {
+    console.log("FormField setor value:", field.value);
+    const setorValue =
+      field.value && typeof field.value === "object"
+        ? field.value
+        : { id: "", nome: field.value || "" };
+
+    return (
+      <FormItem>
+        <FormLabel className="text-lg">Setor</FormLabel>
+        <div className="w-full">
+          <ComboboxDemo
+            placeholder="Selecione o Setor"
+            items={setoresFiltrados}
+            onSelect={(item) => {
+              console.log("ComboboxDemo onSelect:", item);
+              if (item) {
+                const setorData = {
+                  id: String(item.id),
+                  nome: item.nome,
+                };
+                field.onChange(setorData);
+                form.setValue("setor", setorData, { shouldValidate: true });
+              }
+            }}
+            onCreate={(novoSetor) => {
+              const setorData = {
+                id: String(novoSetor.id),
+                nome: novoSetor.nome,
+              };
+              onAdicionarSetor(novoSetor);
+              field.onChange(setorData);
+              form.setValue("setor", setorData, { shouldValidate: true });
+            }}
+            selectedValue={setorValue}
+          />
+        </div>
+        {errors.setor?.message && (
+          <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">
+            {errors.setor?.message}
+          </FormMessage>
+        )}
+      </FormItem>
+    );
+  }}
+/>
 
             <FormField
               control={form.control}
@@ -232,7 +219,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
               )}/>
 
             <div className="pt-6 flex items-center justify-center w-full">
-              <BotaoSalvarCadastro href="ListagemPessoas" />
+              <BotaoSalvarCadastro disabled={Object.keys(errors).length > 0} />
             </div>
           </div>
         </div>

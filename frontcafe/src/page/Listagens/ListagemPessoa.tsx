@@ -2,6 +2,8 @@ import GenericTable from "@/components/table/tableGenerica";
 import { pessoaService } from "@/service/PessoaService";
 import debounce from "@/utils/functions/debounce";
 import IPessoa from "@/utils/interfaces/IPessoa";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function ListagemPessoa(){
@@ -60,11 +62,23 @@ export default function ListagemPessoa(){
     );
 
 
-    const columnPessoa  = [
+    const columnPessoa  = [ 
         {
             key: 'id',
             header: 'ID',
             filterable: true,
+        },
+        {
+            key: 'imagem',
+            header: 'Foto',
+            render: (value: any) => 
+                <Avatar >
+                    <AvatarImage src={value} className="h-12 w-12 rounded-full" />
+                    <AvatarFallback>
+                        <CircleUserRound className="h-12 w-12 text-muted-foreground" />
+                    </AvatarFallback>
+                </Avatar>
+
         },
         {
             key: 'nome',

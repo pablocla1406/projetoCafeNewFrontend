@@ -5,11 +5,6 @@ class PessoaService extends ApiService<IPessoa>{
     constructor(){
         super('pessoas')
     }
-
-    
-
-
-   
 }
 
 export const pessoaService = new PessoaService()

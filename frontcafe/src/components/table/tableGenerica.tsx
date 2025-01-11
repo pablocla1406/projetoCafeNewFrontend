@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CirclePlus, Pencil, Trash2, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { DatePickerWithRange } from '../DatePickerRangeDemo';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,206 +69,208 @@ export default function GenericTable({
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
-      <div className="items-center gap-4 mb-4">
-        <DropdownMenu>
-          <div className="flex justify-end items-center space-x-2">
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Filtros</Button>
-            </DropdownMenuTrigger>
-            <Button variant="outline">
-              <Link to={`/${cadHref}`} className="flex items-center">
-                <CirclePlus className="h-4 w-4 mr-1" />
-                Cadastrar
-              </Link>
-            </Button>
-          </div>
-
-
-
-          <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
-            <div className="p-2 flex flex-col gap-2 relative">
-              <DropdownMenuItem asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon"
-                  className="absolute right-1 top-1 h-6 w-6 hover:bg-muted-foreground hover:cursor-pointer" 
-                >
-                  <XCircle className="h-4 w-4" />
-                </Button>
-              </DropdownMenuItem>
-              
-              {columns.filter(column => column.filterable).map((column) => (
-                <div key={column.key} className="space-y-1">
-                  <span className="text-sm font-medium">{column.header}</span>
-                  <Input
-                    placeholder={`Filtrar por ${column.header}`}
-                    value={filters[column.key] || ''}
-                    onChange={(e) => handleFilterChange(column.key, e.target.value)}
-                    onClick={(e) => e.stopPropagation()}
-                    className="mt-1"
-                  />
-                </div>
-              ))}
+    <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
+      <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
+        <div className="items-center gap-4 mb-4">
+          <DropdownMenu>
+            <div className="flex justify-end items-center space-x-2">
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Filtros</Button>
+              </DropdownMenuTrigger>
+              <Button variant="outline">
+                <Link to={`/${cadHref}`} className="flex items-center">
+                  <CirclePlus className="h-4 w-4 mr-1" />
+                  Cadastrar
+                </Link>
+              </Button>
             </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="w-full max-w-7xl">
-        <Table className='w-full'>
-          <TableHeader>
-            <TableRow>
-              {columns.map(function (column) {
-                return <TableHead key={column.key}>{column.header}</TableHead>;
-              })}
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data && data.length > 0 ? (
-              data.map(function (row) {
-                return (
-                  <TableRow key={row.id}>
-                    {columns.map(function (column) {
-                      return (
-                        <TableCell key={column.key}>
-                          {column.render ? column.render(row[column.key]) : row[column.key]}
-                        </TableCell>
-                      );
-                    })}
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="icon">
-                          <Link to={`/${href}/${row.id}`} className="flex items-center">
-                            <Pencil className="h-4 w-4" />
-                          </Link>
-                        </Button>
-                        <Button 
-                        variant="outline" 
-                        size="icon" 
-                        onClick={() => {
-                          onDelete(row.id);
-                          toast("Seu arquivo foi excluido com sucesso!", {
-                            description: (
-                              <div className="mt-2">
-                                <Progress className="w-full h-2" />
-                                <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
-                              </div>
-                            ),
-                            duration: 4000,
-                            action: {
-                              label: 'Desfazer',
-                              onClick: () => {
-                                onDeleteUndo(row.id);
-                              }
-                            }
-                          });
-                        }}>
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
+
+            <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
+              <div className="p-2 flex flex-col gap-2 relative">
+                <DropdownMenuItem asChild>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    className="absolute right-1 top-1 h-6 w-6 hover:bg-muted-foreground hover:cursor-pointer" 
+                  >
+                    <XCircle className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuItem>
+                
+                {columns.filter(column => column.filterable).map((column) => (
+                  <div key={column.key} className="space-y-1">
+                    <span className="text-sm font-medium">{column.header}</span>
+                    <Input
+                      placeholder={`Filtrar por ${column.header}`}
+                      value={filters[column.key] || ''}
+                      onChange={(e) => handleFilterChange(column.key, e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-1"
+                    />
+                  </div>
+                ))}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <div className="w-full max-w-7xl">
+          <Table className='w-full'>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={columns.length + 1} className="text-center">
-                  Não há mais um item cadastrado
-                </TableCell>
+                {columns.map(function (column) {
+                  return <TableHead className='text-center' key={column.key}>{column.header}</TableHead>;
+                })}
+                <TableHead>Ações</TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex justify-end items-center mt-4">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious 
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) {
-                    onPageChange(currentPage - 1);
-                  }
-                }} 
-                className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-              />
-            </PaginationItem>
-            
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onPageChange(1);
-                }}
-                isActive={currentPage === 1}
-                className="cursor-pointer"
-              >
-                1
-              </PaginationLink>
-            </PaginationItem>
+            </TableHeader>
+            <TableBody>
+              {data && data.length > 0 ? (
+                data.map(function (row) {
+                  return (
+                    <TableRow key={row.id}>
+                      {columns.map(function (column) {
+                        return (
+                          <TableCell className='text-center' key={column.key}>
+                            {column.render ? column.render(row[column.key]) : row[column.key]}
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="icon">
+                            <Link to={`/${href}/${row.id}`} className="flex items-center">
+                              <Pencil className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                          <Button 
+                          variant="outline" 
+                          size="icon" 
+                          onClick={() => {
+                            onDelete(row.id);
+                            
+                            toast("O cadastro foi excluido com sucesso!", {
 
-            {totalPages > 3 && currentPage > 2 && (
+                              description: (
+                                <div className="mt-2">
+                                  <Progress className="w-full h-2" />
+                                  <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
+                                </div>
+                              ),
+                              duration: 4000,
+                              action: {
+                                label: 'Desfazer',
+                                onClick: () => {
+                                  onDeleteUndo(row.id);
+                                }
+                              }
+                            });
+                          }}>
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length + 1} className="text-center">
+                    Não há mais um item cadastrado
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex justify-end items-center mt-4">
+          <Pagination>
+            <PaginationContent>
               <PaginationItem>
-                <PaginationEllipsis/>
-              </PaginationItem>
-            )}
-
-            {currentPage !== 1 && currentPage !== totalPages && (
-              <PaginationItem>
-                <PaginationLink 
+                <PaginationPrevious 
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    onPageChange(currentPage);
-                  }}
-                  isActive 
-                  className="cursor-pointer"
-                >
-                  {currentPage}
-                </PaginationLink>
+                    if (currentPage > 1) {
+                      onPageChange(currentPage - 1);
+                    }
+                  }} 
+                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+                />
               </PaginationItem>
-            )}
-
-            {totalPages > 3 && currentPage < totalPages - 1 && (
-              <PaginationItem>
-                <PaginationEllipsis/>
-              </PaginationItem>
-            )}
-
-            {totalPages > 1 && (
+              
               <PaginationItem>
                 <PaginationLink
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
-                    onPageChange(totalPages);
+                    onPageChange(1);
                   }}
-                  isActive={currentPage === totalPages}
+                  isActive={currentPage === 1}
                   className="cursor-pointer"
                 >
-                  {totalPages}
+                  1
                 </PaginationLink>
               </PaginationItem>
-            )}
 
-            <PaginationItem>
-              <PaginationNext 
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) {
-                    onPageChange(currentPage + 1);
-                  }
-                }} 
-                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              {totalPages > 3 && currentPage > 2 && (
+                <PaginationItem>
+                  <PaginationEllipsis/>
+                </PaginationItem>
+              )}
+
+              {currentPage !== 1 && currentPage !== totalPages && (
+                <PaginationItem>
+                  <PaginationLink 
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPageChange(currentPage);
+                    }}
+                    isActive 
+                    className="cursor-pointer"
+                  >
+                    {currentPage}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+
+              {totalPages > 3 && currentPage < totalPages - 1 && (
+                <PaginationItem>
+                  <PaginationEllipsis/>
+                </PaginationItem>
+              )}
+
+              {totalPages > 1 && (
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPageChange(totalPages);
+                    }}
+                    isActive={currentPage === totalPages}
+                    className="cursor-pointer"
+                  >
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+
+              <PaginationItem>
+                <PaginationNext 
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                      onPageChange(currentPage + 1);
+                    }
+                  }} 
+                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
     </div>
   );

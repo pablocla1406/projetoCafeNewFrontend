@@ -7,7 +7,10 @@ export const BebidaSchema = z.object({
     nome: z.string().min(1, { message: "Nome da bebida é obrigatório" }),
     descricao: z.string().min(1, { message: "Descrição da bebida é obrigatório" }),
     preco: z.number().min(0, { message: "O preço não pode ser negativo" }),
-    image: z.union([z.instanceof(File), z.string()]).optional(),
+    imagem: z.union([
+        z.string().nullable(),
+        z.instanceof(File),
+    ]).optional(),
     status: StatusEnum,
 });
 

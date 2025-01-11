@@ -8,14 +8,19 @@ import { SelectContent, SelectGroup, SelectLabel } from "@radix-ui/react-select"
 import { Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
+import { useState } from "react";
+import { handleImageChange } from "@/utils/functions/image/handleImage";
+import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
+import { Separator } from "@/components/ui/separator";
 
 type BebidaFormProps = {
     dados?: BebidaSchema,
-    onApagarImagem: (imageName: string) => void;
 }
 
-export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
+export default function BebidaForm({ dados,  }: BebidaFormProps) {
     const { form, handleSubmit, errors, onSubmit } = hookBebidaForm(dados);
+
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
 
     return (
         <Form {...form}>
@@ -23,6 +28,7 @@ export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
                 <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
                     <BotaoVoltarCadastro href="ListagemBebidas"/>
                     <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Bebidas</h1>
+                    <Separator orientation="horizontal" className="my-2" />
                     <div className="space-y-6">
 
 
@@ -127,8 +133,8 @@ export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
                         </div>
                         <FormField
                             control={form.control}
-                            name="image"
-                            render={({ field: { onChange, value, ...field } }) => (
+                            name="imagem"
+                            render={({ field: { onChange, value, ...field }}) => (
                                 <FormItem>
                                     <FormLabel className="text-gray-700 dark:text-gray-200 text-lg">Imagem</FormLabel>
                                     <div className="flex flex-col gap-2">
@@ -136,26 +142,24 @@ export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
                                             type="file"
                                             accept="image/*"
                                             onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) onChange(file);
+                                                handleImageChange({
+                                                    event: e,
+                                                    setImagePreview,
+                                                    form 
+                                                })
                                             }}
                                             className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
                                         />
-                                        {value && typeof value === 'string' && (
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <img src={value} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        onApagarImagem(value);
-                                                        onChange(null);
-                                                    }}
-                                                    className="flex items-center gap-1"
-                                                >
+                                        {(imagePreview || value) && (
+                                            <div className="flex items-center gap-2">
+                                                <img src={imagePreview || (typeof value === 'string' ? value : value instanceof File ? URL.createObjectURL(value) : '')} alt="Imagem" className="w-20 h-20 object-cover rounded-md" />
+                                                <Button variant="destructive" type="button" onClick={() => {
+                                                    handleRemoveImage({
+                                                        setImagePreview,
+                                                        form
+                                                    })
+                                                }}>
                                                     <Trash2 className="w-4 h-4" />
-                                                    Remover
                                                 </Button>
                                             </div>
                                         )}
@@ -164,7 +168,7 @@ export default function BebidaForm({ dados, onApagarImagem }: BebidaFormProps) {
                             )}
                         />
 
-                        <BotaoSalvarCadastro href="ListagemBebidas" />
+                        <BotaoSalvarCadastro disabled={Object.keys(errors).length > 0} />
 
                     </div>
                 </div>

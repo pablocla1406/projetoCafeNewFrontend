@@ -26,9 +26,7 @@ export default function PessoaCadastro() {
             if (id) {
                 try {
                     const dados = await pessoaService.listarDadosId(id);
-
-                    // Encontrar o setor correspondente na lista de setores
-                    const setorEncontrado = setoresFiltrados.find(s => s.nome === dados.setor.toString());
+                    console.log('Dados recebidos:', dados);
 
                     const dadosFormatados: PessoaFormSchema = {
                         id: dados.id.toString(),
@@ -36,16 +34,14 @@ export default function PessoaCadastro() {
                         imagem: dados.imagem || "",
                         usuario: dados.usuario,
                         senha: dados.senha || "",
-                        setor: setorEncontrado ? {
-                            id: setorEncontrado.id?.toString(),
-                            nome: setorEncontrado.nome.toString()
-                        } : {
-                            id: "",
-                            nome: dados.setor.toString()
+                        setor: {
+                            id: dados.setor.id.toString(),
+                            nome: dados.setor.nome
                         },
                         permissao: dados.permissao,
                     };
 
+                    console.log('Dados formatados:', dadosFormatados);
                     setPessoa(dadosFormatados);
 
                 } catch (error) {
@@ -55,7 +51,7 @@ export default function PessoaCadastro() {
             }
         }
         carregarDados();
-    }, [id, setoresFiltrados]);
+    }, [id]);
 
     useEffect(() => {
         async function carregarSetores() {

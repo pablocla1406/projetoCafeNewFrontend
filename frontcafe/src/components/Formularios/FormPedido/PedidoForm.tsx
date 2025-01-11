@@ -15,6 +15,7 @@ import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 
 import { DatePickerDemo } from "@/components/DatePickerDemo";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
+import { Separator } from "@/components/ui/separator";
 
 
 type PedidoFormProps = {
@@ -43,6 +44,7 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
           <BotaoVoltarCadastro href="ListagemPedidos"/>
           <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
+          <Separator orientation="horizontal" className="my-2" />
 
           <div className="space-y-6">
 

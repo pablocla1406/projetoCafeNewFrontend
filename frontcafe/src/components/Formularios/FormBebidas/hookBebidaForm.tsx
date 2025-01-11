@@ -3,9 +3,13 @@ import { BebidaSchema } from "./BebidaSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { compressImage } from "@/utils/functions/image/comprimirImage";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     console.log("hookBebidaForm received data:", dadosBebidas);
+    const navigate = useNavigate();
     
     const form = useForm<BebidaSchema>({
         resolver: zodResolver(BebidaSchema),
@@ -14,7 +18,7 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
             nome: "",
             descricao: "",
             preco: 0,
-            image: "",
+            imagem: null,
             status: "Ativo"
         }
     });
@@ -30,16 +34,53 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
 
     async function onSubmit(data: BebidaSchema) {
         console.log("Form submitted with data:", data);
-        try {
-            if (data.id) {
-                await bebidaService.atualizarDadosId(Number(data.id), data);
-            } else {
-                await bebidaService.criarNovoCadastroId(data);
+
+        let imagemFinal: `data:image/${string};base64,${string}` | null = null;
+
+        if(data.imagem instanceof File) {
+            try {
+                const imagemComprimida = await compressImage(data.imagem);
+                imagemFinal = imagemComprimida as `data:image/${string};base64,${string}`;
+            } catch (error) {
+                console.error("Erro ao comprimir imagem:", error);
             }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            throw error;
+        } else {
+            imagemFinal = data.imagem as `data:image/${string};base64,${string}` | null;
         }
+
+        const dadosForRequisition = {
+            nome: data.nome,
+            descricao: data.descricao,
+            preco: data.preco,
+            imagem: imagemFinal,
+            status: data.status
+        };
+
+        console.log("Form submitted with data:", dadosForRequisition);
+
+        try {
+
+        if(data.id) {
+            const dadosPut = {
+                ...dadosForRequisition,
+                id: data.id  
+            }
+            await bebidaService.atualizarDadosId(data.id, dadosPut);
+            toast.success("Bebida atualizada com sucesso!");
+            navigate("/ListagemBebidas");
+        } else {
+            await bebidaService.criarNovoCadastroId(dadosForRequisition);
+            toast.success("Bebida criada com sucesso!");
+            navigate("/ListagemBebidas");
+        }
+
+        } catch (error) {
+            console.error("Erro ao criar ou atualizar bebida:", error);
+            toast.error("Erro ao criar ou atualizar bebida!");
+        }
+
+    
+    
     }
 
     return {

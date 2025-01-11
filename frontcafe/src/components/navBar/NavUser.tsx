@@ -55,9 +55,13 @@ export function NavUser() {
     localStorage.removeItem('usuario')
     localStorage.removeItem('imagem')
     localStorage.removeItem('expirationTime')
+    
+    // Limpar configurações do sistema
+    localStorage.removeItem('vite-ui-theme')
+    localStorage.removeItem('font')
 
     // Redirecionar para a página de login
-    window.location.href = '/'
+    window.location.href = '/login'
   }
 
   return (
@@ -69,9 +73,9 @@ export function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar className="h-8 w-8 rounded-full">
                 <AvatarImage src={userData.imagem ? userData.imagem : ""} alt={userData.nome ? userData.nome : "Raduken"} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-full">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{userData.nome ? userData.nome : "Raduken"}</span>

@@ -2,6 +2,8 @@ import GenericTable from "@/components/table/tableGenerica";
 import { bebidaService } from "@/service/BebidaService";
 import debounce from "@/utils/functions/debounce";
 import IBebida from "@/utils/interfaces/IBebida";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Coffee, Key } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export default function ListagemBebida(){
@@ -50,6 +52,19 @@ export default function ListagemBebida(){
             key: 'id',
             header: 'ID',
             filterable: true
+        },
+        {
+            key: 'imagem',
+            header: 'Imagem',
+            render: (value: any) =>
+                    <Avatar>
+                        <AvatarImage src={value} className="h-10 w-10 rounded-full" />
+                        <AvatarFallback>
+                            <Coffee className="h-10 w-10 text-muted-foreground " />
+                        </AvatarFallback>
+                    </Avatar>
+            ,
+            filterable: false
         },
         {
             key: 'nome',

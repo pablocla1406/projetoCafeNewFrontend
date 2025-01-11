@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { loginSchema, LoginSchema } from "./schemaLogin";
 import api from "@/service/api";
 import ILoginResponse from "@/utils/interfaces/ILoginResponse";
+import { toast } from "sonner";
 
 
 
@@ -48,6 +49,7 @@ export default function HookLogin() {
     }
         catch(error){
             console.error('Error submitting form:', error);
+            toast.error('Usuário ou senha inválido')
             throw error;
         }
     }

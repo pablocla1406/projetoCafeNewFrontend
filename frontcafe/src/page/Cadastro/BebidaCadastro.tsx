@@ -3,6 +3,7 @@ import IBebida from "@/utils/interfaces/IBebida"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import BebidaForm from "@/components/Formularios/FormBebidas/BebidaForm"
+import { BebidaSchema } from "@/components/Formularios/FormBebidas/BebidaSchema"
 
 export default function BebidaCadastro(){
     const { id } = useParams();
@@ -12,7 +13,7 @@ export default function BebidaCadastro(){
         nome: "",
         descricao: "",
         preco: 0,
-        image: "",
+        imagem: null,
         status: "Ativo"
     })
 
@@ -23,12 +24,12 @@ export default function BebidaCadastro(){
                 const dadosBebida = await bebidaService.listarDadosId(id)
                 console.log("Raw data received:", dadosBebida);
                 
-                const formattedData = {
+                const formattedData : BebidaSchema= {
                     id: dadosBebida.id.toString(),
                     nome: dadosBebida.nome,
                     descricao: dadosBebida.descricao,
                     preco: Number(dadosBebida.preco),
-                    image: dadosBebida.image || "",
+                    imagem: dadosBebida.imagem || "",
                     status: dadosBebida.status
                 };
                 console.log("Formatted data:", formattedData);
@@ -47,7 +48,7 @@ export default function BebidaCadastro(){
 
     return(
         <>
-            <BebidaForm dados={bebida} onApagarImagem={() => {}}/>
+            <BebidaForm dados={bebida} />
         </>
     )
 }
