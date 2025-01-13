@@ -5,19 +5,10 @@ export default interface IPedido{
     cliente: {
         id: string;
         nome: string;
-        setor: ISetor
-        imagem?: string;
-        usuario: string;
-        senha: string;
-        permissao: "ADMIN" | "USER" | "AUX";
-    };
+    }
     bebida: {
         id: string;
-        nome: string;
-        preco: number;
-        descricao: string;
-        image?: string | File;
-        status: "Ativo" | "Inativado";
+        nome: string
     };
     unitario: number,
     quantidade: number,

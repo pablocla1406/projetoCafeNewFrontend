@@ -15,22 +15,10 @@ export default function PedidoCadastro() {
         cliente: {
             id: "",
             nome: "",
-            setor: {
-                id: "",
-                nome: ""
-            },
-            imagem: "",
-            usuario: "",
-            senha: "",
-            permissao: "USER"
         },
         bebida: {
             id: "",
             nome: "",
-            preco: 0,
-            descricao: "",
-            image: "",
-            status: "Ativo"
         },
         unitario: 0,
         quantidade: 0,
@@ -100,8 +88,8 @@ export default function PedidoCadastro() {
     return (
         <PedidoForm
             dadosExistentes={pedido}
-            clientes={clientesFiltrados}
-            bebidas={bebidasFiltradas}
+            clientesFiltrados={clientesFiltrados}
+            bebidasFiltradas={bebidasFiltradas}
         />
     );
 }

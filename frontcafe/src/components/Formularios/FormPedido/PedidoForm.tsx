@@ -22,14 +22,14 @@ type PedidoFormProps = {
 
   dadosExistentes?: PedidoSchema;
 
-  clientes: IPessoa[];
+  clientesFiltrados : IPessoa[];
 
-  bebidas: IBebida[];
+  bebidasFiltradas: IBebida[];
 
 };
 
 
-export default function PedidoForm({ dadosExistentes, clientes, bebidas }: PedidoFormProps) {
+export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidasFiltradas }: PedidoFormProps) {
 
   const { form, handleSubmit, errors, onSubmit } = HookPedidoForm(dadosExistentes);
 
@@ -56,61 +56,38 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
               render={({ field }) => {
 
-                const clienteValue = field.value && typeof field.value === 'object'
-                ? field.value
-                : {id: '', nome: '', setor: { id: '', nome: ''}, imagem: '', usuario: '', senha: '', permissao: ''};
-
-                console.log("clienteValue:", clienteValue, "field.value:", field.value, "clientes:", clientes);
-
                 return (
 
                   <FormItem className="space-y-1">
 
-                    <FormLabel className={`text-lg ${errors.cliente ? 'text-red-500' : ''}`}>
-
+                    <FormLabel className ="text-lg">
                       Cliente 
 
                     </FormLabel>
 
                     <ComboboxReadOnly
 
-                      items={clientes}
-
-                      
+                      items={clientesFiltrados}
 
                       onSelect={(item) => {
-
                         if (item) {
-                          field.onChange({
-                            ...item,
-                            id: item.id.toString(),
-                            setor: 'setor' in item ? {
-                              ...item.setor,
-                              id: item.setor.id.toString()
-                            } : { id: '', nome: '' },
-                            permissao: ('permissao' in item ? item.permissao : 'USER') as "USER" | "ADMIN" | "AUX"
-                          });
+                          const clienteObj = {
+                            id: String(item.id),
+                            nome: item.nome,
+                          };
+                          form.setValue("cliente", clienteObj, { shouldValidate: true });
                         }
                       }}
                       
 
-                      selectedValue={clienteValue}
-                      
+                      selectedValue={field.value || { id: '', nome: '' }}
 
                       placeholder="Selecione o Cliente"
                       
 
                       />
 
-                    {errors.cliente && (
-
-                      <FormMessage className="text-red-500">
-
-                        Cliente é obrigatório
-
-                      </FormMessage>
-
-                    )}
+                    {errors.cliente?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.cliente.message}</FormMessage>}
 
                   </FormItem>
 
@@ -130,21 +107,13 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
               render={({ field }) => {
 
-                const selectedBebida = field.value && typeof field.value === 'object'
-                ? field.value
-                : {id: '', nome: '', preco: '', descricao: '', image: '', status: ''};
-
-
-                  console.log("selectedBebida:", selectedBebida, "field.value:", field.value, "bebidas:", bebidas);
-
-
                 return (
 
                   <FormItem className="space-y-1">
 
-                    <FormLabel className={`text-lg ${errors.bebida ? 'text-red-500' : ''}`}>
+                    <FormLabel className ="text-lg">
 
-                      Bebida {errors.bebida && '*'}
+                      Bebida 
 
                     </FormLabel>
 
@@ -152,40 +121,27 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                       placeholder="Selecione a Bebida"
 
-                      items={bebidas}
+                      items={bebidasFiltradas}
 
                       onSelect={(item) => {
                         if (item && 'preco' in item) {
                           const bebidaObj = {
                             id: String(item.id),
                             nome: item.nome,
-                            preco: Number(item.preco),
-                            descricao: item.descricao,
-                            image: item.image,
-                            status: item.status
                           };
-                          field.onChange(bebidaObj);
-                          
-                          form.setValue("unitario", Number(item.preco));
+                          form.setValue("bebida", bebidaObj, { shouldValidate: true });
+                          form.setValue("unitario", Number(item.preco), { shouldValidate: true });
                           const quantidade = form.getValues("quantidade");
-                          form.setValue("total", Number(item.preco) * quantidade);
+                          form.setValue("total", Number(item.preco) * quantidade, { shouldValidate: true });
                         }
                       }}
 
-                      selectedValue={selectedBebida}
+                      selectedValue={field.value || { id: '', nome: '' }}
 
 
                     />
 
-                    {errors.bebida && (
-
-                      <FormMessage className="text-red-500">
-
-                        Bebida é obrigatória
-
-                      </FormMessage>
-
-                    )}
+                    {errors.bebida?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.bebida.message}</FormMessage>}
 
                   </FormItem>
 
@@ -209,9 +165,9 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                   <FormItem className="flex-1">
 
-                    <FormLabel className={`text-lg ${errors.unitario ? 'text-red-500' : ''}`}>
+                    <FormLabel className= "text-lg">
 
-                      Preço Unitário {errors.unitario && '*'}
+                      Preço Unitário 
 
                     </FormLabel>
 
@@ -253,15 +209,8 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                     </div>
 
-                    {errors.unitario && (
+                    {errors.unitario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.unitario?.message}</FormMessage>}
 
-                      <FormMessage className="text-red-500">
-
-                        Preço unitário é obrigatório
-
-                      </FormMessage>
-
-                    )}
 
                   </FormItem>
 
@@ -281,9 +230,9 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                   <FormItem className="flex-1">
 
-                    <FormLabel className={`text-lg ${errors.quantidade ? 'text-red-500' : ''}`}>
+                    <FormLabel className="text-lg">
 
-                      Quantidade {errors.quantidade && '*'}
+                      Quantidade 
 
                     </FormLabel>
 
@@ -311,15 +260,7 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                     />
 
-                    {errors.quantidade && (
-
-                      <FormMessage className="text-red-500">
-
-                        Quantidade é obrigatória
-
-                      </FormMessage>
-
-                    )}
+                    {errors.quantidade?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.quantidade?.message}</FormMessage>}
 
                   </FormItem>
 
@@ -345,10 +286,9 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
                   <FormItem className="flex-1">
 
-                    <FormLabel className={`text-lg ${errors.total ? 'text-red-500' : ''}`}>
+                    <FormLabel className ="text-lg">
 
-                      Total {errors.total && '*'}
-
+                      Total 
                     </FormLabel>
 
                     <div className="relative">
@@ -390,58 +330,44 @@ export default function PedidoForm({ dadosExistentes, clientes, bebidas }: Pedid
 
 
             <FormField
-
               control={form.control}
-
               name="data_compra"
+              render={({ field }) => {
+                // Only adjust date for existing orders (when editing)
+                const adjustDate = (date: Date | undefined) => {
+                  if (!date) return undefined;
+                  const newDate = new Date(date);
+                  // Only add a day if we're editing an existing order (dadosExistentes exists)
+                  if (dadosExistentes?.id) {
+                    newDate.setDate(newDate.getDate() + 1);
+                  }
+                  return newDate;
+                };
 
-              render={({ field }) => (
-
-                <FormItem className="flex-1">
-
-                  <FormLabel className={`text-lg ${errors.data_compra ? 'text-red-500' : ''}`}>
-
-                    Data da Compra {errors.data_compra && '*'}
-
-                  </FormLabel>
-
-                  <div className="w-full">
-
-                    <DatePickerDemo
-
-                      date={field.value}
-
-                      setDate={(date) => {
-
-                        field.onChange(date);
-
-                      }}
-
-                    />
-
-                  </div>
-
-                  {errors.data_compra && (
-
-                    <FormMessage className="text-red-500">
-
-                      Data da compra é obrigatória
-
-                    </FormMessage>
-
-                  )}
-
-                </FormItem>
-
-              )}
-
+                return (
+                  <FormItem className="flex-1">
+                    <FormLabel className="text-lg">
+                      Data da Compra 
+                    </FormLabel>
+                    <div className="w-full">
+                      <DatePickerDemo
+                        date={adjustDate(field.value)}
+                        setDate={(date) => {
+                          field.onChange(date);
+                        }}
+                      />
+                    </div>
+                    {errors.data_compra?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.data_compra?.message}</FormMessage>}
+                  </FormItem>
+                );
+              }}
             />
 
 
 
             <div className="pt-6 flex items-center justify-center w-full">
 
-              <BotaoSalvarCadastro href="ListagemPedidos" />
+              <BotaoSalvarCadastro  disabled={Object.keys(errors).length > 0}/>
 
             </div>
 

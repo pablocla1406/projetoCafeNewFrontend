@@ -4,18 +4,18 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command";
 import { cn } from "@/lib/utils";
-import IPessoa from "@/utils/interfaces/IPessoa";
-import IBebida from "@/utils/interfaces/IBebida";
+import IPessoadoPedido from "@/utils/interfaces/IPessoadoPedido";
+import IBebidadoPedido from "@/utils/interfaces/IBebidadoPedido";
 
 
-type ComboboxReadOnlyProps<T extends IPessoa | IBebida> = {
+type ComboboxReadOnlyProps<T extends IPessoadoPedido | IBebidadoPedido> = {
   items: T[];
   onSelect: (item: T) => void;
   selectedValue?: T | undefined;
   placeholder: string;
 };
 
-export function ComboboxReadOnly<T extends IPessoa | IBebida>({
+export function ComboboxReadOnly<T extends IPessoadoPedido | IBebidadoPedido>({
   items,
   onSelect,
   selectedValue,

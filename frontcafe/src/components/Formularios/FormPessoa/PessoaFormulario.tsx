@@ -6,15 +6,15 @@ import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CircleUserRound, Trash2, User } from "lucide-react";
+import { CircleUserRound, Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro"; // Import the BotaoSalvarCadastro component
 import { useState } from "react";
-import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -161,6 +161,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 nome: novoSetor.nome,
               };
               onAdicionarSetor(novoSetor);
+              toast.success("Setor adicionado com sucesso!");
               field.onChange(setorData);
               form.setValue("setor", setorData, { shouldValidate: true });
             }}
