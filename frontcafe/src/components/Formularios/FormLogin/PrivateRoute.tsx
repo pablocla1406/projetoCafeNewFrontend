@@ -11,8 +11,15 @@ export function PrivateRoute({ requiredPermission }: PrivateRouteProps) {
   
   // Check if token exists and is not expired
   const isTokenValid = () => {
-    if (!token || !expirationTime) return false;
-    return new Date().getTime() < parseInt(expirationTime);
+    if (!token || !expirationTime) {
+      toast.error('Sessão expirada. Por favor, faça login novamente.');
+      return false;
+    }
+    const isValid = new Date().getTime() < parseInt(expirationTime);
+    if (!isValid) {
+      toast.error('Sessão expirada. Por favor, faça login novamente.');
+    }
+    return isValid;
   };
 
   // Check user permissions with hierarchy
@@ -33,6 +40,7 @@ export function PrivateRoute({ requiredPermission }: PrivateRouteProps) {
       return requiredPermission === 'USER';
     }
 
+    toast.error('Você não tem permissão para acessar esta página');
     return false;
   };
 
@@ -46,7 +54,7 @@ export function PrivateRoute({ requiredPermission }: PrivateRouteProps) {
   if (!hasPermission()) {
     // User doesn't have required permission
     toast.error('Você não tem permissão para acessar esta página.');
-    return <Navigate to="/Home" replace />;
+    return null;
   }
 
   return <Outlet />;

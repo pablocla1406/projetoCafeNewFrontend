@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './page/Home.tsx';
 import BebidaCadastro from './page/Cadastro/BebidaCadastro.tsx';
 import ListagemPessoa from './page/Listagens/ListagemPessoa.tsx';
@@ -21,37 +21,42 @@ createRoot(document.getElementById('root')!).render(
       <Toaster />
       <App>
         <Routes>
-          {/* Original routes with validation */}
+          <Route path='/' element={<Navigate to="/login" replace />} />
           <Route path='/login' element={<LoginPage />} />
           <Route element={<PrivateRoute />}>
             <Route element={<NavBar />}>
               <Route path='/Home' element={<Home />} />
               
-              {/* USER routes */}
+              {/* Base routes - USER level */}
               <Route element={<PrivateRoute requiredPermission="USER" />}>
                 <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
                 <Route path='/ListagemPedidos' element={<ListagemCadastro/>} />
                 <Route path='/ListagemBebidas' element={<ListagemBebida />} />
               </Route>
 
-              {/* AUX routes */}
+              {/* AUX level routes */}
               <Route element={<PrivateRoute requiredPermission="AUX" />}>
                 <Route path='/cadastroBebida' element={<BebidaCadastro />} />
                 <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
                 <Route path='/cadastroPedido' element={<PedidoCadastro/>} />
                 <Route path='/cadastroPedido/:id' element={<PedidoCadastro/>} />
+                <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
                 <Route path='/ListagemBebidas' element={<ListagemBebida />} />
                 <Route path='/ListagemPedidos' element={<ListagemCadastro/>} />
                 <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
-                <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
-
-              
               </Route>
 
-              {/* ADMIN routes */}
+              {/* ADMIN level routes - tem acesso a tudo */}
               <Route element={<PrivateRoute requiredPermission="ADMIN" />}>
+                <Route path='/cadastroBebida' element={<BebidaCadastro />} />
+                <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
+                <Route path='/cadastroPedido' element={<PedidoCadastro/>} />
+                <Route path='/cadastroPedido/:id' element={<PedidoCadastro/>} />
                 <Route path='/cadastroPessoa' element={<PessoaCadastro />} />
                 <Route path='/cadastroPessoa/:id' element={<PessoaCadastro />} />
+                <Route path='/ListagemBebidas' element={<ListagemBebida />} />
+                <Route path='/ListagemPedidos' element={<ListagemCadastro/>} />
+                <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
               </Route>
             </Route>
           </Route>

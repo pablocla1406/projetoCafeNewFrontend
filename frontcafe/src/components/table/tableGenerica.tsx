@@ -54,7 +54,6 @@ export default function GenericTable({
   }, [data, columns]);
 
   function handleFilterChange(key: string, value: string) {
-    console.log('Filter change:', key, value);
     const newFilters = { ...filters };
     
     if (value.trim() === '') {
@@ -62,8 +61,6 @@ export default function GenericTable({
     } else {
       newFilters[key] = value;
     }
-    
-    console.log('New filters:', newFilters);
     setFilters(newFilters);
     onFilter(newFilters);
   }

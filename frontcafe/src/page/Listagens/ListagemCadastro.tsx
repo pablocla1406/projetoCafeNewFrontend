@@ -4,12 +4,18 @@ import { pedidoService } from "@/service/PedidoService";
 import IPedido from "@/utils/interfaces/IPedido";
 import React, { useEffect, useState } from "react";
 import debounce from "@/utils/functions/debounce";
+import TabelaRelatorio, { IClientStats } from "./tabelaRelatorio";
+import api from "@/service/api";
+import { Button } from "@/components/ui/button";
 
 export default function ListagemCadastro() {
     const [pedidos, SetPedidos] = useState<IPedido[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, setFilters] = useState<Record<string, string>>({});
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [clientStats, setClientStats] = useState<IClientStats[]>([]);
 
     const fetchData = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
         const { data, totalPages } = await pedidoService.listarDadosListagem(currentFilters, page, 12);
@@ -61,10 +67,25 @@ export default function ListagemCadastro() {
         filterable: false},
     ]
 
+
+
+
+    async function processarRelatorio (){
+
+        const comprasMes = await api.get<IClientStats[]>(`/relatorio/compras-mensal`);
+        setClientStats(comprasMes.data);
+        setIsDialogOpen(true);
+    }
+
+
+
     return(
         <div className="space-y-4">
             <div className="flex justify-end">
                 <DatePickerWithRange onFilter={handleFilter} />
+                <Button onClick={processarRelatorio}>Processar Relatorio</Button>
+
+                {isDialogOpen && <TabelaRelatorio clients={clientStats}/>}
             </div>
             <GenericTable
                 cadHref="cadastroPedido"
