@@ -15,9 +15,16 @@ import {
 interface DatePickerDemoProps {
   date?: Date
   setDate: (date: Date | undefined) => void
+  isNewRecord?: boolean
 }
 
-export function DatePickerDemo({ date, setDate }: DatePickerDemoProps) {
+export function DatePickerDemo({ date, setDate, isNewRecord }: DatePickerDemoProps) {
+  // Ajusta a data para exibição apenas se for novo cadastro
+  const displayDate = date ? new Date(date) : undefined;
+  if (displayDate && isNewRecord) {
+    displayDate.setDate(displayDate.getDate() - 1);
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -29,7 +36,7 @@ export function DatePickerDemo({ date, setDate }: DatePickerDemoProps) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Escolha uma data</span>}
+          {displayDate ? format(displayDate, "PPP") : <span>Escolha uma data</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">

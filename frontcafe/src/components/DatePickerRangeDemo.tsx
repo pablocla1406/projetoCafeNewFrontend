@@ -16,13 +16,21 @@ import {
 
 interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
   onFilter?: (filters: Record<string, string>) => void;
+  resetDates?: boolean;
 }
 
 export function DatePickerWithRange({
   className,
   onFilter,
+  resetDates,
 }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>()
+
+  React.useEffect(() => {
+    if (resetDates) {
+      setDate(undefined);
+    }
+  }, [resetDates]);
 
   React.useEffect(() => {
     if (onFilter && date?.from && date.to) {

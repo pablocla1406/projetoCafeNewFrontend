@@ -1,5 +1,5 @@
 import * as React from "react"
-import { AlignJustify, ChevronDown, Coffee, HandCoins, Users } from "lucide-react"
+import { AlignJustify,  Coffee, HandCoins, Users } from "lucide-react"
 
 import {
   Sidebar,

@@ -332,35 +332,22 @@ export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidas
             <FormField
               control={form.control}
               name="data_compra"
-              render={({ field }) => {
-                // Only adjust date for existing orders (when editing)
-                const adjustDate = (date: Date | undefined) => {
-                  if (!date) return undefined;
-                  const newDate = new Date(date);
-                  // Only add a day if we're editing an existing order (dadosExistentes exists)
-                  if (dadosExistentes?.id) {
-                    newDate.setDate(newDate.getDate() + 1);
-                  }
-                  return newDate;
-                };
-
-                return (
-                  <FormItem className="flex-1">
-                    <FormLabel className="text-lg">
-                      Data da Compra 
-                    </FormLabel>
-                    <div className="w-full">
-                      <DatePickerDemo
-                        date={adjustDate(field.value)}
-                        setDate={(date) => {
-                          field.onChange(date);
-                        }}
-                      />
-                    </div>
-                    {errors.data_compra?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.data_compra?.message}</FormMessage>}
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="text-lg">
+                    Data da Compra 
+                  </FormLabel>
+                  <div className="w-full">
+                    <DatePickerDemo
+                      date={field.value}
+                      setDate={(date) => {
+                        field.onChange(date);
+                      }}
+                    />
+                  </div>
+                  {errors.data_compra?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.data_compra?.message}</FormMessage>}
+                </FormItem>
+              )}
             />
 
 

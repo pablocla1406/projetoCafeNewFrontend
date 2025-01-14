@@ -11,13 +11,15 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
 
     const navigate = useNavigate();
 
+    // Função para ajustar a data quando recebemos do backend
     const parseDate = (dateStr: string | Date | undefined) => {
         if (!dateStr) return new Date();
         
-        if (!dadosExistentes?.id) {
-            return new Date();
-        }
         const date = new Date(dateStr);
+        if (dadosExistentes?.id) {
+            // Se for edição, adiciona um dia ao receber do backend
+            date.setDate(date.getDate() + 1);
+        }
         return date;
     };
 
@@ -55,6 +57,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
 
     async function onSubmit(data: PedidoSchema) {
         try {
+
             const dadosBasePedido = {
                 cliente: {
                     id: data.cliente.id,

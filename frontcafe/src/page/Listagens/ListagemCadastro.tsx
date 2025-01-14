@@ -7,42 +7,28 @@ import debounce from "@/utils/functions/debounce";
 import TabelaRelatorio, { IClientStats } from "./tabelaRelatorio";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { anos, meses } from "@/utils/dadosDatas/dadosDatas";
 
 export default function ListagemCadastro() {
     const [pedidos, SetPedidos] = useState<IPedido[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, setFilters] = useState<Record<string, string>>({});
-    const [selectedMonth, setSelectedMonth] = useState<string>('');
-    const [selectedYear, setSelectedYear] = useState<string>('');
+    const [mesSelecionado, setmesSelecionado] = useState<string>('');
+    const [anoSelecionado, setAnoSelecionado] = useState<string>('');
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [clientStats, setClientStats] = useState<IClientStats[]>([]);
+    const [resetDates, setResetDates] = useState(false);
 
-    const currentYear = new Date().getFullYear();
-    const anos = Array.from({length: 5}, (_, i) => (currentYear - 2 + i).toString());
-    const meses = [
-        { value: "1", label: "Janeiro" },
-        { value: "2", label: "Fevereiro" },
-        { value: "3", label: "Março" },
-        { value: "4", label: "Abril" },
-        { value: "5", label: "Maio" },
-        { value: "6", label: "Junho" },
-        { value: "7", label: "Julho" },
-        { value: "8", label: "Agosto" },
-        { value: "9", label: "Setembro" },
-        { value: "10", label: "Outubro" },
-        { value: "11", label: "Novembro" },
-        { value: "12", label: "Dezembro" }
-    ];
-
-    const fetchData = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
+    
+    const buscarDados = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
         const { data, totalPages } = await pedidoService.listarDadosListagem(currentFilters, page, 12);
         SetPedidos(data);
         SetTotalPages(totalPages);
     }
 
     useEffect(() => {
-        fetchData(currentPage, filters);
+        buscarDados(currentPage, filters);
     }, [currentPage, filters]);
 
     async function handleDelete(id: string) {
@@ -54,7 +40,7 @@ export default function ListagemCadastro() {
     async function handleDeleteUndo(PedidoExcluidoId: string) {
         try {
             await pedidoService.restaurarRegistro(PedidoExcluidoId);
-            fetchData(currentPage, filters);
+            buscarDados(currentPage, filters);
         } catch (error) {
             console.error(error);
         }
@@ -86,13 +72,12 @@ export default function ListagemCadastro() {
     ]
 
     async function processarRelatorio() {
-        console.log('Processing report with:', { selectedMonth, selectedYear });
         try {
             const comprasMes = await pedidoService.pedidoRelatorio(
-                selectedMonth ? parseInt(selectedMonth) : undefined,
-                selectedYear ? parseInt(selectedYear) : undefined
+                mesSelecionado ? parseInt(mesSelecionado) : undefined,
+                anoSelecionado ? parseInt(anoSelecionado) : undefined
             );
-            console.log('Report data received:', comprasMes);
+
             setClientStats(comprasMes);
             setIsDialogOpen(true);
         } catch (error) {
@@ -103,9 +88,25 @@ export default function ListagemCadastro() {
     return(
         <div className="space-y-4">
             <div className="flex justify-between">
-                <DatePickerWithRange onFilter={handleFilter} />
+                <div className="flex gap-3 items-center">
+                    <DatePickerWithRange 
+                        onFilter={handleFilter} 
+                        resetDates={resetDates}
+                    />
+                    <Button 
+                        variant="destructive" 
+                        onClick={() => {
+                            SetCurrentPage(1);
+                            setResetDates(true);
+                            handleFilter({});
+                            setTimeout(() => setResetDates(false), 100);
+                        }} 
+                    >
+                        Limpar
+                    </Button>
+                </div>
                 <div className="flex gap-3">
-                    <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                    <Select value={mesSelecionado} onValueChange={setmesSelecionado}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Selecione o mês" />
                         </SelectTrigger>
@@ -117,7 +118,7 @@ export default function ListagemCadastro() {
                             ))}
                         </SelectContent>
                     </Select>
-                    <Select value={selectedYear} onValueChange={setSelectedYear}>
+                    <Select value={anoSelecionado} onValueChange={setAnoSelecionado}>
                         <SelectTrigger className="w-[120px]">
                             <SelectValue placeholder="Ano" />
                         </SelectTrigger>

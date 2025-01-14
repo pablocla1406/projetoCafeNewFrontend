@@ -27,13 +27,18 @@ export function downloadCSV(data: any[], headers: string[], filename: string) {
     // Create blob with proper MIME type
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
     
-    // Create download link
+    // Create File object
+    const file = new File([blob], `${filename}.csv`, { type: 'text/csv;charset=utf-8' });
+    
+    // Create download link for user
     const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
+    link.href = URL.createObjectURL(blob);
     link.download = `${filename}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     // Clean up the URL object
-    window.URL.revokeObjectURL(link.href);
+    URL.revokeObjectURL(link.href);
+    
+    return file;
 }

@@ -1,8 +1,9 @@
+import BarChartMixed from "@/components/Tela Inicial/BarChartMixed";
 
 export default function Home() {
 return(
     <>
-    <h1>Hello, Word</h1>
+    <BarChartMixed />
     </>
 )
 
