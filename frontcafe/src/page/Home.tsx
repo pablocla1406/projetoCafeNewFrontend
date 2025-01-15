@@ -1,10 +1,10 @@
-import BarChartMixed from "@/components/Tela Inicial/BarChartMixed";
+import DashBoard from "@/components/homeComponents/DashBoard";
 
 export default function Home() {
 return(
-    <>
-    <BarChartMixed />
-    </>
+   <div>
+    <DashBoard />
+   </div>
 )
 
 }

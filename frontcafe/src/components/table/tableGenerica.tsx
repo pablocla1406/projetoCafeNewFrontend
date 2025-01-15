@@ -66,7 +66,7 @@ export default function GenericTable({
   }
 
   return (
-    <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
+    <div className="w-[1090px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
       <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
         <div className="items-center gap-4 mb-4">
           <DropdownMenu>
