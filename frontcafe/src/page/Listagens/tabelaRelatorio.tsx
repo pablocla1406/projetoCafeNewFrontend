@@ -39,7 +39,7 @@ export default function TabelaRelatorio({clients, onClose, open}: TabelaRelatori
     async function EnviaDiscord(){
         try {
             const arquivo = download();
-            await DiscordService.enviaRelatorioCafe(arquivo, 'Olá @everyone, segue o Relatório mensal do Café');
+            await DiscordService.enviaRelatorioCafe(arquivo, 'Olá @everyone, Segue o Relatório mensal do Café');
             toast.success('Relatório enviado com sucesso para Discord');
         } catch (error) {
             console.error('Erro ao enviar relatório:', error);

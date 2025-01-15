@@ -1,5 +1,5 @@
 import GenericTable from "@/components/table/tableGenerica";
-import { DatePickerWithRange } from "@/components/DatePickerRangeDemo";
+import { DatePickerWithRange } from "@/components/RelacaoADates/DatePickerRangeDemo";
 import { pedidoService } from "@/service/PedidoService";
 import IPedido from "@/utils/interfaces/IPedido";
 import React, { useEffect, useState } from "react";

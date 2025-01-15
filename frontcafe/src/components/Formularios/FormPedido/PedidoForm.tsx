@@ -13,7 +13,7 @@ import IPessoa from "@/utils/interfaces/IPessoa";
 
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 
-import { DatePickerDemo } from "@/components/DatePickerDemo";
+import { DatePickerDemo } from "@/components/RelacaoADates/DatePickerDemo";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import { Separator } from "@/components/ui/separator";
 
