@@ -141,7 +141,7 @@ export default function BarChartMixed() {
           </BarChart>
           
         </ChartContainer>
-        <div className="pt-6">
+        <div className="pt-20">
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="filtro" className="group">
             <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent">
