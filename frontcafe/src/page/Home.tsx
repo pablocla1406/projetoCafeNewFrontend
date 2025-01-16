@@ -3,13 +3,13 @@ import TextoCafeVariasLinguas from "@/components/Tela Inicial/textoCafeVariasLin
 import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
-return(
-   <div className="p-10">
-
-   <TextoCafeVariasLinguas />
-   <Separator orientation="horizontal" className="my-2 pb-1"  />
-    <DashBoard />
-   </div>
-)
-
+  return (
+    <div className="p-10 space-y-20">
+      <div>
+      <TextoCafeVariasLinguas />
+      <Separator orientation="horizontal" className="my-6" />
+      </div>
+      <DashBoard />
+    </div>
+  );
 }

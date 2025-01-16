@@ -2,7 +2,7 @@ import IPedido from "@/utils/interfaces/IPedido";
 import ApiService from "./ApiService";
 import api from "./api";
 import { IClientStats } from "@/page/Listagens/tabelaRelatorio";
-import IPedidos6meses from "@/utils/interfaces/IPedidos6meses";
+import IPedidoPorMes from "@/utils/interfaces/IPedidoPorMes";
 
 class PedidoService extends ApiService<IPedido> {
     constructor() {
@@ -18,8 +18,9 @@ class PedidoService extends ApiService<IPedido> {
     }
 
 
-    async listarPedidosUltimos6meses() : Promise<IPedidos6meses[]>{
-        const resposta = await api.get<IPedidos6meses[]>(`/${this.recurso}/relatorio/ultimos6meses`);
+    async listarPedidosporMes(mesInicial?: string, mesFinal?: string) : Promise<IPedidoPorMes[]>{
+        const params = mesInicial && mesFinal ? `?mesInicial=${mesInicial}&mesFinal=${mesFinal}` : '';
+        const resposta = await api.get<IPedidoPorMes[]>(`/${this.recurso}/listarPedidosPorMes${params}`);
         return resposta.data
     }
 }
