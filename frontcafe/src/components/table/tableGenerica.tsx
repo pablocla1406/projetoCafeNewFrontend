@@ -47,6 +47,7 @@ export default function GenericTable({
   cadHref
 }: GenericTableProps) {
   const [filters, setFilters] = React.useState<Record<string, string>>({});
+  const currentlyTheme = localStorage.getItem('theme')
 
   useEffect(() => {
     console.log('Data:', data);
@@ -70,16 +71,16 @@ export default function GenericTable({
       <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
         <div className="items-center gap-4 mb-4">
           <DropdownMenu>
-            <div className="flex justify-end items-center space-x-2">
+            <div className={`flex justify-end items-center space-x-2 `}>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">Filtros</Button>
+                <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>Filtros</Button>
               </DropdownMenuTrigger>
-              <Button variant="outline">
-                <Link to={`/${cadHref}`} className="flex items-center">
+                <Link to={`/${cadHref}`} className="flex justify-center">
+              <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>
                   <CirclePlus className="h-4 w-4 mr-1" />
                   Cadastrar
-                </Link>
               </Button>
+                </Link>
             </div>
 
             <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
@@ -96,7 +97,7 @@ export default function GenericTable({
                 
                 {columns.filter(column => column.filterable).map((column) => (
                   <div key={column.key} className="space-y-1">
-                    <span className="text-sm font-medium">{column.header}</span>
+                    <span className="text-sm text-centerfont-medium">{column.header}</span>
                     <Input
                       placeholder={`Filtrar por ${column.header}`}
                       value={filters[column.key] || ''}
@@ -115,9 +116,9 @@ export default function GenericTable({
             <TableHeader>
               <TableRow>
                 {columns.map(function (column) {
-                  return <TableHead className='text-center' key={column.key}>{column.header}</TableHead>;
+                  return <TableHead className='text-center text-lg whitespace-nowrap px-4' key={column.key}>{column.header}</TableHead>;
                 })}
-                <TableHead>Ações</TableHead>
+                <TableHead className='text-center whitespace-nowrap px-4'>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -127,20 +128,21 @@ export default function GenericTable({
                     <TableRow key={row.id}>
                       {columns.map(function (column) {
                         return (
-                          <TableCell className='text-center' key={column.key}>
+                          <TableCell className='text-center whitespace-nowrap px-4 text-base' key={column.key}>
                             {column.render ? column.render(row[column.key]) : row[column.key]}
                           </TableCell>
                         );
                       })}
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="icon">
-                            <Link to={`/${href}/${row.id}`} className="flex items-center">
+                      <TableCell className='text-center'>
+                        <div className="flex justify-center space-x-2">
+                          <Link to={`/${href}/${row.id}`} className="flex items-center justify-center">
+                            <Button variant="outline" className="btnBonito" size="icon">
                               <Pencil className="h-4 w-4" />
-                            </Link>
-                          </Button>
+                            </Button>
+                          </Link>
                           <Button 
-                          variant="outline" 
+                          variant="outline"
+                          className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`} 
                           size="icon" 
                           onClick={() => {
                             onDelete(row.id);

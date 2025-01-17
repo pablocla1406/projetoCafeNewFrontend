@@ -6,6 +6,7 @@ interface ILoginResponse {
         permissao: string;
         setor: string;
         imagem: string;
+        pedidosNoMes: string;
     };
     token: string;
     tipo: string;

@@ -72,12 +72,14 @@ export default function ListagemPessoa(){
             key: 'imagem',
             header: 'Foto',
             render: (value: any) => 
+                <div className="flex justify-center items-center">
                 <Avatar >
                     <AvatarImage src={value} className="h-12 w-12 rounded-full" />
                     <AvatarFallback>
                         <CircleUserRound className="h-12 w-12 text-muted-foreground" />
                     </AvatarFallback>
                 </Avatar>
+                </div>
 
         },
         {

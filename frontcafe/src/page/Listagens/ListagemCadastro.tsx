@@ -19,6 +19,7 @@ export default function ListagemCadastro() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [clientStats, setClientStats] = useState<IClientStats[]>([]);
     const [resetDates, setResetDates] = useState(false);
+    const Currentlytheme = localStorage.getItem('theme');
 
     
     const buscarDados = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
@@ -107,7 +108,7 @@ export default function ListagemCadastro() {
                 </div>
                 <div className="flex gap-3">
                     <Select value={mesSelecionado} onValueChange={setmesSelecionado}>
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-[180px] ">
                             <SelectValue placeholder="Selecione o mês" />
                         </SelectTrigger>
                         <SelectContent>
@@ -130,7 +131,7 @@ export default function ListagemCadastro() {
                             ))}
                         </SelectContent>
                     </Select>
-                    <Button onClick={processarRelatorio}>Processar Relatório</Button>
+                    <Button className="btnBonito"onClick={processarRelatorio}>Processar Relatório</Button>
                 </div>
                 <TabelaRelatorio 
                     clients={clientStats} 

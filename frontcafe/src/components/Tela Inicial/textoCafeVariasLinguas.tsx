@@ -60,7 +60,7 @@ export default function TextoCafeVariasLinguas() {
 
     return(
         <h1 className="text-4xl font-bold text-gray-800">
-            <span className="text-indigo-500">{textoAtual}</span>
+            <span className="text-primary-foreground">{textoAtual}</span>
             <span className="blinking-cursor">|</span>
         </h1>
     );

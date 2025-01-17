@@ -22,7 +22,7 @@ export default function LoginPage() {
       
       <div className="relative">
         <img
-          src="/src/lib/images/logo.webp"
+          src="/src/lib/images/logincoffe.jpg"
           alt="Coffee Shop Background"
           className="h-full w-full object-cover"
         />

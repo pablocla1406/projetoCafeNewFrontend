@@ -57,12 +57,14 @@ export default function ListagemBebida(){
             key: 'imagem',
             header: 'Imagem',
             render: (value: any) =>
+                <div className="flex justify-center items-center">
                     <Avatar>
                         <AvatarImage src={value} className="h-10 w-10 rounded-full" />
                         <AvatarFallback>
                             <Coffee className="h-10 w-10 text-muted-foreground " />
                         </AvatarFallback>
                     </Avatar>
+                </div>
             ,
             filterable: false
         },

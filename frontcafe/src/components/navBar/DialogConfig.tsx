@@ -75,7 +75,7 @@ export default function DialogConfig({style, showButton = true, children}: dialo
                         <Button variant="outline" type="button" onClick={() => setOpen(false)}>
                             Cancelar
                         </Button>
-                        <Button type="submit">Salvar alterações</Button>
+                        <Button type="submit" className="btnBonito" >Salvar alterações</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

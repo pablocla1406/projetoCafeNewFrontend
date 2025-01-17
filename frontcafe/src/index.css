@@ -10,8 +10,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgba(51, 34, 28, 0.87); /* Cor próxima de grãos de café */
+  background-color: #f9f5f3; /* Fundo claro com um tom café suave */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,11 +21,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #6f4c3a; /* Tom de café médio para links */
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #534134; /* Tom mais escuro no hover */
 }
 
 body {
@@ -40,6 +40,19 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+.btnLight {
+  background-color: #6f4c3a; /* Botão claro */
+  color: #ffffff;
+}
+.btnDark {
+  background-color: #f7ebeb; /* Botão escuro */
+  color: #534134;
+}
+
+.btnBonito {
+  background-color: #6f4c3a; /* Botão claro */
+  color: #ffffff;
+}
 
 button {
   border-radius: 8px;
@@ -48,102 +61,114 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #6f4c3a; 
+  color: #533838;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: #ffffff; 
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+
+.dark button {
+  @apply bg-accent text-accent-foreground;
+}
+
+.dark button:hover {
+  @apply bg-accent text-accent-foreground;
+}
+
+
 /* Dark mode styles */
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #352f2a; /* Texto em tom mais escuro para fundo claro */
+    background-color: #f9f5f3; /* Fundo claro */
   }
   a:hover {
-    color: #747bff;
+    color: #534134;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #d0c1bd; /* Botão claro no tema claro */
   }
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --background: 30 20% 95%; /* Fundo claro */
+    --foreground: 30 20% 20%; /* Texto escuro */
+    --card: 30 20% 95%; /* Fundo dos cards */
+    --card-foreground: 30 20% 20%; /* Texto nos cards */
+    --popover: 30 20% 95%;
+    --popover-foreground: 30 20% 20%;
+    --primary: 24 20% 75%; /* Tom de café médio */
+    --primary-foreground: 24 30% 20%; /* Texto em contraste */
+    --secondary: 24 30% 80%; /* Tonalidade mais clara de café */
+    --secondary-foreground: 24 30% 30%; /* Contraste secundário */
+    --muted: 24 20% 85%;
+    --muted-foreground: 24 30% 40%;
+    --accent: 24 20% 85%;
+    --accent-foreground: 24 30% 20%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
+    --border: 30 20% 80%; /* Bordas em tons neutros */
+    --input: 30 20% 80%;
+    --ring: 30 20% 60%;
+    --chart-1: 24 76% 61%; /* Tons relacionados aos gráficos */
+    --chart-2: 35 58% 45%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 30 20% 90%; /* Fundo suave da sidebar */
+    --sidebar-foreground: 30 30% 20%; /* Texto na sidebar */
+    --sidebar-primary: 24 20% 75%;
+    --sidebar-primary-foreground: 30 30% 20%;
+    --sidebar-accent: 24 20% 85%;
+    --sidebar-accent-foreground: 30 30% 30%;
+    --sidebar-border: 30 20% 85%;
+    --sidebar-ring: 24 30% 50%;
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 30 30% 10%; /* Fundo escuro */
+    --foreground: 24 40% 95%; /* Texto claro */
+    --card: 30 30% 10%; /* Fundo dos cards */
+    --card-foreground: 24 40% 95%;
+    --popover: 30 30% 10%;
+    --popover-foreground: 24 40% 95%;
+    --primary: 24 30% 80%; /* Tom mais claro no modo escuro */
+    --primary-foreground: 30 30% 10%; /* Texto mais escuro */
+    --secondary: 24 30% 70%;
+    --secondary-foreground: 24 40% 95%;
+    --btn: 24 30% 70%;
+    --muted: 24 20% 30%;
+    --muted-foreground: 24 40% 70%;
+    --accent: 24 20% 40%;
+    --accent-foreground: 24 40% 90%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 24 30% 50%; /* Bordas no tema escuro */
+    --input: 24 30% 50%;
+    --ring: 24 40% 70%;
+    --chart-1: 24 50% 50%;
+    --chart-2: 35 60% 40%;
+    --chart-3: 30 70% 45%;
+    --chart-4: 43 50% 55%;
+    --chart-5: 27 50% 65%;
+    --sidebar-background: 30 20% 20%;
+    --sidebar-foreground: 24 40% 90%;
+    --sidebar-primary: 24 30% 75%;
+    --sidebar-primary-foreground: 24 40% 95%;
+    --sidebar-accent: 24 20% 50%;
+    --sidebar-accent-foreground: 24 40% 90%;
+    --sidebar-border: 30 30% 50%;
+    --sidebar-ring: 24 40% 50%;
   }
 }
 
@@ -154,4 +179,5 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
+  
 }

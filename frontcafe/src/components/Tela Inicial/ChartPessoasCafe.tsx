@@ -59,7 +59,7 @@ export default function ChartPessoasCafe() {
         <CardDescription>
           {mesSelecionado && anoSelecionado 
             ? `Data Selecionada: ${mesSelecionado}/${anoSelecionado}`
-            : 'Mostrando dados de todo o período'}
+            : 'Dados do Mês Atual '}
         </CardDescription>
       </CardHeader>
       <CardContent>

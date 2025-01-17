@@ -43,7 +43,7 @@ export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidas
         <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
 
           <BotaoVoltarCadastro href="ListagemPedidos"/>
-          <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Pedido</h1>
+          <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pedido</h1>
           <Separator orientation="horizontal" className="my-2" />
 
           <div className="space-y-6">

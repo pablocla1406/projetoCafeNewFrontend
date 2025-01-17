@@ -27,7 +27,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
                 <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
                     <BotaoVoltarCadastro href="ListagemBebidas"/>
-                    <h1 className="text-2xl pb-7 font-extrabold text-gray-900 dark:text-white text-center">Formulário de Bebidas</h1>
+                    <h1 className="text-2xl pb-7 font-extrabold  text-center">Formulário de Bebidas</h1>
                     <Separator orientation="horizontal" className="my-2" />
                     <div className="space-y-6">
 
@@ -148,7 +148,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                                     form 
                                                 })
                                             }}
-                                            className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-700 file:text-zinc-100 hover:file:bg-zinc-600"
+                                            className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:cursor-pointer "
                                         />
                                         {(imagePreview || value) && (
                                             <div className="flex items-center gap-2">

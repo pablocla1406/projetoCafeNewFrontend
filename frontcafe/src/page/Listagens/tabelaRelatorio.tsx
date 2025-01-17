@@ -85,10 +85,10 @@ export default function TabelaRelatorio({clients, onClose, open}: TabelaRelatori
                         </Button>
                     </div>
                     <div className="flex space-x-2">
-                        <Button variant="outline" onClick={onClose}>
+                        <Button className="btnBonito" onClick={onClose}>
                             Fechar
                         </Button>
-                        <Button onClick={download}>
+                        <Button className="btnBonito" onClick={download}>
                             Baixar Planilha
                         </Button>
                     </div>

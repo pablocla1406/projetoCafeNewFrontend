@@ -7,7 +7,7 @@ interface BotaoSalvarCadastroProps {
 export default function BotaoSalvarCadastro({ disabled }: BotaoSalvarCadastroProps) {
     return (
         <Button 
-            className="w-full text-1xl" 
+            className="w-full text-1xl btnBonito" 
             type="submit" 
             variant="default" 
             disabled={disabled}

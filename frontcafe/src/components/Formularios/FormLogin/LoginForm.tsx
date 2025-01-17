@@ -11,16 +11,17 @@ export default function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-2 text-center">
+            <div className="flex flex-col items-center gap-4 text-center">
                 <h1 className="text-2xl font-bold">Login do Usuário</h1>
                 <p className="text-balance text-sm text-muted-foreground">
                     Entre com o seu Usuário e Senha para ser feito o Login
                 </p>
             </div>
-            <div className="grid gap-6">
+            <div className="h-5"></div> 
+            <div className="grid gap-6 space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="usuario">Usuário</Label>
-                    <Input 
+                    <Input  
                         {...form.register("usuario")}
                         id="usuario" 
                         type="text" 
@@ -50,7 +51,7 @@ export default function LoginForm() {
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
 
                 </div>
-                <Button type="submit">Entrar</Button>
+                <Button type="submit" className="btnBonito">Entrar</Button>
                 </div>
         </form>
     )
