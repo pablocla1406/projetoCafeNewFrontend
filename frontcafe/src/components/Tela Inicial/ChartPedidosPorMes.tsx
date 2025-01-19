@@ -49,95 +49,110 @@ export default function ChartPedidosPorMes() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pedidos por Período</CardTitle>
-        <CardDescription>Selecione um período para visualizar os pedidos</CardDescription>
+        <CardTitle className="text-2xl">Pedidos por Período</CardTitle>
+        <CardDescription className="text-lg">
+        Selecione um período para visualizar os pedidos
+        </CardDescription>
         
       </CardHeader>
       <CardContent>
-        <ChartContainer config={{}}>
-          <BarChart
-            accessibilityLayer
-            data={pedidosComCores}
-            layout="vertical"
-            margin={{
-              right: 16,
-            }}
-          >
-            <CartesianGrid horizontal={false} />
-            <YAxis
-              dataKey="anoMes"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              
-            />
-            <XAxis dataKey="totalVendas" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={({active, payload}) => {
-                if (active && payload && payload.length) {
-                  return (
-                    <div className="rounded-lg border bg-background p-2 shadow-sm">
-                      <div className="grid gap-2">
-                        <div className="flex flex-col">
-                          <span className="text-[0.70rem] uppercase text-muted-foreground">
-                            Nome
-                          </span>
-                          <span className="font-bold">
-                            {payload[0].payload.anoMes}
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[0.70rem] uppercase text-muted-foreground">
-                            Vezes
-                          </span>
-                          <span className="font-bold">
-                            {payload[0].payload.totalVendas}
-                          </span>
+        <ChartContainer config={{}} className="w-[500px] mx-auto">
+          {pedidosComCores.length > 0 ? (
+            <BarChart
+              accessibilityLayer
+              data={pedidosComCores}
+              layout="vertical"
+              margin={{
+                right: 16,
+                top: 0,
+                bottom: 0,
+                left: 0
+              }}
+              width={300}
+              height={250}
+            >
+              <CartesianGrid horizontal={false} />
+              <YAxis
+                dataKey="anoMes"
+                type="category"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                
+              />
+              <XAxis dataKey="totalVendas" type="number" hide />
+              <ChartTooltip
+                cursor={false}
+                content={({active, payload}) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="rounded-lg border bg-background p-2 shadow-sm">
+                        <div className="grid gap-2">
+                          <div className="flex flex-col">
+                            <span className="text-[0.70rem] uppercase text-muted-foreground">
+                              Nome
+                            </span>
+                            <span className="font-bold">
+                              {payload[0].payload.anoMes}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[0.70rem] uppercase text-muted-foreground">
+                              Quantidade de Pedidos
+                            </span>
+                            <span className="font-bold">
+                              {payload[0].payload.totalVendas}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                }
-                return null
-              }}
-            />
-            <Bar
-              dataKey="totalVendas"
-              layout="vertical"
-              fill="hsl(var(--primary))"
-              radius={4}
-            >
-              <LabelList
-                dataKey="mesAno"
-                position="insideLeft"
-                offset={8}
-                className="fill-[--color-label]"
-                fontSize={12}
+                    )
+                  }
+                  return null
+                }}
               />
-              <LabelList
+              <Bar
                 dataKey="totalVendas"
-                position="right"
-                offset={8}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
+                layout="vertical"
+                fill="hsl(var(--primary))"
+                radius={4}
+              >
+                <LabelList
+                  dataKey="mesAno"
+                  position="insideLeft"
+                  offset={8}
+                  className="fill-[--color-label]"
+                  fontSize={12}
+                />
+                <LabelList
+                  dataKey="totalVendas"
+                  position="right"
+                  offset={8}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Bar>
+            </BarChart>
+          ) : (
+            <div className="flex items-center justify-center h-[250px] text-lg text-muted-foreground">
+              Não existem pedidos no período selecionado
+            </div>
+          )}
         </ChartContainer>
-        <FiltroPIniPFin
-          periodoInicial={periodoInicial}
-          setPeriodoInicial={setPeriodoInicial}
-          periodoFinal={periodoFinal}
-          setPeriodoFinal={setPeriodoFinal}
-        />
+        <div className="flex justify-center pt-6">
+          <FiltroPIniPFin
+            periodoInicial={periodoInicial}
+            setPeriodoInicial={setPeriodoInicial}
+            periodoFinal={periodoFinal}
+            setPeriodoFinal={setPeriodoFinal}
+          />
+        </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 font-medium leading-none text-xl">
           Observe quais meses tiveram mais pedidos <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground text-base">
           Pessoal gosta de um cafezinho não ?
         </div>
       </CardFooter>

@@ -32,7 +32,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} 
       className="space-y-10">
-        <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
+        <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
         <BotaoVoltarCadastro href="ListagemPessoas"/>
         <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pessoa</h1>
         <Separator orientation="horizontal" className="my-2" />
@@ -46,7 +46,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   <Input 
                     {...field} 
                     placeholder="Digite o Nome" 
-                    className="w-2/4 h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
+                    className="w-2/4 h-11 px-3 py-2 dark:placeholder:text-white border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
                   />
                   {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                 </FormItem>
@@ -109,7 +109,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                   <FormItem className="flex-1">
                     <FormLabel className=" text-lg">Usuário</FormLabel>
                     <Input {...field} placeholder="Digite o Usuário" 
-                    className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                    className="w-full h-11 px-3 py-2 dark:placeholder:text-white border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.usuario?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.usuario.message}</FormMessage>}
                   </FormItem>
                 )}/>
@@ -120,7 +120,8 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 render={({ field }) => (
                   <FormItem className="flex-1">
                     <FormLabel className=" text-lg">Senha</FormLabel>
-                    <Input {...field} placeholder="Digite a Senha" className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                    <Input {...field} placeholder="Digite a Senha"
+                     className="w-full h-11 px-3 py-2 dark:placeholder:text-white border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                     {errors.senha?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.senha.message}</FormMessage>}
                   </FormItem>
                 )}/>

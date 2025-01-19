@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function TextoCafeVariasLinguas() {
     const [nomeUsuario, setNomeUsuario] = useState({nome : ''});
+    const [pedidosNoMes, setPedidosNoMes] = useState({pedidosNoMes : ''});
     const [linguagem, setLinguagem] = useState(0);
     const [textoAtual, setTextoAtual] = useState("");
     const [velocidade, setVelocidade] = useState(150);
@@ -10,12 +11,15 @@ export default function TextoCafeVariasLinguas() {
 
     useEffect(() => {
         const nome = localStorage.getItem('nome') || ''
+        const pedidosNoMes = localStorage.getItem('pedidosNoMes') || 0
+        setPedidosNoMes({pedidosNoMes: pedidosNoMes.toString()});
         setNomeUsuario({nome});
     }, []);
 
     const mensagemParaUsuario = `Olá, ${nomeUsuario.nome}! Seja bem-vindo!`;
 
-    const linguas = [
+    const mensagemTotal = [
+        `Você possui ${pedidosNoMes.pedidosNoMes} pedidos neste mês`,
         "Vamos tomar café", // Português
         "Let's have coffee", // Inglês
         "Prenons un café", // Francês
@@ -28,16 +32,17 @@ export default function TextoCafeVariasLinguas() {
         "コーヒーを飲もう", // Japonês
     ];
 
+
     useEffect(() => {
         function logicaDeTexto() {
-            const todooTexto = mostrarMensagemInicial ? mensagemParaUsuario : linguas[linguagem];
+            const todooTexto = mostrarMensagemInicial ? mensagemParaUsuario : mensagemTotal[linguagem];
 
             if (estaDeletando) {
                 setTextoAtual((prev) => prev.slice(0, prev.length - 1));
                 if (textoAtual === "") {
                     setEstaDeletando(false);
                     if (!mostrarMensagemInicial) {
-                        setLinguagem((prev) => (prev + 1) % linguas.length);
+                        setLinguagem((prev) => (prev + 1) % mensagemTotal.length);
                     }
                     setMostrarMensagemInicial(false);
                 }
@@ -59,9 +64,9 @@ export default function TextoCafeVariasLinguas() {
     }, [linguagem, textoAtual, velocidade, estaDeletando, mostrarMensagemInicial]);
 
     return(
-        <h1 className="text-4xl font-bold text-gray-800">
-            <span className="text-primary-foreground">{textoAtual}</span>
-            <span className="blinking-cursor">|</span>
+        <h1 className="text-5xl font-bold text-gray-800">
+            <span className="text-primary-foreground dark:text-primary">{textoAtual}</span>
+            <span className="blinking-cursor dark:text-primary">|</span>
         </h1>
     );
 }

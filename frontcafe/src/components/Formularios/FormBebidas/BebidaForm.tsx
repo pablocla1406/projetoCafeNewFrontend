@@ -25,7 +25,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-                <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-12">
+                <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
                     <BotaoVoltarCadastro href="ListagemBebidas"/>
                     <h1 className="text-2xl pb-7 font-extrabold  text-center">Formulário de Bebidas</h1>
                     <Separator orientation="horizontal" className="my-2" />
@@ -41,7 +41,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                     <FormItem className="flex-1">
                                         <FormLabel className="text-lg">Nome</FormLabel>
                                         <Input {...field} placeholder="Digite o Nome"
-                                            className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                                            className="w-full h-11 px-3 py-2 dark:placeholder:text-white border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                                         {errors.nome?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.nome.message}</FormMessage>}
                                     </FormItem>
                                 )}
@@ -51,10 +51,10 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                 control={form.control}
                                 name="descricao"
                                 render={({ field }) => (
-                                    <FormItem className="flex-1">
+                                    <FormItem className="flex-1">   
                                         <FormLabel className="text-lg">Descrição</FormLabel>
                                         <Input {...field} placeholder="Digite a Descrição"
-                                            className="w-full h-20 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
+                                            className="w-full h-20 px-3 py-2 dark:placeholder:text-white border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white" />
                                         {errors.descricao?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.descricao.message}</FormMessage>}
                                     </FormItem>
                                 )}
@@ -93,7 +93,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                                     id="defaultPrice"
                                                     onChange={(e) => {
                                                         if (e.target.checked) {
-                                                            onChange(2.30);
+                                                            onChange(parseFloat("2.30"));
                                                         } else {
                                                             onChange('');
                                                         }
@@ -106,6 +106,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                         </div>
                                     </FormItem>
                                 )}
+                                
                             />
 
                             <FormField

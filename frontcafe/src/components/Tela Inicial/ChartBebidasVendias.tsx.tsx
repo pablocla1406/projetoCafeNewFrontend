@@ -57,9 +57,9 @@ export default function ChartBebidasVendidas() {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Bebidas Mais Vendidas</CardTitle>
-        <CardDescription>
+      <CardHeader>
+        <CardTitle className="text-2xl">Bebidas Mais Vendidas</CardTitle>
+        <CardDescription className="text-lg">
           {mesSelecionado && anoSelecionado
             ? `Data Selecionada: ${mesSelecionado}/${anoSelecionado}`
             : 'Dados do Mês Atual'}
@@ -68,9 +68,9 @@ export default function ChartBebidasVendidas() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={{}}
-          className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+          className="mx-auto aspect-square max-h-[400px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
-          <PieChart>
+          <PieChart width={400} height={400}>
             <ChartTooltip 
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
@@ -96,7 +96,7 @@ export default function ChartBebidasVendidas() {
               nameKey="nome"
               cx="50%"
               cy="50%"
-              outerRadius={80}
+              outerRadius={150}
               label
             />
           </PieChart>
@@ -107,11 +107,11 @@ export default function ChartBebidasVendidas() {
         </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex  gap-2 font-medium leading-none">
-          As Bebidas Mais Vendidas <TrendingUp className="h-4 w-4" />
+        <div className="flex gap-2 font-medium leading-none text-lg">
+          Top 5 Mais Compradores <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
-          E você gosta mais de qual bebida?
+        <div className="leading-none text-muted-foreground text-base">
+        Será que você consegue passar?          
         </div>
       </CardFooter>
     </Card>

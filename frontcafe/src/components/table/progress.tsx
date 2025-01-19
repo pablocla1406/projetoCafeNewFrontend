@@ -10,12 +10,12 @@ export function Progress({ className }: ProgressProps) {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setProgress((oldProgress) => {
-                if (oldProgress === 100) {
+            setProgress((progressAntigo) => {
+                if (progressAntigo === 100) {
                     clearInterval(timer);
                     return 100;
                 }
-                return Math.min(oldProgress + 2.7, 100);
+                return Math.min(progressAntigo + 2.7, 100);
             });
         }, 100);
 

@@ -4,9 +4,9 @@ import ChartPessoasCafe from "../Tela Inicial/ChartPessoasCafe.tsx";
 
 export default function DashBoard() {
     return (
-        <div className="w-[1090px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
-            <h1 className="text-2xl pb-7 font-extrabold"> Dashboard </h1>
-            <div className="grid grid-cols-3 gap-4">
+        <div className="w-full  rounded-lg shadow-md p-8">
+            <h1 className="text-4xl font-extrabold mb-8"> Dashboard </h1>
+            <div className="space-y-8">
                 <ChartPessoasCafe />
                 <ChartBebidasVendidas />
                 <ChartPedidosPorMes />

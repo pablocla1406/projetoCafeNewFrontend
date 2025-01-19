@@ -20,9 +20,7 @@ export default function BebidaCadastro(){
     async function receberDados(){
         if(id){
             try {
-                console.log("Fetching data for ID:", id);
                 const dadosBebida = await bebidaService.listarDadosId(id)
-                console.log("Raw data received:", dadosBebida);
                 
                 const formattedData : BebidaSchema= {
                     id: dadosBebida.id.toString(),
@@ -32,7 +30,6 @@ export default function BebidaCadastro(){
                     imagem: dadosBebida.imagem || "",
                     status: dadosBebida.status
                 };
-                console.log("Formatted data:", formattedData);
                 setBebida(formattedData);
             } catch (error) {
                 console.error("Erro ao buscar dados:", error)

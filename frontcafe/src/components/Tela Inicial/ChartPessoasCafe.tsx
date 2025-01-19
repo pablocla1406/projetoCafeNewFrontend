@@ -24,7 +24,6 @@ export default function ChartPessoasCafe() {
   const [mesSelecionado, setMesSelecionado] = useState<string>("");
   const [anoSelecionado, setAnoSelecionado] = useState<string>("");
 
-
   
   const limparFiltros = () => {
     setMesSelecionado('')
@@ -55,93 +54,96 @@ export default function ChartPessoasCafe() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>As Pessoas que Mais Amam Café</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl">As Pessoas que Mais Amam Café</CardTitle>
+        <CardDescription className="text-lg">
           {mesSelecionado && anoSelecionado 
             ? `Data Selecionada: ${mesSelecionado}/${anoSelecionado}`
             : 'Dados do Mês Atual '}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={{}}>
-          <BarChart
-            data={pessoasAmamCafe && pessoasAmamCafe.length > 0 ? pessoasAmamCafe : [
-              { 
-                nome: 'Nenhuma pessoa encontrada',
-              }
-            ]}
-            layout="vertical"
-            margin={{
-              left: 0,
-              right: 20,
-              top: 0,
-              bottom: 0
-            }}
-            height={300}
-          >
-            <YAxis
-              dataKey="nome"
-              type="category"
-              tickLine={false}
-              tickMargin={8}
-              axisLine={false}
-              width={90}
-              fontSize={12}
-              stroke="hsl(var(--foreground))"
-            />
-            <XAxis 
-              dataKey="vezesComprou" 
-              type="number" 
-              hide 
-            />
-            <ChartTooltip
-              cursor={false}
-              content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                  return (
-                    <div className="rounded-lg border bg-background p-2 shadow-sm">
-                      <div className="grid gap-2">
-                        <div className="flex flex-col">
-                          <span className="text-[0.70rem] uppercase text-muted-foreground">
-                            Nome
-                          </span>
-                          <span className="font-bold">
-                            {payload[0].payload.nome}
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[0.70rem] uppercase text-muted-foreground">
-                            Vezes
-                          </span>
-                          <span className="font-bold">
-                            {payload[0].value}
-                          </span>
+        <ChartContainer config={{}} className="w-[700px] mx-auto">
+          {pessoasAmamCafe && pessoasAmamCafe.length > 0 ? (
+            <BarChart
+              data={pessoasAmamCafe}
+              layout="vertical"
+              margin={{
+                left: 0,
+                right: 20,
+                top: 0,
+                bottom: 0
+              }}
+              width={300}
+              height={250}
+              className="overflow-visible"
+            >
+              <YAxis
+                dataKey="nome"
+                type="category"
+                tickLine={false}
+                tickMargin={8}
+                axisLine={false}
+                width={90}
+                fontSize={12}
+                stroke="hsl(var(--foreground))"
+              />
+              <XAxis 
+                dataKey="vezesComprou" 
+                type="number" 
+                hide 
+              />
+              <ChartTooltip
+                cursor={false}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="rounded-lg border bg-background p-2 shadow-sm">
+                        <div className="grid gap-2">
+                          <div className="flex flex-col">
+                            <span className="text-[0.70rem] uppercase text-muted-foreground">
+                              Nome
+                            </span>
+                            <span className="font-bold">
+                              {payload[0].payload.nome}
+                            </span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[0.70rem] uppercase text-muted-foreground">
+                              Vezes
+                            </span>
+                            <span className="font-bold">
+                              {payload[0].value}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )
-                }
-                return null
-              }}
-            />
-            <Bar 
-              dataKey="vezesComprou" 
-              radius={5}
-              fill="hsl(var(--primary))"
-            />
-          </BarChart>
-          
+                    )
+                  }
+                  return null
+                }}
+              />
+              <Bar 
+                dataKey="vezesComprou" 
+                radius={5}
+                fill="hsl(var(--primary))"
+              />
+            </BarChart>
+          ) : (
+            <div className="flex items-center justify-center h-[250px] text-lg text-muted-foreground">
+              Não existem pessoas que compraram café no período selecionado
+            </div>
+          )}
         </ChartContainer>
-        <div className="pt-6">
+        <div className="flex justify-center pt-6">
           <FiltroDateChart mesSelecionado={mesSelecionado} setMesSelecionado={setMesSelecionado} anoSelecionado={anoSelecionado} setAnoSelecionado={setAnoSelecionado} limparFiltros={limparFiltros} />
         </div>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 font-medium leading-none text-xl">
           Top 5 Mais Compradores <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
-        Será que você consegue passar?          
+        <div className="leading-none text-muted-foreground text-base">
+        Será que você consegue?          
         </div>
       </CardFooter>
     </Card>
