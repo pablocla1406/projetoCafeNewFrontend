@@ -10,7 +10,7 @@ import { CircleUserRound, Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro"; // Import the BotaoSalvarCadastro component
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";

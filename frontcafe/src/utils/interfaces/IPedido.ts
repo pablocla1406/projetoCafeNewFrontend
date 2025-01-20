@@ -1,4 +1,3 @@
-import { ISetor } from "./ISetor";
 
 export default interface IPedido{
     id: string,

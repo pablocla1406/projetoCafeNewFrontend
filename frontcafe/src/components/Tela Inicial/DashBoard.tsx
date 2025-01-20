@@ -1,6 +1,6 @@
-import ChartBebidasVendidas from "../Tela Inicial/ChartBebidasVendias.tsx";
-import ChartPedidosPorMes from "../Tela Inicial/ChartPedidosPorMes.tsx";
-import ChartPessoasCafe from "../Tela Inicial/ChartPessoasCafe.tsx";
+import ChartBebidasVendidas from "./ChartBebidasVendias.tsx.tsx";
+import ChartPedidosPorMes from "./ChartPedidosPorMes.tsx";
+import ChartPessoasCafe from "./ChartPessoasCafe.tsx";
 
 export default function DashBoard() {
     return (

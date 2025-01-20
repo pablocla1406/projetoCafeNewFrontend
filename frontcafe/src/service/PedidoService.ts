@@ -11,9 +11,7 @@ class PedidoService extends ApiService<IPedido> {
 
     async pedidoRelatorio(mes?: number, ano?: number)  : Promise<IClientStats[]>{
         const params = mes && ano ? `?mes=${mes}&ano=${ano}` : '';
-        console.log('Service - Params:', { mes, ano, url: `/${this.recurso}/relatorio${params}` });
         const resposta = await api.get<IClientStats[]>(`/${this.recurso}/relatorio${params}`);
-        console.log('Service - Response:', resposta.data);
         return resposta.data
     }
 

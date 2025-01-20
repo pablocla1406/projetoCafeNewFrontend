@@ -70,7 +70,9 @@ export default function ChartBebidasVendidas() {
           config={{}}
           className="mx-auto aspect-square max-h-[400px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
         >
-          <PieChart width={400} height={400}>
+          {bebidasMaisVendidas && bebidasMaisVendidas.length > 0 ? (
+            
+            <PieChart width={400} height={400}>
             <ChartTooltip 
               content={({ active, payload }) => {
                 if (active && payload && payload.length) {
@@ -100,6 +102,11 @@ export default function ChartBebidasVendidas() {
               label
             />
           </PieChart>
+            ):(
+              <div className="flex items-center justify-center h-[250px] text-lg text-muted-foreground">
+                Não existem bebidas vendidas no período selecionado
+              </div>
+            )}
         </ChartContainer>
 
         <div className="pt-6">

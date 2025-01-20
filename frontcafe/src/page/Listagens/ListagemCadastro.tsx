@@ -19,7 +19,6 @@ export default function ListagemCadastro() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [clientStats, setClientStats] = useState<IClientStats[]>([]);
     const [resetDates, setResetDates] = useState(false);
-    const Currentlytheme = localStorage.getItem('theme');
 
     
     const buscarDados = async (page: number = 1, currentFilters: Record<string, string> = {}) => {
