@@ -40,7 +40,7 @@ export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidas
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 
-        <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+        <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
 
           <BotaoVoltarCadastro href="ListagemPedidos"/>
           <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pedido</h1>

@@ -108,10 +108,10 @@ export default function ChartBebidasVendidas() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none text-lg">
-          Top 5 Mais Compradores <TrendingUp className="h-4 w-4" />
+          Top 5 Bebidas mais Vendidas <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground text-base">
-        Será que você consegue passar?          
+        As mais pedidas de vocês!
         </div>
       </CardFooter>
     </Card>

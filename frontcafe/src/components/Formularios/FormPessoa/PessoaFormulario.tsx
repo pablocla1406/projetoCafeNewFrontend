@@ -32,7 +32,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} 
       className="space-y-10">
-        <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+        <div className="w-[1000px mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
         <BotaoVoltarCadastro href="ListagemPessoas"/>
         <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pessoa</h1>
         <Separator orientation="horizontal" className="my-2" />
@@ -70,15 +70,17 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                       className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:cursor-pointer "
                     />
                     {(imagePreview || value) && (
-                      <div className="flex items-center gap-2 mt-2">
-                        <Avatar className="w-16 h-16">
+                      <div className="mt-6 mb-6 flex flex-col items-center justify-center">
+                        <p className="text-lg mb-2">Preview da imagem do Colaborador:</p>
+                        <div className="flex items-center gap-4">
+                          
+                        <Avatar className="w-20 h-20">
                           <AvatarImage 
                             src={imagePreview || (typeof value === "string" ? value : value instanceof File ? URL.createObjectURL(value) : "")} 
+                            className="rounded-full  h-20 w-20"
                             alt="Preview" 
                           />
-                          <AvatarFallback>
-                            <CircleUserRound className="w-4 h-4" />
-                          </AvatarFallback>
+
                         </Avatar>
                         <Button
                           type="button"
@@ -90,11 +92,12 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                               form 
                             });
                           }}
-                          className="flex items-center gap-1"
-                        >
+                          className="flex items-center gap-2"
+                          >
                           <Trash2 className="w-4 h-4" />
                           Remover
                         </Button>
+                          </div>
                       </div>
                     )}
                   </div>
@@ -146,7 +149,6 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
             placeholder="Selecione o Setor"
             items={setoresFiltrados}
             onSelect={(item) => {
-              console.log("ComboboxDemo onSelect:", item);
               if (item) {
                 const setorData = {
                   id: String(item.id),
@@ -195,8 +197,8 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                       }
                     }}
                   >
-                    <SelectTrigger className="w-full h-11 text-white border-zinc-700">
-                      <SelectValue>
+                    <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 hover:bg-zinc-100 hover:text-zinc-900 focus:ring-blue-100 dark:bg-zinc-900 dark:text-white">
+                      <SelectValue placeholder="Selecione a Permissão">
                         {field.value === 'ADMIN' ? 'Administração' :
                          field.value === 'USER' ? 'Funcionário' :
                          field.value === 'AUX' ? 'Auxiliar Admin' :
@@ -205,14 +207,22 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                     </SelectTrigger>
                     <SelectContent 
                       position="popper" 
-                      side="right" 
-                      className=" btnBonito min-w-[180px]"
+                      side="bottom"
+                      className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg min-w-[250px]"
                     >
                       <SelectGroup>
-                        <SelectLabel className="text-gray-200">Permissões</SelectLabel>
-                        <SelectItem value="ADMIN" className="cursor-pointer hover:bg-white-100 focus:bg-white-100">Administração</SelectItem>
-                        <SelectItem value="USER" className="cursor-pointer hover:bg-white-100 focus:bg-white-100">Funcionário</SelectItem>
-                        <SelectItem value="AUX" className="cursor-pointer hover:bg-white-100 focus:bg-white-100">Auxiliar Admin</SelectItem>
+                        <SelectLabel className="px-3 py-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                          Permissões
+                        </SelectLabel>
+                        <SelectItem value="ADMIN" className="cursor-pointer px-3 py-2.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                          Administração
+                        </SelectItem>
+                        <SelectItem value="USER" className="cursor-pointer px-3 py-2.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                          Funcionário
+                        </SelectItem>
+                        <SelectItem value="AUX" className="cursor-pointer px-3 py-2.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                          Auxiliar Admin
+                        </SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select> 

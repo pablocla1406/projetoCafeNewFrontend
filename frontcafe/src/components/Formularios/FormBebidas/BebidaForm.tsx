@@ -25,7 +25,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-                <div className="w-[1000px] bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+                <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
                     <BotaoVoltarCadastro href="ListagemBebidas"/>
                     <h1 className="text-2xl pb-7 font-extrabold  text-center">Formulário de Bebidas</h1>
                     <Separator orientation="horizontal" className="my-2" />
@@ -152,16 +152,29 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                             className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:cursor-pointer "
                                         />
                                         {(imagePreview || value) && (
-                                            <div className="flex items-center gap-2">
-                                                <img src={imagePreview || (typeof value === 'string' ? value : value instanceof File ? URL.createObjectURL(value) : '')} alt="Imagem" className="w-20 h-20 object-cover rounded-md" />
-                                                <Button variant="destructive" type="button" onClick={() => {
-                                                    handleRemoveImage({
-                                                        setImagePreview,
-                                                        form
-                                                    })
-                                                }}>
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
+                                            <div className="mt-6 mb-6 flex flex-col items-center space-y-2">
+                                                <p className="text-lg mb-2">Preview da imagem da Bebida:</p>
+                                                <div className="flex items-center justify-center gap-4 ">
+                                                    <img 
+                                                        src={imagePreview || (typeof value === 'string' ? value : value instanceof File ? URL.createObjectURL(value) : '')} 
+                                                        alt="Preview" 
+                                                        className="w-24 h-24 object-cover rounded-lg" 
+                                                    />
+                                                    <Button 
+                                                        variant="destructive" 
+                                                        type="button" 
+                                                        onClick={() => {
+                                                            handleRemoveImage({
+                                                                setImagePreview,
+                                                                form
+                                                            })
+                                                        }}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                        Remover
+                                                    </Button>
+                                                </div>
                                             </div>
                                         )}
                                     </div>

@@ -51,7 +51,9 @@ export default function ChartPedidosPorMes() {
       <CardHeader>
         <CardTitle className="text-2xl">Pedidos por Período</CardTitle>
         <CardDescription className="text-lg">
-        Selecione um período para visualizar os pedidos
+          {!periodoFinal && !periodoFinal
+          ? "Pedidos do mês atual"
+          : `Pedidos de ${periodoInicial} a ${periodoFinal}`}
         </CardDescription>
         
       </CardHeader>
