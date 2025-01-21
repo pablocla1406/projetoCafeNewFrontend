@@ -28,7 +28,7 @@ export default function BebidaCadastro(){
                     descricao: dadosBebida.descricao,
                     preco: Number(dadosBebida.preco),
                     imagem: dadosBebida.imagem || "",
-                    status: dados\Bebida.status
+                    status: dadosBebida.status
                 };
                 setBebida(formattedData);
             } catch (error) {

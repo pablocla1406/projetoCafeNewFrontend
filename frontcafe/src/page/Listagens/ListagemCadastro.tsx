@@ -31,9 +31,9 @@ export default function ListagemCadastro() {
         buscarDados(currentPage, filters);
     }, [currentPage, filters]);
 
-    async function handleDelete(id: string) {
-        await pedidoService.deletarDadosId(id);
-        const dadosAposExclusao = pedidos.filter(pedido => pedido.id !== id);
+    async function handleDelete(PedidoExcluidoId: string) {
+        await pedidoService.deletarDadosId(PedidoExcluidoId);
+        const dadosAposExclusao = pedidos.filter(pedido => pedido.id !== PedidoExcluidoId);
         SetPedidos(dadosAposExclusao);
     }
 

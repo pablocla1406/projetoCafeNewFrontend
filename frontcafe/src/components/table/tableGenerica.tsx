@@ -49,10 +49,7 @@ export default function GenericTable({
   const [filters, setFilters] = React.useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
 
-  useEffect(() => {
-    console.log('Data:', data);
-    console.log('Columns:', columns);
-  }, [data, columns]);
+ 
 
   function handleFilterChange(key: string, value: string) {
     const newFilters = { ...filters };
