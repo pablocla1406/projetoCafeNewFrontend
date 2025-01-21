@@ -80,7 +80,7 @@ export default function TabelaRelatorio({clients, onClose, open}: TabelaRelatori
                 <DialogFooter className="flex justify-between">
                     <div className="flex-1">
                         <Button onClick={EnviaDiscord} className="text-start bg-[#5865f2] hover:bg-[#5865f2]/90 text-white flex items-center gap-2">
-                            <img src="/src/lib/images/discord-logo-4-1.png" className="h-5 w-5" alt="Discord" />
+                            <img src="/images/discord-logo-4-1.png" className="h-5 w-5" alt="Discord" />
                             Enviar Discord
                         </Button>
                     </div>

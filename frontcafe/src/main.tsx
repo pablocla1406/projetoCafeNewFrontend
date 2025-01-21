@@ -27,14 +27,12 @@ createRoot(document.getElementById('root')!).render(
             <Route element={<NavBar />}>
               <Route path='/Home' element={<Home />} />
               
-              {/* Base routes - USER level */}
               <Route element={<PrivateRoute requiredPermission="USER" />}>
                 <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
                 <Route path='/ListagemPedidos' element={<ListagemCadastro/>} />
                 <Route path='/ListagemBebidas' element={<ListagemBebida />} />
               </Route>
 
-              {/* AUX level routes */}
               <Route element={<PrivateRoute requiredPermission="AUX" />}>
                 <Route path='/cadastroBebida' element={<BebidaCadastro />} />
                 <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />
@@ -46,7 +44,6 @@ createRoot(document.getElementById('root')!).render(
                 <Route path='/ListagemPessoas' element={<ListagemPessoa />} />
               </Route>
 
-              {/* ADMIN level routes - tem acesso a tudo */}
               <Route element={<PrivateRoute requiredPermission="ADMIN" />}>
                 <Route path='/cadastroBebida' element={<BebidaCadastro />} />
                 <Route path='/cadastroBebida/:id' element={<BebidaCadastro />} />

@@ -36,18 +36,14 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
 
     async function onSubmit(data: PessoaFormSchema) {
         try {
-            console.log('Iniciando submissão do formulário:', data);
             let imagemFinal: `data:image/${string};base64,${string}` | null = null;
     
             // Processa a imagem se for um arquivo
             if (data.imagem instanceof File) {
-                console.log('Processando imagem do tipo File');
                 try {
                     const imagemComprimida = await compressImage(data.imagem);
                     imagemFinal = imagemComprimida as `data:image/${string};base64,${string}`;
                 } catch (error) {
-                    console.error('Erro ao comprimir imagem:', error);
-                    toast.error('Erro ao processar a imagem');
                     return;
                 }
             } else if (typeof data.imagem === 'string' && data.imagem.startsWith('data:image/')) {
@@ -67,10 +63,8 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
                 permissao: data.permissao
             };
 
-            console.log('Dados formatados para envio:', dadosBase);
 
             if (dadosExistentes?.id) {
-                console.log('Atualizando pessoa existente');
                 const dadosPut = {
                     ...dadosBase,
                     id: dadosExistentes.id
