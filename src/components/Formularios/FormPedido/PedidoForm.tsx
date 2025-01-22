@@ -16,7 +16,7 @@ import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import { DatePickerDemo } from "@/components/RelacaoADates/DatePickerDemo";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import { Separator } from "@/components/ui/separator";
-
+import React from 'react';
 
 type PedidoFormProps = {
 
@@ -33,14 +33,14 @@ export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidas
 
   const { form, handleSubmit, errors, onSubmit } = HookPedidoForm(dadosExistentes);
 
-
+ 
   return (
 
     <Form {...form}>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 
-        <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+        <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
 
           <BotaoVoltarCadastro href="ListagemPedidos"/>
           <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pedido</h1>
@@ -227,45 +227,25 @@ export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidas
                 name="quantidade"
 
                 render={({ field }) => (
-
                   <FormItem className="flex-1">
-
                     <FormLabel className="text-lg">
-
                       Quantidade 
-
                     </FormLabel>
-
                     <Input
-
                       className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
-
                       type="number"
-
                       placeholder="Digite a quantidade"
-
                       {...field}
-
                       onChange={(e) => {
-
                         const value = Number(e.target.value);
-
                         field.onChange(value);
-
                         const unitario = form.getValues("unitario");
-
                         form.setValue("total", unitario * value);
-
                       }}
-
                     />
-
                     {errors.quantidade?.message && <FormMessage className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.quantidade?.message}</FormMessage>}
-
                   </FormItem>
-
                 )}
-
               />
 
             </div>

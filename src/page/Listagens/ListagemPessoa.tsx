@@ -64,11 +64,6 @@ export default function ListagemPessoa(){
 
     const columnPessoa  = [ 
         {
-            key: 'id',
-            header: 'ID',
-            filterable: true,
-        },
-        {
             key: 'imagem',
             header: 'Foto',
             render: (value: any) => 

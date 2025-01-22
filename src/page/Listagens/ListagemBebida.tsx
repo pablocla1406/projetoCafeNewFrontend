@@ -49,11 +49,6 @@ export default function ListagemBebida(){
 
     const columnsBebidas = [
         {
-            key: 'id',
-            header: 'ID',
-            filterable: true
-        },
-        {
             key: 'imagem',
             header: 'Imagem',
             render: (value: any) =>
@@ -66,7 +61,7 @@ export default function ListagemBebida(){
                     </Avatar>
                 </div>
             ,
-            filterable: false
+            filterable: false,
         },
         {
             key: 'nome',
@@ -80,7 +75,9 @@ export default function ListagemBebida(){
             render: (value: string | number) => {
                 const numericValue = typeof value === 'string' ? parseFloat(value) : value;
                 return `R$ ${numericValue.toFixed(2)}`;
-            }
+            },
+            positionText: 'text-right'
+            
         },
         {
             key: 'status',

@@ -25,7 +25,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-                <div className="w-[1000px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+                <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
                     <BotaoVoltarCadastro href="ListagemBebidas"/>
                     <h1 className="text-2xl pb-7 font-extrabold  text-center">Formulário de Bebidas</h1>
                     <Separator orientation="horizontal" className="my-2" />

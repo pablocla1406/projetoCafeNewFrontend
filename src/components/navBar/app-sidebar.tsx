@@ -12,9 +12,12 @@ import { Separator } from "@/components/ui/separator"
 import { Link } from "react-router-dom"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
 import { NavUser } from "./NavUser"
+import useBloquearLogin from "@/hooks/useBloquearLogin"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const isBlocked = useBloquearLogin()
+
   return (
     <Sidebar {...props} className="bg-white dark:bg-white">
       <SidebarHeader className="text-white">
@@ -26,7 +29,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1" className="group">
-                <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37]">
+                <AccordionTrigger 
+                  className={`flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37]`}>
                   <AlignJustify className="mr-2 h-4 w-4" />
                   Menu Inicial
                 </AccordionTrigger>
@@ -39,8 +43,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2" className="group">
-                <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37]">
-                    <Coffee className="mr-2 h-4 w-4"/>
+                <AccordionTrigger 
+                  disabled={isBlocked}
+                  title={isBlocked ? "Você não tem permissão para acessar este menu" : ""}
+                  className={`flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37] ${isBlocked ? 'cursor-not-allowed' : ''}`}>
+                  <Coffee className="mr-2 h-4 w-4"/>
                   Bebidas
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
@@ -55,8 +62,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3" className="group">
-                <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37]">
-                <Users className="mr-2 h-4 w-4"/>
+                <AccordionTrigger 
+                  disabled={isBlocked}
+                  title={isBlocked ? "Você não tem permissão para acessar este menu" : ""}
+                  className={`flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37] ${isBlocked ? 'cursor-not-allowed' : ''}`}>
+                  <Users className="mr-2 h-4 w-4"/>
                   Pessoas
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
@@ -69,22 +79,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     </Link>
                   </div>
                 </AccordionContent>
-                  <AccordionItem value="item-4" className="group">
-                    <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37]">
-                    <HandCoins className="mr-2 h-4 w-4"/>
-                      Pedidos
-                    </AccordionTrigger>
-                    <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                      <div className="px-4 pb-4 space-y-2">
-                        <Link to="/ListagemPedidos" className="block py-2 text-sm text-center text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
-                          Listagem de Pedidos
-                        </Link>
-                        <Link to="/cadastroPedido" className="block py-2 text-sm text-center text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
-                          Cadastro de Pedidos
-                        </Link>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
+              </AccordionItem>
+              <AccordionItem value="item-4" className="group">
+                <AccordionTrigger 
+                  disabled={isBlocked}
+                  title={isBlocked ? "Você não tem permissão para acessar este menu" : ""}
+                  className={`flex w-full items-center justify-between py-4 text-left text-sm font-medium text-[#4a3f35] dark:text-white transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-[#dcd8cc] hover:text-[#4a3f35] dark:hover:bg-[#463b37] ${isBlocked ? 'cursor-not-allowed' : ''}`}>
+                  <HandCoins className="mr-2 h-4 w-4"/>
+                  Pedidos
+                </AccordionTrigger>
+                <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                  <div className="px-4 pb-4 space-y-2">
+                    <Link to="/ListagemPedidos" className="block py-2 text-sm text-center text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                      Listagem de Pedidos
+                    </Link>
+                    <Link to="/cadastroPedido" className="block py-2 text-sm text-center text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                      Cadastro de Pedidos
+                    </Link>
+                  </div>
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           </SidebarMenu>

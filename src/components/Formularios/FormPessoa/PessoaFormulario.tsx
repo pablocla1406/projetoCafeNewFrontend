@@ -32,7 +32,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} 
       className="space-y-10">
-        <div className="w-[1000px mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
+        <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md p-12">
         <BotaoVoltarCadastro href="ListagemPessoas"/>
         <h1 className="text-2xl pb-7 font-extrabold text-center">Formulário de Pessoa</h1>
         <Separator orientation="horizontal" className="my-2" />

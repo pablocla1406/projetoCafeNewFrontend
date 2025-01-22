@@ -58,9 +58,23 @@ export default function ListagemCadastro() {
         {key: "id", header: "ID", filterable: true},
         {key: "cliente", header: "Cliente", filterable: true},
         {key: "bebida", header: "Bebida", filterable: true},
-        {key: "unitario", header: "Preço Unitário", filterable: false},
-        {key: "quantidade", header: "Quantidade", filterable: false},
-        {key: "total", header: "Total", filterable: false},
+        {key: "unitario",
+        header: "Preço Unitário",
+        render: (value: string | number) => {
+            return `R$ ${value}`;
+        },
+        filterable: false,
+        positionText: "text-right"
+    },
+        {key: "quantidade", header: "Quantidade", filterable: false, positionText: "text-center"},
+        {key: "total", 
+        header: "Total",
+        render: (value: string | number) => {
+            return `R$ ${value}`;
+        },
+        filterable: false,
+        positionText: "text-right"
+    },
         {key: "data_compra",
         header: "Data Compra", 
         render: (value: string | number) => {

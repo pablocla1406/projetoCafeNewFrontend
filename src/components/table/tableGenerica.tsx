@@ -13,12 +13,14 @@ import {
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
 import { toast } from 'sonner';
 import { Progress } from './progress';
+import { Avatar } from '@radix-ui/react-avatar';
 
 interface Column {
   key: string;
   header: string;
   filterable?: boolean;
   render?: (value: any) => React.ReactNode;
+  positionText?: string;
 }
 
 interface GenericTableProps {
@@ -64,8 +66,8 @@ export default function GenericTable({
   }
 
   return (
-    <div className="w-[1090px] mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
-      <div className="w-full max-w-5xl mx-auto border rounded-lg p-4 space-y-4">
+    <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
+      <div className="w-full mx-auto border rounded-lg p-4 space-y-4">
         <div className="items-center gap-4 mb-4">
           <DropdownMenu>
             <div className={`flex justify-end items-center space-x-2 `}>
@@ -108,12 +110,12 @@ export default function GenericTable({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="w-full max-w-7xl">
+        <div className="w-full">
           <Table className='w-full'>
             <TableHeader>
               <TableRow>
                 {columns.map(function (column) {
-                  return <TableHead className='text-center text-lg whitespace-nowrap px-4' key={column.key}>{column.header}</TableHead>;
+                  return <TableHead className={`${column.positionText ? column.positionText : 'text-center'} text-lg whitespace-nowrap px-4 `} key={column.key}>{column.header}</TableHead>;
                 })}
                 <TableHead className='text-center whitespace-nowrap px-4'>Ações</TableHead>
               </TableRow>
@@ -125,7 +127,7 @@ export default function GenericTable({
                     <TableRow key={row.id}>
                       {columns.map(function (column) {
                         return (
-                          <TableCell className='text-center whitespace-nowrap px-4 text-base' key={column.key}>
+                          <TableCell className= {` ${column.positionText ? column.positionText : 'text-center'} whitespace-nowrap px-4 text-base`} key={column.key}>
                             {column.render ? column.render(row[column.key]) : row[column.key]}
                           </TableCell>
                         );
@@ -143,12 +145,11 @@ export default function GenericTable({
                           size="icon" 
                           onClick={() => {
                             onDelete(row.id);
-                            
                             toast("O cadastro foi excluido com sucesso!", {
 
                               description: (
                                 <div className="mt-2">
-                                  <Progress className="w-full h-2" />
+                                  <Progress className="w-full h-2 bg-white" />
                                   <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
                                 </div>
                               ),
