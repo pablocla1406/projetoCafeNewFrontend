@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export default function TextoCafeVariasLinguas() {
     const [nomeUsuario, setNomeUsuario] = useState({nome : ''});
-    const [pedidosNoMes, setPedidosNoMes] = useState({pedidosNoMes : ''});
+    const [pedidosNoMes, setPedidosNoMes] = useState({pedidosNoMes : '0'});
     const [linguagem, setLinguagem] = useState(0);
     const [textoAtual, setTextoAtual] = useState("");
     const [velocidade, setVelocidade] = useState(150);
@@ -11,15 +11,16 @@ export default function TextoCafeVariasLinguas() {
 
     useEffect(() => {
         const nome = localStorage.getItem('nome') || ''
-        const pedidosNoMes = localStorage.getItem('pedidosNoMes')
-        setPedidosNoMes({pedidosNoMes: pedidosNoMes ? pedidosNoMes.toString() : '0'});
+        const pedidosStorage = localStorage.getItem('pedidosNoMes')
+        const pedidosValue = pedidosStorage === null || pedidosStorage === 'null' ? '0' : pedidosStorage
+        setPedidosNoMes({pedidosNoMes: pedidosValue});
         setNomeUsuario({nome});
     }, []);
 
     const mensagemParaUsuario = `Olá, ${nomeUsuario.nome}! Seja bem-vindo!`;
 
     const mensagemTotal = [
-        `Você possui ${pedidosNoMes.pedidosNoMes} pedidos neste mês`,
+        `Você possui ${pedidosNoMes?.pedidosNoMes || '0'} pedidos neste mês`,
         "Vamos tomar café", // Português
         "Let's have coffee", // Inglês
         "Prenons un café", // Francês
