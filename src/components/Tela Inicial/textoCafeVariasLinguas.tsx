@@ -11,8 +11,8 @@ export default function TextoCafeVariasLinguas() {
 
     useEffect(() => {
         const nome = localStorage.getItem('nome') || ''
-        const pedidosNoMes = localStorage.getItem('pedidosNoMes') || 0
-        setPedidosNoMes({pedidosNoMes: pedidosNoMes.toString()});
+        const pedidosNoMes = localStorage.getItem('pedidosNoMes')
+        setPedidosNoMes({pedidosNoMes: pedidosNoMes ? pedidosNoMes.toString() : '0'});
         setNomeUsuario({nome});
     }, []);
 
