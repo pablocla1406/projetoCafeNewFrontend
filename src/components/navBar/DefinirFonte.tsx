@@ -23,6 +23,7 @@ export default function DefinirFonte({ setFont, setTempFont }: DefinirFonteProps
         <option value="sans">Sans-serif</option>
         <option value="serif">Serif</option>
         <option value="mono">Monospace</option>
+        <option value="roboto">Roboto</option>
       </select>
 
       <div
