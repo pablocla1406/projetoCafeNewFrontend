@@ -1,6 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
+import { CalendarSearch } from "lucide-react";
 
 interface FiltrarDateChartProps {
   mesSelecionado: string;
@@ -21,10 +22,11 @@ export default function FiltroDateChart({
   const anoAtual = hoje.getFullYear();
 
   return (
-    <Accordion type="single" collapsible className="w-full mb-6"> {/* Adicionado 'mb-6' */}
+    <Accordion type="single" collapsible className="w-full mb-6"> 
       <AccordionItem value="filtro" className="group">
         <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left text-sm font-medium transition-all [&[data-state=open]>svg]:rotate-180 bg-transparent hover:bg-transparent hover:text-[#4a3f35] focus:ring-0">
           Filtrar por Data
+          <CalendarSearch className="w-4 h-4" />
         </AccordionTrigger>
         <AccordionContent>
           <div className="flex flex-col items-center justify-center gap-4 py-4">

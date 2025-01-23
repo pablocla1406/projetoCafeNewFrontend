@@ -5,6 +5,8 @@ class SetorService extends ApiService<ISetor> {
     constructor() {
         super('setores')
     }
+
+   
 }
 
 export const setorService = new SetorService();

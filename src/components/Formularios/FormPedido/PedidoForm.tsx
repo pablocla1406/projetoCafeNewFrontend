@@ -1,7 +1,7 @@
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ComboboxReadOnly } from "@/components/ComboboxReadOnly";
+import { ComboboxReadOnly } from "@/components/Comboboxs/ComboboxReadOnly";
 
 import { PedidoSchema } from "./PedidoSchema";
 
@@ -16,7 +16,6 @@ import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import { DatePickerDemo } from "@/components/RelacaoADates/DatePickerDemo";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import { Separator } from "@/components/ui/separator";
-import React from 'react';
 
 type PedidoFormProps = {
 

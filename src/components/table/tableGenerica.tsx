@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,10 +9,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
 import { toast } from 'sonner';
 import { Progress } from './progress';
-import { Avatar } from '@radix-ui/react-avatar';
+import { useState } from "react";
+import PaginationParaTabela from "./Pagination";
 
 interface Column {
   key: string;
@@ -48,7 +47,7 @@ export default function GenericTable({
   onPageChange,
   cadHref
 }: GenericTableProps) {
-  const [filters, setFilters] = React.useState<Record<string, string>>({});
+  const [filters, setFilters] = useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
 
  
@@ -143,24 +142,29 @@ export default function GenericTable({
                           variant="outline"
                           className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`} 
                           size="icon" 
-                          onClick={() => {
-                            onDelete(row.id);
-                            toast("O cadastro foi excluido com sucesso!", {
-
-                              description: (
-                                <div className="mt-2">
-                                  <Progress className="w-full h-2 bg-white" />
-                                  <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
-                                </div>
-                              ),
-                              duration: 4000,
-                              action: {
-                                label: 'Desfazer',
-                                onClick: () => {
-                                  onDeleteUndo(row.id);
+                          onClick={async () => {
+                            try {
+                               await Promise.resolve(onDelete(row.id));
+                              // Only show toast if deletion was successful (no error thrown)
+                              toast("O cadastro foi excluido com sucesso!", {
+                                description: (
+                                  <div className="mt-2">
+                                    <Progress className="w-full h-2 bg-white" />
+                                    <p className="mt-2">Se você deseja cancelar a exclusão, clique no botão de Desfazer.</p>
+                                  </div>
+                                ),
+                                duration: 4000,
+                                action: {
+                                  label: 'Desfazer',
+                                  onClick: () => {
+                                    onDeleteUndo(row.id);
+                                  }
                                 }
-                              }
-                            });
+                              });
+                            } catch (error) {
+                              // Error will be handled by the parent component
+                              console.log("Erro na exclusão");
+                            }
                           }}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -179,95 +183,7 @@ export default function GenericTable({
             </TableBody>
           </Table>
         </div>
-        <div className="flex justify-end items-center mt-4">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage > 1) {
-                      onPageChange(currentPage - 1);
-                    }
-                  }} 
-                  className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-                />
-              </PaginationItem>
-              
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onPageChange(1);
-                  }}
-                  isActive={currentPage === 1}
-                  className="cursor-pointer"
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem>
-
-              {totalPages > 3 && currentPage > 2 && (
-                <PaginationItem>
-                  <PaginationEllipsis/>
-                </PaginationItem>
-              )}
-
-              {currentPage !== 1 && currentPage !== totalPages && (
-                <PaginationItem>
-                  <PaginationLink 
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onPageChange(currentPage);
-                    }}
-                    isActive 
-                    className="cursor-pointer"
-                  >
-                    {currentPage}
-                  </PaginationLink>
-                </PaginationItem>
-              )}
-
-              {totalPages > 3 && currentPage < totalPages - 1 && (
-                <PaginationItem>
-                  <PaginationEllipsis/>
-                </PaginationItem>
-              )}
-
-              {totalPages > 1 && (
-                <PaginationItem>
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onPageChange(totalPages);
-                    }}
-                    isActive={currentPage === totalPages}
-                    className="cursor-pointer"
-                  >
-                    {totalPages}
-                  </PaginationLink>
-                </PaginationItem>
-              )}
-
-              <PaginationItem>
-                <PaginationNext 
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                      onPageChange(currentPage + 1);
-                    }
-                  }} 
-                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+        <PaginationParaTabela currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
       </div>
     </div>
   );

@@ -11,7 +11,8 @@ import {
 import {
   ChartContainer,
   ChartTooltip,
-} from "@/components/ui/chart"
+}
+from "@/components/ui/chart"
 import { pedidoService } from "@/service/PedidoService"
 import { coresCharts } from "./coresCharts"
 import { useEffect, useState } from "react"

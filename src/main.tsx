@@ -18,7 +18,7 @@ import { Toaster } from 'sonner';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Toaster richColors position='top-right'/>
+      <Toaster richColors position='top-center'/>
       <App>
         <Routes>
           <Route path='/' element={<Navigate to="/login" replace />} />

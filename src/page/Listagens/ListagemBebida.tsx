@@ -77,7 +77,6 @@ export default function ListagemBebida(){
                 return `R$ ${numericValue.toFixed(2)}`;
             },
             positionText: 'text-right'
-            
         },
         {
             key: 'status',

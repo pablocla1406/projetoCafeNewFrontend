@@ -55,7 +55,6 @@ export default function ListagemCadastro() {
     );
 
     const collumnsPedidos = [
-        {key: "id", header: "ID", filterable: true},
         {key: "cliente", header: "Cliente", filterable: true},
         {key: "bebida", header: "Bebida", filterable: true},
         {key: "unitario",

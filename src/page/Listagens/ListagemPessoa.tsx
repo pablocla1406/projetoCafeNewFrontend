@@ -5,18 +5,20 @@ import IPessoa from "@/utils/interfaces/IPessoa";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import ListagemSetores from "./ListagemSetores";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function ListagemPessoa(){
     const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, SetFilters] = useState<Record<string, string>>({});
+    const [open, setOpen] = useState(false);
 
     async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         try {
-            console.log('Fetching with filters:', currentFilters);
             const { data, totalPages } = await pessoaService.listarDadosListagem(currentFilters, page, 12);
-            console.log('Received data:', data);
             if (data) {
                 SetPessoas(data);
                 SetTotalPages(totalPages);
@@ -31,15 +33,17 @@ export default function ListagemPessoa(){
         fetchData(currentPage, filters);
     }, [currentPage, filters]); 
 
-
-
+    
 
     async function handleDelete(id: string){
         try {
             await pessoaService.deletarDadosId(id);
-            fetchData(currentPage, filters);
-        } catch (error) {
+            await fetchData(currentPage, filters);
+            return true; // Indicate successful deletion
+        } catch (error: any) {
+            toast.error(error.message)
             console.error('Erro ao deletar:', error);
+            throw error; // Re-throw error to be caught by the table component
         }
     }
 
@@ -91,6 +95,23 @@ export default function ListagemPessoa(){
 
     
     return(
+        <div className="space-y-4">
+            <div className="flex justify-between items-right">
+
+                <Button
+                variant="outline"
+                className="btnBonito" 
+                onClick={() => setOpen(true)}
+                >
+                Listagem Setores
+                </Button>
+
+                <ListagemSetores
+                open={open}
+                setOpen={setOpen}
+                />
+
+            </div>
         <GenericTable
         cadHref="cadastroPessoa"
         data={pessoas}
@@ -103,6 +124,7 @@ export default function ListagemPessoa(){
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
         />
+        </div>
     )
 
 }
