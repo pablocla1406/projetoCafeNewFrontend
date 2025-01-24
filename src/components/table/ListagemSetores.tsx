@@ -6,7 +6,7 @@ import { setorService } from "@/service/setorService";
 import { Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { setorSchema } from "../Formularios/FormPessoa/SetorSchema";
+import { schemaSetor } from "../Formularios/FormPessoa/SetorSchema";
 
 interface listagemSetoresProps {
     open: boolean;
@@ -18,7 +18,7 @@ interface listagemSetoresProps {
 export default function ListagemSetores({ open, setOpen }: listagemSetoresProps) {
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
-    const [setores, SetSetores] = useState<setorSchema[]>([]);
+    const [setores, SetSetores] = useState<schemaSetor[]>([]);
     const [filters, SetFilters] = useState<Record<string, string>>({});
     const [novoSetorNome, setNovoSetorNome] = useState('');
 
@@ -41,7 +41,7 @@ export default function ListagemSetores({ open, setOpen }: listagemSetoresProps)
     }, [currentPage, filters]);
 
     
-    async function handleCreate(novoSetor: setorSchema){
+    async function handleCreate(novoSetor: schemaSetor){
         try{
             const setorExistente = setores.find(setor => 
                 setor.nome.toLowerCase() === novoSetor.nome.toLowerCase()
@@ -80,7 +80,7 @@ export default function ListagemSetores({ open, setOpen }: listagemSetoresProps)
             return;
         }
         
-        const novoSetor: setorSchema = {
+        const novoSetor: schemaSetor = {
             nome: novoSetorNome
         };
         

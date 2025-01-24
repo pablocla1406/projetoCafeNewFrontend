@@ -18,7 +18,7 @@ import { toast } from "sonner";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
-  onAdicionarSetor: (Setor: ISetor) => void; // Add the onAdicionarSetor prop
+  onAdicionarSetor: (Setor: ISetor) => Promise<ISetor>; // Add the onAdicionarSetor prop
   setoresFiltrados: ISetor[];
 }
 
@@ -158,15 +158,20 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                 form.setValue("setor", setorData, { shouldValidate: true });
               }
             }}
-            onCreate={(novoSetor) => {
-              const setorData = {
-                id: String(novoSetor.id),
-                nome: novoSetor.nome,
-              };
-              onAdicionarSetor(novoSetor);
-              toast.success("Setor adicionado com sucesso!");
-              field.onChange(setorData);
-              form.setValue("setor", setorData, { shouldValidate: true });
+            onCreate={async (novoSetor) => {
+              // Aguarda o retorno do onAdicionarSetor que deve retornar o setor com ID
+              const setorCriado = await onAdicionarSetor(novoSetor);
+              if (setorCriado && setorCriado.id) {
+                const setorData = {
+                  id: String(setorCriado.id),
+                  nome: setorCriado.nome,
+                };
+                field.onChange(setorData);
+                form.setValue("setor", setorData, { shouldValidate: true });
+                toast.success("Setor adicionado com sucesso!");
+              } else {
+                toast.error("Erro ao adicionar setor");
+              }
             }}
             selectedValue={setorValue}
           />
