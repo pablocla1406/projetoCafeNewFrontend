@@ -24,6 +24,8 @@ export default function ChartPedidosPorMes() {
   const [periodoInicial, setPeriodoInicial] = useState<string>("")
   const [periodoFinal, setPeriodoFinal] = useState<string>("")
 
+
+  
   
   
   useEffect(() => {
@@ -46,6 +48,12 @@ export default function ChartPedidosPorMes() {
     ...pedido,
     fill: coresCharts[index % coresCharts.length]
   }));
+
+
+  function limparFiltros(){
+    setPeriodoInicial('')
+    setPeriodoFinal('')
+  }
 
   return (
     <Card>
@@ -148,6 +156,7 @@ export default function ChartPedidosPorMes() {
             setPeriodoInicial={setPeriodoInicial}
             periodoFinal={periodoFinal}
             setPeriodoFinal={setPeriodoFinal}
+            limparFiltros={limparFiltros}
           />
         </div>
       </CardContent>

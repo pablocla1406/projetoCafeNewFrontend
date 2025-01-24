@@ -16,6 +16,7 @@ import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import { DatePickerDemo } from "@/components/RelacaoADates/DatePickerDemo";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import { Separator } from "@/components/ui/separator";
+import { useEffect } from "react";
 
 type PedidoFormProps = {
 
@@ -31,6 +32,16 @@ type PedidoFormProps = {
 export default function PedidoForm({ dadosExistentes, clientesFiltrados, bebidasFiltradas }: PedidoFormProps) {
 
   const { form, handleSubmit, errors, onSubmit } = HookPedidoForm(dadosExistentes);
+
+
+  useEffect(() => {
+
+    const quantidade = form.getValues("quantidade");
+    const quantidaComDefaultValue = quantidade === 0 ? 1 : quantidade;
+    form.setValue("quantidade", quantidaComDefaultValue);
+
+    
+  }, [])
 
  
   return (

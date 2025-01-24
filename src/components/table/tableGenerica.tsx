@@ -33,6 +33,9 @@ interface GenericTableProps {
   totalPages: number;
   onPageChange: (page: number) => void;
   cadHref: string;
+  botaoAdicional?: boolean
+  nomeBotaoAdicional?: string
+  abrirDialogBotaoAdicional?: () => void
 }
 
 export default function GenericTable({
@@ -45,7 +48,10 @@ export default function GenericTable({
   currentPage,
   totalPages,
   onPageChange,
-  cadHref
+  cadHref,
+  botaoAdicional = false,
+  nomeBotaoAdicional,
+  abrirDialogBotaoAdicional
 }: GenericTableProps) {
   const [filters, setFilters] = useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
@@ -70,15 +76,25 @@ export default function GenericTable({
         <div className="items-center gap-4 mb-4">
           <DropdownMenu>
             <div className={`flex justify-end items-center space-x-2 `}>
+              {botaoAdicional && (
+                <Button 
+                  variant="outline" 
+                  className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`} 
+                  onClick={abrirDialogBotaoAdicional}
+                >
+                  {nomeBotaoAdicional}
+                </Button>
+              )}
+
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>Filtros</Button>
               </DropdownMenuTrigger>
-                <Link to={`/${cadHref}`} className="flex justify-center">
-              <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>
+              <Link to={`/${cadHref}`} className="flex justify-center">
+                <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>
                   <CirclePlus className="h-4 w-4 mr-1" />
                   Cadastrar
-              </Button>
-                </Link>
+                </Button>
+              </Link>
             </div>
 
             <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
@@ -145,7 +161,6 @@ export default function GenericTable({
                           onClick={async () => {
                             try {
                                await Promise.resolve(onDelete(row.id));
-                              // Only show toast if deletion was successful (no error thrown)
                               toast("O cadastro foi excluido com sucesso!", {
                                 description: (
                                   <div className="mt-2">

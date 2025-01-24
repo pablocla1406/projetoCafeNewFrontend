@@ -3,8 +3,9 @@ import { bebidaService } from "@/service/BebidaService";
 import debounce from "@/utils/functions/debounce";
 import IBebida from "@/utils/interfaces/IBebida";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Coffee, Key } from "lucide-react";
+import { Coffee } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ListagemBebida(){
     const [bebidas, SetBebidas] = useState<IBebida[]>([]);
@@ -25,9 +26,15 @@ export default function ListagemBebida(){
 
 
     async function handleDelete(id: string){
-        await bebidaService.deletarDadosId(id);
-        const dadosAposExclusao = bebidas.filter(bebida => bebida.id !== id);
-        SetBebidas(dadosAposExclusao);
+        try {
+            await bebidaService.deletarDadosId(id);
+            const dadosAposExclusao = bebidas.filter(bebida => bebida.id !== id);
+            SetBebidas(dadosAposExclusao);
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.error || error.message || 'Erro ao excluir bebida';
+            toast.error(errorMessage);
+            throw error;
+        }
     }
 
     async function handleDeleteUndo(BebidaExcluidaId: string) {

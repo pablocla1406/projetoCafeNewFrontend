@@ -5,7 +5,7 @@ import IPessoa from "@/utils/interfaces/IPessoa";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import ListagemSetores from "./ListagemSetores";
+import ListagemSetores from "../../components/table/ListagemSetores";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -41,9 +41,9 @@ export default function ListagemPessoa(){
             await fetchData(currentPage, filters);
             return true; // Indicate successful deletion
         } catch (error: any) {
-            toast.error(error.message)
-            console.error('Erro ao deletar:', error);
-            throw error; // Re-throw error to be caught by the table component
+            const errorMessage = error.response?.data?.error || error.message || 'Erro ao excluir pessoa';
+            toast.error(errorMessage);
+            throw error; 
         }
     }
 
@@ -95,23 +95,12 @@ export default function ListagemPessoa(){
 
     
     return(
-        <div className="space-y-4">
-            <div className="flex justify-between items-right">
-
-                <Button
-                variant="outline"
-                className="btnBonito" 
-                onClick={() => setOpen(true)}
-                >
-                Listagem Setores
-                </Button>
-
+<>
                 <ListagemSetores
                 open={open}
                 setOpen={setOpen}
                 />
 
-            </div>
         <GenericTable
         cadHref="cadastroPessoa"
         data={pessoas}
@@ -123,8 +112,11 @@ export default function ListagemPessoa(){
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
+        botaoAdicional={true}
+        nomeBotaoAdicional="Listagem Setores"
+        abrirDialogBotaoAdicional={() => setOpen(true)}
+        
         />
-        </div>
+    </>
     )
-
 }

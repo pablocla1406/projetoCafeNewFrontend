@@ -37,7 +37,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                 nome: "",
             },
             unitario: dadosExistentes?.unitario || 0,
-            quantidade: dadosExistentes?.quantidade || 0,
+            quantidade: dadosExistentes?.quantidade || 1,
             total: dadosExistentes?.total || 0,
             data_compra: parseDate(dadosExistentes?.data_compra),
         }

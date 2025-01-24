@@ -39,13 +39,45 @@ export default function PaginationParaTabela({currentPage, totalPages, onPageCha
                 </PaginationLink>
               </PaginationItem>
 
+              {totalPages <= 3 && totalPages >= 2 && (
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPageChange(2);
+                    }}
+                    isActive={currentPage === 2}
+                    className="cursor-pointer"
+                  >
+                    2
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+
+              {totalPages === 3 && (
+                <PaginationItem>
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onPageChange(3);
+                    }}
+                    isActive={currentPage === 3}
+                    className="cursor-pointer"
+                  >
+                    3
+                  </PaginationLink>
+                </PaginationItem>
+              )}
+
               {totalPages > 3 && currentPage > 2 && (
                 <PaginationItem>
                   <PaginationEllipsis/>
                 </PaginationItem>
               )}
 
-              {currentPage !== 1 && currentPage !== totalPages && (
+              {totalPages > 3 && currentPage !== 1 && currentPage !== totalPages && (
                 <PaginationItem>
                   <PaginationLink 
                     href="#"
@@ -67,7 +99,7 @@ export default function PaginationParaTabela({currentPage, totalPages, onPageCha
                 </PaginationItem>
               )}
 
-              {totalPages > 1 && (
+              {totalPages > 3 && (
                 <PaginationItem>
                   <PaginationLink
                     href="#"
@@ -83,18 +115,20 @@ export default function PaginationParaTabela({currentPage, totalPages, onPageCha
                 </PaginationItem>
               )}
 
-              <PaginationItem>
-                <PaginationNext 
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                      onPageChange(currentPage + 1);
-                    }
-                  }} 
-                  className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-                />
-              </PaginationItem>
+              {totalPages === 1 || (
+                <PaginationItem>
+                  <PaginationNext 
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage < totalPages) {
+                        onPageChange(currentPage + 1);
+                      }
+                    }} 
+                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+                  />
+                </PaginationItem>
+              )}
             </PaginationContent>
           </Pagination>
         </div>

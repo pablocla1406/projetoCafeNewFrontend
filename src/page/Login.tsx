@@ -7,7 +7,7 @@ export default function LoginPage() {
       <div className="flex flex-col items-center justify-center bg-background px-4 py-8 dark:bg-zinc-800">
         <div className="w-full max-w-[480px] space-y-6">
           <div className="flex items-center gap-3 pb-20">
-            <img src="/images/logoAppel.png" alt="Logo" className="item-center w-14 h-14 mr-2 rounded-lg" />
+            <img src="/images/LogoCafeAppel1.png" alt="Logo" className="item-center w-12 h-12 mr-2 rounded-lg" />
             <span className="text-2xl font-semibold text-foreground dark:text-white">Appel Café</span>
           </div>
           

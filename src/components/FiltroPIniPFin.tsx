@@ -2,16 +2,22 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import CampoComPesquisa from "./Comboboxs/CampoComPesquisa"
+import { Button } from "./ui/button"
+import { Trash2 } from "lucide-react"
 
 interface FiltroPIniPFinProps {
     periodoInicial: string
     setPeriodoInicial: (data: string) => void
     periodoFinal: string
     setPeriodoFinal: (data: string) => void
+    limparFiltros: () => void
 }
 
 
-export default function FiltroPIniPFin({periodoInicial, setPeriodoInicial, periodoFinal, setPeriodoFinal}: FiltroPIniPFinProps) {
+export default function FiltroPIniPFin({periodoInicial, setPeriodoInicial, periodoFinal, setPeriodoFinal, limparFiltros}: FiltroPIniPFinProps) {
+
+
+
 
     const periodos = Array.from({ length: 24 }, (_, i) => {
         const date = new Date()
@@ -37,6 +43,8 @@ export default function FiltroPIniPFin({periodoInicial, setPeriodoInicial, perio
         }
     }
 
+    
+
     return (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="filtro" className="group">
@@ -61,7 +69,17 @@ export default function FiltroPIniPFin({periodoInicial, setPeriodoInicial, perio
                     selectedValue={periodos.find(p => p.valor === periodoFinal)?.label}
                   />
                 </div>
+
+                {(periodoInicial && periodoFinal) && (
+                  <Button
+                  variant='destructive'
+                  onClick={limparFiltros}>
+                    Limpar
+                    <Trash2 className="w-4 h-4 ml-2" />
+                  </Button>
+                  )}
               </div>
+
             </div>
           </AccordionContent>
         </AccordionItem>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Calendar } from "lucide-react";
@@ -15,6 +15,11 @@ export default function CampoComPesquisa({ items, placeholder, selectedValue, on
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedItem, setSelectedItem] = useState<string | undefined>(selectedValue);
+
+    useEffect(() => {
+        setSelectedItem(selectedValue);
+        setSearch(selectedValue || "");
+    }, [selectedValue]);
 
     const filterItems = items.filter((item) => {
         if(!search) return true;
@@ -37,7 +42,7 @@ export default function CampoComPesquisa({ items, placeholder, selectedValue, on
                     aria-expanded={open}
                     aria-haspopup="listbox"
                     aria-controls="combobox-options"
-                    className="w-full justify-between h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white"
+                    className="w-full justify-between h-11 px-3 py-2 border-zinc-100 rounded-md focus:ring-2 focus:ring-blue-500 "
                 >
                     {selectedItem || search ||placeholder}
                 

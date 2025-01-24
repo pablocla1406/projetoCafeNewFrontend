@@ -46,7 +46,6 @@ export function NavUser() {
   }, [])
 
   const handleLogout = () => {
-    // Limpar o localStorage
     localStorage.removeItem('token')
     localStorage.removeItem('pessoa')
     localStorage.removeItem('permissao')
@@ -56,11 +55,9 @@ export function NavUser() {
     localStorage.removeItem('imagem')
     localStorage.removeItem('expirationTime')
     
-    // Limpar configurações do sistema
     localStorage.removeItem('vite-ui-theme')
     localStorage.removeItem('font')
 
-    // Redirecionar para a página de login
     window.location.href = '/login'
   }
 
