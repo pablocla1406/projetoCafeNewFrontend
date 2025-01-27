@@ -1,9 +1,10 @@
 import GenericTable from "@/components/table/tableGenerica";
+import { Button } from "@/components/ui/button";
 import { bebidaService } from "@/service/BebidaService";
 import debounce from "@/utils/functions/debounce";
 import IBebida from "@/utils/interfaces/IBebida";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Coffee } from "lucide-react";
+import { BadgeCheck, BadgeX, Coffee } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -54,6 +55,17 @@ export default function ListagemBebida(){
         []
     );
 
+    async function ativarInativarStatus(id: string) {
+        try {
+
+             await bebidaService.ativarOuInativarRegisto(id);
+            fetchData(currentPage, filters); 
+        } catch (error) {
+            toast.error('Erro ao ativar ou inativar status');
+            
+        }
+    }
+
     const columnsBebidas = [
         {
             key: 'imagem',
@@ -80,15 +92,29 @@ export default function ListagemBebida(){
             header: 'Preço',
             filterable: false,
             render: (value: string | number) => {
-                const numericValue = typeof value === 'string' ? parseFloat(value) : value;
-                return `R$ ${numericValue.toFixed(2)}`;
+                const valorComDecimal = parseFloat(value as string).toFixed(2);
+                return `R$ ${valorComDecimal}`;
+
             },
-            positionText: 'text-right'
-        },
+        },  
         {
             key: 'status',
-            header: 'Status',
+            header: 'Ativo',
+            render: (value: string) => (
+                <div className="flex justify-center items-center">
+                    {value === 'Inativo' ? (
+                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
+                            <BadgeX className="text-red-500 text-lg" />
+                        </Button>
+                    ) : (
+                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
+                            <BadgeCheck className="text-green-500 text-lg" />
+                        </Button>
+                    )}
+                </div>
+            ),
             filterable: true
+
         }
     ]
 

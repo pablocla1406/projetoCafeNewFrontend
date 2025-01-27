@@ -131,6 +131,9 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
 
             </div>
 
+
+            <div className="flex gap-4">
+
             <FormField
   control={form.control}
   name="setor"
@@ -142,7 +145,7 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
         : { id: "", nome: field.value || "" };
 
     return (
-      <FormItem>
+      <FormItem className="flex-1">
         <FormLabel className="text-lg">Setor</FormLabel>
         <div className="w-full">
           <ComboboxDemo
@@ -159,7 +162,6 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
               }
             }}
             onCreate={async (novoSetor) => {
-              // Aguarda o retorno do onAdicionarSetor que deve retornar o setor com ID
               const setorCriado = await onAdicionarSetor(novoSetor);
               if (setorCriado && setorCriado.id) {
                 const setorData = {
@@ -185,6 +187,32 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
     );
   }}
 />
+
+
+
+              <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel className="text-lg">Status</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange} >
+                  <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white">
+                  <SelectValue placeholder="Selecione um status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                      <SelectLabel>Status</SelectLabel>
+                      <SelectItem value="Ativo">Ativo</SelectItem>
+                      <SelectItem value="Inativo">Inativo</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  </FormItem>
+              )}
+            />
+              
+            </div>
 
             <FormField
               control={form.control}

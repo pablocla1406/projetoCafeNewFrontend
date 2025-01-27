@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const StatusEnum = z.enum(["Ativo", "Inativado"]);
+export const StatusEnum = z.enum(["Ativo", "Inativo"]);
 
 export const BebidaSchema = z.object({
     id: z.string(),

@@ -22,6 +22,10 @@ export default function HookLogin() {
 
     async function onSubmit(data: LoginSchema) {
         try{
+            if (!data.usuario || !data.senha) {
+                toast.error('Por favor, preencha todos os campos');
+                return;
+            }
 
             const response = await api.post<ILoginResponse>('/auth/login', data)
             
@@ -49,7 +53,6 @@ export default function HookLogin() {
        window.location.href = '/Home'
     }
         catch(error){
-            console.error('Error submitting form:', error);
             toast.error('Usuário ou senha inválido')
             throw error;
         }

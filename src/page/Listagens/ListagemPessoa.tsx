@@ -3,7 +3,7 @@ import { pessoaService } from "@/service/PessoaService";
 import debounce from "@/utils/functions/debounce";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { CircleUserRound } from "lucide-react";
+import { BadgeCheck, BadgeX, CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ListagemSetores from "../../components/table/ListagemSetores";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,16 @@ export default function ListagemPessoa(){
     );
 
 
+    async function ativarInativarStatus(id: string) {
+        try {
+             await pessoaService.ativarOuInativarRegisto(id);
+            fetchData(currentPage, filters); 
+        } catch (error) {
+            toast.error('Erro ao ativar ou inativar status');
+            
+        }
+    }
+
     const columnPessoa  = [ 
         {
             key: 'imagem',
@@ -90,6 +100,24 @@ export default function ListagemPessoa(){
             key: 'setor',
             header: 'Setor',
             filterable: true,
+        },
+        {
+            key: 'status',
+            header: 'Ativo',
+            render: (value: string) => (
+                <div className="flex justify-center items-center">
+                    {value === 'Inativo' ? (
+                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
+                            <BadgeX className="text-red-500" />
+                        </Button>
+                    ) : (
+                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
+                            <BadgeCheck className="text-green-500" />
+                        </Button>
+                    )}
+                </div>
+            ),
+            filterable: false,
         }
     ]
 

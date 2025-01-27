@@ -24,6 +24,7 @@ export const pessoaFormSchema = z.object({
         .max(50, { message: "A senha deve ter no máximo 50 caracteres" }),
     setor: setorSchema,
     permissao: permissaoEnum,
+    status: z.enum(["Ativo", "Inativo"])
 });
 
 export type PessoaFormSchema = z.infer<typeof pessoaFormSchema>;

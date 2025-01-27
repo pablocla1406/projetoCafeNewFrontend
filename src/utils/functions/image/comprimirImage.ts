@@ -9,7 +9,6 @@ export const compressImage = async (file: File): Promise<string> => {
                 let width = img.width;
                 let height = img.height;
                 
-                // Se a imagem for maior que 800px em qualquer dimensão, redimensiona mantendo a proporção
                 const MAX_SIZE = 800;
                 if (width > height && width > MAX_SIZE) {
                     height = Math.round((height * MAX_SIZE) / width);

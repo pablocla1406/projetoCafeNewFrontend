@@ -64,6 +64,12 @@ class ApiService<T>{
         return resposta.data
     }
 
+
+    async ativarOuInativarRegisto(id: string): Promise<T> {
+        const resposta = await api.patch<T>(`/${this.recurso}/${id}/ativarouinativar`)
+        return resposta.data
+    }
+
 }
 
 export default ApiService

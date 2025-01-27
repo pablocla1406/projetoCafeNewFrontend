@@ -1,6 +1,6 @@
 export enum Status {
     Ativo = "Ativo",
-    Inativado = "Inativado"
+    Inativo = "Inativo"
 }
 
 export default interface IBebidaListagem {

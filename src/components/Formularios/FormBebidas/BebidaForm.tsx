@@ -120,7 +120,7 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                                 <SelectValue placeholder="Selecione o Status" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectGroup>
+                                                <SelectGroup className="bg-white text-black">
                                                     <SelectLabel className="dark:bg-zinc-900 dark:text-white">Status</SelectLabel>
                                                     <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer" value="Ativo">Ativo</SelectItem>
                                                     <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer" value="Inativo">Inativo</SelectItem>

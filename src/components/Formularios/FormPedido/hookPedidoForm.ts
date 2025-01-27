@@ -67,7 +67,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                     id: data.bebida.id,
                     nome: data.bebida.nome
                 },
-                unitario: data.unitario,
+                unitario: (data.unitario),
                 quantidade: data.quantidade,
                 total: data.total,
                 data_compra: data.data_compra

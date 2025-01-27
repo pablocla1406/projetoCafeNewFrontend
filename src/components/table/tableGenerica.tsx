@@ -149,12 +149,13 @@ export default function GenericTable({
                       })}
                       <TableCell className='text-center'>
                         <div className="flex justify-center space-x-2">
-                          <Link to={`/${href}/${row.id}`} className="flex items-center justify-center">
+                          <Link to={`/${href}/${row.id}`} className="flex items-center justify-center hover:cursor-pointer" title='Editar'>
                             <Button variant="outline" className="btnBonito" size="icon">
                               <Pencil className="h-4 w-4" />
                             </Button>
                           </Link>
-                          <Button 
+                          <Button
+                          title='Excluir' 
                           variant="outline"
                           className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`} 
                           size="icon" 

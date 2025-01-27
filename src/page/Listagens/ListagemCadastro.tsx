@@ -60,7 +60,8 @@ export default function ListagemCadastro() {
         {key: "unitario",
         header: "Preço Unitário",
         render: (value: string | number) => {
-            return `R$ ${value}`;
+            const valorComDecimal = parseFloat(value as string).toFixed(2);
+            return `R$ ${valorComDecimal}`;
         },
         filterable: false,
         positionText: "text-right"
@@ -69,7 +70,8 @@ export default function ListagemCadastro() {
         {key: "total", 
         header: "Total",
         render: (value: string | number) => {
-            return `R$ ${value}`;
+            const valorComDecimal = parseFloat(value as string).toFixed(2);
+            return `R$ ${valorComDecimal}`;
         },
         filterable: false,
         positionText: "text-right"
