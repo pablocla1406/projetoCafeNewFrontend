@@ -1,4 +1,3 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import HookPessoaForm from "./hookPessoaForm";
 import { PessoaFormSchema } from "./PessoaSchema";
 import { ComboboxDemo } from "@/components/Comboboxs/ComboboxDemo"; // Import the ComboboxDemo component
@@ -15,6 +14,7 @@ import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -138,7 +138,6 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
   control={form.control}
   name="setor"
   render={({ field }) => {
-    console.log("FormField setor value:", field.value);
     const setorValue =
       field.value && typeof field.value === "object"
         ? field.value
@@ -196,19 +195,20 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormLabel className="text-lg">Status</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange} >
-                  <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white">
-                  <SelectValue placeholder="Selecione um status" />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white hover:cursor-pointer hover:text-[#4a3f35] hover:bg-white">
+                      <SelectValue placeholder="Selecione o Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectGroup>
-                      <SelectLabel>Status</SelectLabel>
-                      <SelectItem value="Ativo">Ativo</SelectItem>
-                      <SelectItem value="Inativo">Inativo</SelectItem>
+                      <SelectGroup className="bg-white text-black">
+                        <SelectLabel className="dark:text-white dark:text-white">Status</SelectLabel>
+                        <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer hover:text-[#4a3f35] hover:bg-white" value="Ativo" >Ativo</SelectItem>
+                        <SelectItem className="dark:bg-zinc-900 dark:text-white hover:cursor-pointer hover:text-[#4a3f35] hover:bg-white" value="Inativo">Inativo</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                  </FormItem>
+                  <FormMessage />
+                </FormItem>
               )}
             />
               

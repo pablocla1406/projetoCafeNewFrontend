@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { BadgeCheck, BadgeX, CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ListagemSetores from "../../components/table/ListagemSetores";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function ListagemPessoa(){
@@ -15,11 +14,13 @@ export default function ListagemPessoa(){
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, SetFilters] = useState<Record<string, string>>({});
     const [open, setOpen] = useState(false);
+    const [isAnimating, SetIsAnimating] = useState<string | null>(null);
 
     async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         try {
             const { data, totalPages } = await pessoaService.listarDadosListagem(currentFilters, page, 12);
             if (data) {
+                console.log('Dados recebidos:', data);
                 SetPessoas(data);
                 SetTotalPages(totalPages);
             }
@@ -68,11 +69,14 @@ export default function ListagemPessoa(){
 
     async function ativarInativarStatus(id: string) {
         try {
-             await pessoaService.ativarOuInativarRegisto(id);
-            fetchData(currentPage, filters); 
+            SetIsAnimating(id);
+            const response = await pessoaService.ativarOuInativarRegisto(id);
+            console.log('Resposta da ativação/inativação:', response);
+            await fetchData(currentPage, filters); 
         } catch (error) {
             toast.error('Erro ao ativar ou inativar status');
-            
+        } finally {
+            setTimeout(() => SetIsAnimating(null), 1000);
         }
     }
 
@@ -102,28 +106,36 @@ export default function ListagemPessoa(){
             filterable: true,
         },
         {
-            key: 'status',
+            key: 'id',
             header: 'Ativo',
-            render: (value: string) => (
+            render: (value: string) => {
+                const pessoa = pessoas.find(pessoa => pessoa.id === value);
+                const isAnimatingButton = isAnimating === value;
+
+                return(
                 <div className="flex justify-center items-center">
-                    {value === 'Inativo' ? (
-                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
-                            <BadgeX className="text-red-500" />
-                        </Button>
+                    {pessoa?.status === 'Inativo' ? (
+                        <div 
+                        className={`p-2 cursor-pointer transition-all duration-500 rounded-full hover:bg-red-50 dark:hover:bg-red-950/50 ${isAnimatingButton ? 'animate-spin-once bg-red-100 dark:bg-red-950' : ''}`}
+                        onClick={() => !isAnimatingButton && ativarInativarStatus(value)}>
+                            <BadgeX className={`text-red-500 ${isAnimatingButton ? 'scale-110' : ''}`} />
+                        </div>
                     ) : (
-                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
-                            <BadgeCheck className="text-green-500" />
-                        </Button>
+                        <div
+                        className={`p-2 cursor-pointer transition-all duration-500 rounded-full hover:bg-green-50 dark:hover:bg-green-950/50 ${isAnimatingButton ? 'animate-spin-once bg-green-100 dark:bg-green-950' : ''}`}
+                        onClick={() => !isAnimatingButton && ativarInativarStatus(value)}>
+                            <BadgeCheck className={`text-green-500 ${isAnimatingButton ? 'scale-110' : ''}`} />
+                        </div>
                     )}
                 </div>
-            ),
+            )},
             filterable: false,
         }
     ]
 
     
     return(
-<>
+        <>
                 <ListagemSetores
                 open={open}
                 setOpen={setOpen}

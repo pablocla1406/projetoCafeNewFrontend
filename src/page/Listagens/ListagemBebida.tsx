@@ -13,6 +13,7 @@ export default function ListagemBebida(){
     const [currentPage, SetCurrentPage] = useState(1);
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, SetFilters] = useState<Record<string, string>>({});
+    const [isAnimating, setAnimating] = useState<string | null>(null);
 
     async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         const { data, totalPages } = await bebidaService.listarDadosListagem(currentFilters, page, 12);
@@ -41,7 +42,7 @@ export default function ListagemBebida(){
     async function handleDeleteUndo(BebidaExcluidaId: string) {
         try {
             await bebidaService.restaurarRegistro(BebidaExcluidaId);
-            fetchData(currentPage, filters); // Refresh the page data
+            fetchData(currentPage, filters); 
         } catch (error) {
             console.error(error);
         }
@@ -57,12 +58,13 @@ export default function ListagemBebida(){
 
     async function ativarInativarStatus(id: string) {
         try {
-
-             await bebidaService.ativarOuInativarRegisto(id);
-            fetchData(currentPage, filters); 
+            setAnimating(id);
+            await bebidaService.ativarOuInativarRegisto(id);
+            await fetchData(currentPage, filters); 
         } catch (error) {
             toast.error('Erro ao ativar ou inativar status');
-            
+        } finally {
+            setTimeout(() => setAnimating(null), 1000);
         }
     }
 
@@ -98,23 +100,33 @@ export default function ListagemBebida(){
             },
         },  
         {
-            key: 'status',
+            key: 'id',
             header: 'Ativo',
-            render: (value: string) => (
-                <div className="flex justify-center items-center">
-                    {value === 'Inativo' ? (
-                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
-                            <BadgeX className="text-red-500 text-lg" />
-                        </Button>
-                    ) : (
-                        <Button variant="outline" onClick={() => ativarInativarStatus(value)}>
-                            <BadgeCheck className="text-green-500 text-lg" />
-                        </Button>
-                    )}
-                </div>
-            ),
-            filterable: true
-
+            render: (value: string) => {
+                const bebida = bebidas.find(b => b.id === value);
+                const isAnimatingButton = isAnimating === value;
+                
+                return (
+                    <div className="flex justify-center items-center">
+                        {bebida?.status === 'Inativo' ? (
+                            <div 
+                                className={`p-2 cursor-pointer transition-all duration-500 rounded-full hover:bg-red-50 dark:hover:bg-red-950/50 ${isAnimatingButton ? 'animate-spin-once bg-red-100 dark:bg-red-950' : ''}`}
+                                onClick={() => !isAnimatingButton && ativarInativarStatus(value)}
+                            >
+                                <BadgeX className={`text-red-500 ${isAnimatingButton ? 'scale-110' : ''}`} />
+                            </div>
+                        ) : (
+                            <div 
+                                className={`p-2 cursor-pointer transition-all duration-500 rounded-full hover:bg-green-50 dark:hover:bg-green-950/50 ${isAnimatingButton ? 'animate-spin-once bg-green-100 dark:bg-green-950' : ''}`}
+                                onClick={() => !isAnimatingButton && ativarInativarStatus(value)}
+                            >
+                                <BadgeCheck className={`text-green-500 ${isAnimatingButton ? 'scale-110' : ''}`} />
+                            </div>
+                        )}
+                    </div>
+                )
+            },
+            filterable: false
         }
     ]
 

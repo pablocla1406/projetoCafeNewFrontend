@@ -34,7 +34,6 @@ export default function PedidoCadastro() {
             const clientesData = await pessoaService.listarDados();
             const bebidasData = await bebidaService.listarDados();
 
-            // Normalizar os clientes para incluir setor como objeto
             const clientesNormalizados = clientesData.map((cliente: IPessoa) => ({
                 ...cliente,
                 setor: {

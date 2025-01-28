@@ -20,7 +20,8 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
             usuario: "",
             senha: "",
             setor: { id: "", nome: "" },
-            permissao: "USER"
+            permissao: "USER",
+            status: "Ativo"
         }
     });
 
@@ -60,7 +61,8 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
                     id: data.setor.id.toString(),
                     nome: data.setor.nome
                 },
-                permissao: data.permissao
+                permissao: data.permissao,
+                status: data.status
             };
 
 

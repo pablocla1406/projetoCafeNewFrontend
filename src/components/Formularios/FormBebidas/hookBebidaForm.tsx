@@ -26,7 +26,6 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     const { handleSubmit, formState: {errors}, reset } = form;
 
     useEffect(() => {
-        console.log("Form reset with data:", dadosBebidas);
         if (dadosBebidas) {
             reset(dadosBebidas);
         }
@@ -42,7 +41,6 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
                 const imagemComprimida = await compressImage(data.imagem);
                 imagemFinal = imagemComprimida as `data:image/${string};base64,${string}`;
             } catch (error) {
-                console.error("Erro ao comprimir imagem:", error);
             }
         } else {
             imagemFinal = data.imagem as `data:image/${string};base64,${string}` | null;

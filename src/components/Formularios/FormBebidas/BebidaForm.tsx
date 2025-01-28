@@ -3,8 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BebidaSchema } from "./BebidaSchema";
 import hookBebidaForm from "./hookBebidaForm";
-import { Select, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SelectContent, SelectGroup, SelectLabel } from "@radix-ui/react-select";
 import { Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
@@ -12,6 +10,7 @@ import { useState } from "react";
 import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type BebidaFormProps = {
     dados?: BebidaSchema,
@@ -116,8 +115,8 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                     <FormItem className="flex-1">
                                         <FormLabel className="text-lg">Status</FormLabel>
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white">
-                                                <SelectValue placeholder="Selecione o Status" />
+                                            <SelectTrigger className="w-full h-11 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white hover:cursor-pointer hover:text-[#4a3f35] hover:bg-white">
+                                                <SelectValue placeholder="Selecione o Status"  />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup className="bg-white text-black">

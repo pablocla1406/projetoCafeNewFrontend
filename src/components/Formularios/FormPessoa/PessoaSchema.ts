@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StatusEnum } from "../FormBebidas/BebidaSchema";
 
 const setorSchema = z.object({
   id: z.string(),
@@ -24,7 +25,7 @@ export const pessoaFormSchema = z.object({
         .max(50, { message: "A senha deve ter no máximo 50 caracteres" }),
     setor: setorSchema,
     permissao: permissaoEnum,
-    status: z.enum(["Ativo", "Inativo"])
+    status: StatusEnum
 });
 
 export type PessoaFormSchema = z.infer<typeof pessoaFormSchema>;
