@@ -13,6 +13,11 @@ class PessoaService extends ApiService<IPessoa>{
         const resposta = await api.get<IPessoasMaisVendidas[]>(`/${this.recurso}/tomamMaisCafe${params}`)
         return resposta.data
     }
+
+    async editarImagemPessoa(id: string, imagem: `data:image/${string};base64,${string}` | null) {
+        const resposta = await api.patch(`/${this.recurso}/${id}/atualizafoto`, { imagem });
+        return resposta.data;
+    }
 }
 
 

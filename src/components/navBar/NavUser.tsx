@@ -4,6 +4,7 @@ import {
   ChevronsUpDown,
   LogOut,
   Settings,
+  UserPen,
 } from "lucide-react"
 
 import {
@@ -28,6 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import DialogConfig from "./DialogConfig"
 import { useEffect, useState } from "react"
+import DialogeditarImagem from "./DialogeditarImagem"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
@@ -36,6 +38,8 @@ export function NavUser() {
     usuario: '',
     imagem: ''
   })
+
+  
 
   useEffect(() => {
     const nome = localStorage.getItem('nome') || ''
@@ -61,6 +65,14 @@ export function NavUser() {
     window.location.href = '/login'
   }
 
+
+  const letraInicial = (nome: string) => {
+    return nome
+      .split(' ')
+      .map((nome) => nome.charAt(0).toUpperCase())
+      .join('');
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -71,8 +83,8 @@ export function NavUser() {
               className=" bg-[#dcd8cc]  data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             > 
               <Avatar className="h-8 w-8 rounded-full">
-                <AvatarImage src={userData.imagem ? userData.imagem : ""} alt={userData.nome ? userData.nome : "Raduken"} />
-                <AvatarFallback className="rounded-full">CN</AvatarFallback>
+                <AvatarImage src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
+                <AvatarFallback className="rounded-full">{letraInicial(userData.nome)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{userData.nome ? userData.nome : "coffezinho"}</span>
@@ -91,7 +103,7 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{letraInicial(userData.nome)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{userData.nome ? userData.nome : "Raduken"}</span>
@@ -101,11 +113,21 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+
+
+              <DialogeditarImagem>
+                <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
+                  <UserPen className="mr-2 h-4 w-4" />
+                  Editar imagem
+                </DropdownMenuItem>
+
+              </DialogeditarImagem>
               <DialogConfig style="" showButton={false}>
                 <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
                   <Settings className="mr-2 h-4 w-4" />
                   Configurações
                 </DropdownMenuItem>
+                
               </DialogConfig>
             </DropdownMenuGroup>
             <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
