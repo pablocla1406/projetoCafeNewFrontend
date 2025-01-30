@@ -164,6 +164,7 @@ export default function ListagemCadastro() {
                 totalPages={totalPages}
                 href="cadastroPedido"
                 onPageChange={SetCurrentPage}
+                NomeListagem="Pedidos"
             />
         </div>
     )

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from './app-sidebar';
 import DialogConfig from './DialogConfig';
-import DialogPedidos from './DialogPedidos';
 
 export default function NavBar() {
   return (
@@ -32,9 +31,6 @@ export default function NavBar() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-            </div>
-            <div className="flex items-center">
-              <DialogPedidos />
             </div>
           </header>
 

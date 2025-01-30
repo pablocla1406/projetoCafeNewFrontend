@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
-import { compressImage } from "@/utils/functions/image/comprimirImage";
 import { pessoaService } from "@/service/PessoaService";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
-import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
-import { Trash2, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import PreviewParaImagens from "../PreviewParaImagens";
+import { Upload } from "lucide-react";
+import { compressImage } from "@/utils/functions/image/comprimirImage";
 
 interface Usuario {
     id: string;
@@ -15,9 +15,10 @@ interface Usuario {
 
 interface DialogeditarImagemProps {
     children: React.ReactNode;
+    onImageUpdate?: () => void;
 }
 
-export default function DialogeditarImagem({ children }: DialogeditarImagemProps) {
+export default function DialogeditarImagem({ children, onImageUpdate }: DialogeditarImagemProps) {
     const [open, setOpen] = useState(false);
     const [usuario, setUsuario] = useState<Usuario>({
         id: '',
@@ -52,29 +53,40 @@ export default function DialogeditarImagem({ children }: DialogeditarImagemProps
 
     async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
-        let imagemFinal: `data:image/${string};base64,${string}` | null = null;
-
-        if (usuario.imagem instanceof File) {
-            try {
-                const imagemComprimida = await compressImage(usuario.imagem);
-                imagemFinal = imagemComprimida as `data:image/${string};base64,${string}`;
-            } catch (error) {
-                toast.error('Erro ao comprimir a imagem');
-                return;
-            }
-        } else if (typeof usuario.imagem === 'string' && usuario.imagem.startsWith('data:image/')) {
-            imagemFinal = usuario.imagem as `data:image/${string};base64,${string}`;
-        }
-
         try {
-            await pessoaService.editarImagemPessoa(usuario.id, imagemFinal);
-            toast.success('Imagem atualizada com sucesso!');
-            setOpen(false);
-            if (imagemFinal) {
-                localStorage.setItem('imagem', imagemFinal);
+            let imagemFinal: string | null = null;
+
+            if (usuario.imagem instanceof File) {
+                try {
+                    imagemFinal = await compressImage(usuario.imagem);
+                } catch (error) {
+                    console.error('Erro ao comprimir imagem:', error);
+                    toast.error('Erro ao comprimir a imagem');
+                    return;
+                }
+            } else if (typeof usuario.imagem === 'string' && usuario.imagem.startsWith('data:image/')) {
+                imagemFinal = usuario.imagem;
             }
-        } catch (error) {
-            toast.error('Erro ao atualizar a imagem');
+
+            try {
+                await pessoaService.editarImagemPessoa(usuario.id, imagemFinal);
+                toast.success('Imagem atualizada com sucesso!');
+                setOpen(false);
+                
+                if (imagemFinal) {
+                    localStorage.setItem('imagem', imagemFinal);
+                } else {
+                    localStorage.removeItem('imagem');
+                }
+                
+                onImageUpdate?.();
+            } catch (error: any) {
+                console.error('Erro ao atualizar imagem:', error);
+                toast.error(error.response?.data?.error || 'Erro ao atualizar a imagem');
+            }
+        } catch (error: any) {
+            console.error('Erro geral:', error);
+            toast.error('Erro ao processar a operação');
         }
     }
 
@@ -92,32 +104,7 @@ export default function DialogeditarImagem({ children }: DialogeditarImagemProps
                 <div className="mt-4">
                     <form onSubmit={onSubmit} className="space-y-6">
                         <div className="flex flex-col items-center gap-6">
-                            <div className="relative group">
-                                {imagePreview ? (
-                                    <div className="relative w-40 h-40">
-                                        <img 
-                                            src={imagePreview}
-                                            alt="Preview"
-                                            className="w-full h-full object-cover rounded-full border-4 border-primary/20"
-                                        />
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            size="icon"
-                                            className="absolute -top-2 -right-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                            onClick={clearImage}
-                                        >
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <div className="w-40 h-40 rounded-full border-4 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
-                                        <span className="text-gray-500 text-sm text-center px-4">
-                                            Clique para selecionar uma imagem
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                            <PreviewParaImagens imagePreview={imagePreview} limparImagem={clearImage} />
 
                             <div className="w-full max-w-sm">
                                 <label

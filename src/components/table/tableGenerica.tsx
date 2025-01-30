@@ -1,18 +1,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, Pencil, Trash2, XCircle } from 'lucide-react';
+import { CirclePlus, Pencil, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
 import { toast } from 'sonner';
 import { Progress } from './progress';
 import { useState } from "react";
 import PaginationParaTabela from "./Pagination";
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from "../ui/accordion";
 
 interface Column {
   key: string;
@@ -36,6 +32,7 @@ interface GenericTableProps {
   botaoAdicional?: boolean
   nomeBotaoAdicional?: string
   abrirDialogBotaoAdicional?: () => void
+  NomeListagem: string
 }
 
 export default function GenericTable({
@@ -51,7 +48,8 @@ export default function GenericTable({
   cadHref,
   botaoAdicional = false,
   nomeBotaoAdicional,
-  abrirDialogBotaoAdicional
+  abrirDialogBotaoAdicional,
+  NomeListagem
 }: GenericTableProps) {
   const [filters, setFilters] = useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
@@ -72,58 +70,58 @@ export default function GenericTable({
 
   return (
     <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
-      <div className="w-full mx-auto border rounded-lg p-4 space-y-4">
-        <div className="items-center gap-4 mb-4">
-          <DropdownMenu>
-            <div className={`flex justify-end items-center space-x-2 `}>
+      <div className="w-full mx-auto border rounded-lg p-6 space-y-6">
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between items-center w-full">
+            <h1 className="text-2xl font-bold text-[#4a3f35] dark:text-white dark:border-white pb-1">{NomeListagem}</h1>
+            <div className="flex items-center space-x-2">
               {botaoAdicional && (
                 <Button 
                   variant="outline" 
-                  className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`} 
+                  className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'} transition-colors`} 
                   onClick={abrirDialogBotaoAdicional}
                 >
                   {nomeBotaoAdicional}
                 </Button>
               )}
-
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>Filtros</Button>
-              </DropdownMenuTrigger>
-              <Link to={`/${cadHref}`} className="flex justify-center">
-                <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'}`}>
-                  <CirclePlus className="h-4 w-4 mr-1" />
+              <Link to={`/${cadHref}`}>
+                <Button variant="outline" className={`${currentlyTheme === 'dark' ? 'btnDark' : 'btnLight'} transition-colors`}>
+                  <CirclePlus className="h-4 w-4 mr-2" />
                   Cadastrar
                 </Button>
               </Link>
             </div>
+          </div>
 
-            <DropdownMenuContent side="right" align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
-              <div className="p-2 flex flex-col gap-2 relative">
-                <DropdownMenuItem asChild>
-                  <Button 
-                    variant="outline" 
-                    size="icon"
-                    className="absolute right-1 top-1 h-6 w-6 hover:bg-muted-foreground hover:cursor-pointer" 
-                  >
-                    <XCircle className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuItem>
-                
-                {columns.filter(column => column.filterable).map((column) => (
-                  <div key={column.key} className="space-y-1">
-                    <span className="text-sm text-centerfont-medium">{column.header}</span>
-                    <Input
-                      placeholder={`Filtrar por ${column.header}`}
-                      value={filters[column.key] || ''}
-                      onChange={(e) => handleFilterChange(column.key, e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-1"
-                    />
-                  </div>
-                ))}
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem 
+              value="item-1"
+              className="border dark:border-zinc-700 rounded-lg overflow-hidden"
+            >
+              <AccordionTrigger className="w-full bg-white hover:bg-white hover:text-[#4a3f35] dark:bg-zinc-800 dark:hover:bg-zinc-800 dark:text-white hover:cursor-pointer">
+                <span>Filtros</span>
+              </AccordionTrigger>
+              <AccordionContent className="px-4 pt-4 pb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {columns.filter(column => column.filterable).map((column) => (
+                    <div key={column.key} className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {column.header}
+                      </label>
+                      <Input
+                        placeholder={`Filtrar por ${column.header.toLowerCase()}`}
+                        value={filters[column.key] || ''}
+                        onChange={(e) => handleFilterChange(column.key, e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+             
         </div>
         <div className="w-full">
           <Table className='w-full'>

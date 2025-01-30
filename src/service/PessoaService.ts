@@ -14,7 +14,7 @@ class PessoaService extends ApiService<IPessoa>{
         return resposta.data
     }
 
-    async editarImagemPessoa(id: string, imagem: `data:image/${string};base64,${string}` | null) {
+    async editarImagemPessoa(id: string, imagem: string | null) {
         const resposta = await api.patch(`/${this.recurso}/${id}/atualizafoto`, { imagem });
         return resposta.data;
     }

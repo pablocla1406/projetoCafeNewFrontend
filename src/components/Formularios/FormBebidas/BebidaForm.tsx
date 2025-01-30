@@ -1,9 +1,7 @@
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { BebidaSchema } from "./BebidaSchema";
 import hookBebidaForm from "./hookBebidaForm";
-import { Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro";
 import { useState } from "react";
@@ -11,6 +9,7 @@ import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import PreviewParaImagens from "@/components/PreviewParaImagens";
 
 type BebidaFormProps = {
     dados?: BebidaSchema,
@@ -150,32 +149,20 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
                                             }}
                                             className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:cursor-pointer "
                                         />
-                                        {(imagePreview || value) && (
-                                            <div className="mt-6 mb-6 flex flex-col items-center space-y-2">
-                                                <p className="text-lg mb-2">Preview da imagem da Bebida:</p>
-                                                <div className="flex items-center justify-center gap-4 ">
-                                                    <img 
-                                                        src={imagePreview || (typeof value === 'string' ? value : value instanceof File ? URL.createObjectURL(value) : '')} 
-                                                        alt="Preview" 
-                                                        className="w-24 h-24 object-cover rounded-lg" 
-                                                    />
-                                                    <Button 
-                                                        variant="destructive" 
-                                                        type="button" 
-                                                        onClick={() => {
-                                                            handleRemoveImage({
-                                                                setImagePreview,
-                                                                form
-                                                            })
-                                                        }}
-                                                        className="flex items-center gap-2"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                        Remover
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        )}
+                                        <div className="mt-6 mb-6 flex flex-col items-center gap-2 justify-center">
+
+                                                <span className="text-lg font-semibold">Imagem da Bebida</span>
+
+                                            <PreviewParaImagens
+                                            imagePreview={imagePreview}
+                                            valueCampo={value}
+                                            limparImagem={() => handleRemoveImage({
+                                                setImagePreview,
+                                                form
+                                            })}
+                                            />
+
+                                        </div>
                                     </div>
                                 </FormItem>
                             )}

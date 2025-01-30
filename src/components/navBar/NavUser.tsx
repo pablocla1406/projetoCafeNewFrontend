@@ -4,6 +4,7 @@ import {
   ChevronsUpDown,
   LogOut,
   Settings,
+  ShoppingCart,
   UserPen,
 } from "lucide-react"
 
@@ -28,26 +29,65 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import DialogConfig from "./DialogConfig"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import DialogeditarImagem from "./DialogeditarImagem"
+import { pessoaService } from "@/service/PessoaService"
+import DialogPedidos from "./DialogPedidos"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const [userData, setUserData] = useState({
+
+  interface UserData {
+    id: string;
+    nome: string;
+    usuario: string;
+    imagem: string | null;
+  }
+
+  const [userData, setUserData] = useState<UserData>({
+    id: '',
     nome: '',
     usuario: '',
     imagem: ''
   })
 
-  
+  const [imageKey, setImageKey] = useState(0)
 
   useEffect(() => {
+    const id = localStorage.getItem('id') || ''
     const nome = localStorage.getItem('nome') || ''
     const usuario = localStorage.getItem('usuario') || ''
     const imagem = localStorage.getItem('imagem') || ''
     
-    setUserData({ nome, usuario, imagem })
+    setUserData({ id, nome, usuario, imagem })
   }, [])
+
+  const handleImageUpdate = useCallback(async () => {
+    const id = localStorage.getItem('id') || ''
+    try {
+      const imagemUsuario = await pessoaService.listarDadosId(id)
+      setUserData(prev => ({ ...prev, imagem: imagemUsuario.imagem || '' }))
+      setImageKey(prev => prev + 1)
+    } catch (error) {
+      console.error('Erro ao atualizar imagem:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    handleImageUpdate()
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'imagem') {
+        handleImageUpdate()
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [handleImageUpdate])
+
+
+
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -64,7 +104,6 @@ export function NavUser() {
 
     window.location.href = '/login'
   }
-
 
   const letraInicial = (nome: string) => {
     return nome
@@ -83,7 +122,7 @@ export function NavUser() {
               className=" bg-[#dcd8cc]  data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             > 
               <Avatar className="h-8 w-8 rounded-full">
-                <AvatarImage src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
+                <AvatarImage key={imageKey} src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
                 <AvatarFallback className="rounded-full">{letraInicial(userData.nome)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -102,7 +141,7 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
+                  <AvatarImage key={imageKey} src={userData.imagem} alt={userData.nome ? userData.nome : "Raduken"} />
                   <AvatarFallback className="rounded-lg">{letraInicial(userData.nome)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -114,13 +153,18 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
 
+              <DialogPedidos>
+                <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Meus Pedidos
+                </DropdownMenuItem>
+              </DialogPedidos>
 
-              <DialogeditarImagem>
+              <DialogeditarImagem onImageUpdate={handleImageUpdate}>
                 <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
                   <UserPen className="mr-2 h-4 w-4" />
-                  Editar imagem
+                  Editar Imagem
                 </DropdownMenuItem>
-
               </DialogeditarImagem>
               <DialogConfig style="" showButton={false}>
                 <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>

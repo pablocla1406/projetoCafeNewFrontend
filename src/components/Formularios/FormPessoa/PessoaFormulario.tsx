@@ -4,17 +4,15 @@ import { ComboboxDemo } from "@/components/Comboboxs/ComboboxDemo"; // Import th
 import { ISetor } from "@/utils/interfaces/ISetor";
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { CircleUserRound, Trash2 } from "lucide-react";
 import BotaoVoltarCadastro from "@/components/Button/BotaoVoltarCadastro";
 import BotaoSalvarCadastro from "@/components/Button/BotaoSalvarCadastro"; // Import the BotaoSalvarCadastro component
 import { useState } from "react";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { handleImageChange } from "@/utils/functions/image/handleImage";
 import { handleRemoveImage } from "@/utils/functions/image/handleRemoveImage";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import PreviewParaImagens from "@/components/PreviewParaImagens";
 
 type PessoaFormularioProps = {
   dadosExistentes?: PessoaFormSchema;
@@ -69,37 +67,16 @@ export default function PessoaFormulario({ dadosExistentes, onAdicionarSetor, se
                       })}
                       className="w-full h-15 px-3 py-2 border-zinc-700 rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-zinc-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold hover:cursor-pointer "
                     />
-                    {(imagePreview || value) && (
-                      <div className="mt-6 mb-6 flex flex-col items-center justify-center">
-                        <p className="text-lg mb-2">Preview da imagem do Colaborador:</p>
-                        <div className="flex items-center gap-4">
-                          
-                        <Avatar className="w-20 h-20">
-                          <AvatarImage 
-                            src={imagePreview || (typeof value === "string" ? value : value instanceof File ? URL.createObjectURL(value) : "")} 
-                            className="rounded-full  h-20 w-20"
-                            alt="Preview" 
-                          />
+                    <div className="mt-6 mb-6 flex flex-col items-center gap-2 justify-center">
 
-                        </Avatar>
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => {
-                            handleRemoveImage({ 
-                              setImagePreview,
-                              form 
-                            });
-                          }}
-                          className="flex items-center gap-2"
-                          >
-                          <Trash2 className="w-4 h-4" />
-                          Remover
-                        </Button>
-                          </div>
+                        <span className="text-lg font-semibold"> Imagem do Colaborador</span>
+
+                   <PreviewParaImagens
+                      imagePreview={imagePreview}
+                      valueCampo={value}
+                      limparImagem={() => handleRemoveImage({ setImagePreview, form })} 
+                      />
                       </div>
-                    )}
                   </div>
                 </FormItem>
               )}/>

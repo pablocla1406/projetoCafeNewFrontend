@@ -1,8 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { useEffect, useState } from "react";
-import {  ShoppingCart } from "lucide-react";
 
-export default function DialogPedidos() {
+
+interface DialogPedidosProps {
+    children: React.ReactNode
+}
+export default function DialogPedidos({children}: DialogPedidosProps) {
     const [open, setOpen] = useState(false)
 
     const [dadosClientes, setDadosClientes] = useState({
@@ -26,10 +29,7 @@ export default function DialogPedidos() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <div className="flex flex-row items-center space-x-3 hover:cursor-pointer">
-                    <span className="text-foreground">Ver meus pedidos:</span>
-                        <ShoppingCart className="h-5 w-5" />
-                </div>
+                {children}
             </DialogTrigger>
 
             <DialogContent>
@@ -45,7 +45,7 @@ export default function DialogPedidos() {
             </div>
             <div className="w-full">
 
-            <img src="/images/PedidosImagem.png" alt="hummmcafezinho" className="w-full rounded-3xl" />
+            <img src="/images/PedidosImagem.png" alt="hummmcafezinho" className="w-full rounded-3xl opacity-80" />
             </div>
             </div>
 

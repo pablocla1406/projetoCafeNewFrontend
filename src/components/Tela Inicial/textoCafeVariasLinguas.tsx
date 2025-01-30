@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 export default function TextoCafeVariasLinguas() {
-    const [nomeUsuario, setNomeUsuario] = useState({nome : ''});
-    const [pedidosNoMes, setPedidosNoMes] = useState({pedidosNoMes : '0'});
+    const [Usuario, setUsuario] = useState({
+        nome : '',
+        pedidosNoMes : '0'
+    });
     const [linguagem, setLinguagem] = useState(0);
     const [textoAtual, setTextoAtual] = useState("");
     const [velocidade, setVelocidade] = useState(150);
@@ -10,17 +12,25 @@ export default function TextoCafeVariasLinguas() {
     const [mostrarMensagemInicial, setMostrarMensagemInicial] = useState(true);
 
     useEffect(() => {
-        const nome = localStorage.getItem('nome') || ''
         const pedidosStorage = localStorage.getItem('pedidosNoMes')
         const pedidosValue = pedidosStorage === null || pedidosStorage === 'null' ? '0' : pedidosStorage
-        setPedidosNoMes({pedidosNoMes: pedidosValue});
-        setNomeUsuario({nome});
+        
+        const nome = localStorage.getItem('nome') || ''
+        const nomesArray = nome.split(' ')
+        
+        const doisPrimeirosNomes = nomesArray.slice(0, 2).join(' ')
+        
+        const nomeFormatado = doisPrimeirosNomes.charAt(0).toUpperCase() + doisPrimeirosNomes.slice(1).toLowerCase()
+
+        setUsuario({nome: nomeFormatado, pedidosNoMes: pedidosValue})
     }, []);
 
-    const mensagemParaUsuario = `Olá, ${nomeUsuario.nome}! Seja bem-vindo!`;
+
+
+    const mensagemParaUsuario = `Olá, ${Usuario.nome}! Seja bem-vindo!`;
 
     const mensagemTotal = [
-        `Você possui ${pedidosNoMes?.pedidosNoMes || '0'} pedidos neste mês`,
+        `Você possui ${Usuario.pedidosNoMes || '0'} pedidos neste mês`,
         "Vamos tomar café", // Português
         "Let's have coffee", // Inglês
         "Prenons un café", // Francês

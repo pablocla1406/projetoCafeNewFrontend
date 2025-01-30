@@ -155,6 +155,7 @@ export default function ListagemPessoa(){
         botaoAdicional={true}
         nomeBotaoAdicional="Listagem Setores"
         abrirDialogBotaoAdicional={() => setOpen(true)}
+        NomeListagem="Pessoas"
         
         />
     </>

@@ -143,6 +143,7 @@ export default function ListagemBebida(){
         totalPages={totalPages}
         onPageChange={SetCurrentPage}
         onDeleteUndo={handleDeleteUndo} 
+        NomeListagem="Bebidas"
         />
 
 
