@@ -56,7 +56,7 @@ export default function ChartPedidosPorMes() {
   }
 
   return (
-    <Card>
+    <Card className="rounded-2xl shadow-2xl bg-background">
       <CardHeader>
         <CardTitle className="text-2xl">Pedidos por Período</CardTitle>
         <CardDescription className="text-lg">

@@ -69,7 +69,7 @@ export default function GenericTable({
   }
 
   return (
-    <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-md dark:shadow-zinc-900 p-8">
+    <div className="w-full mx-auto bg-white dark:bg-zinc-800 rounded-lg shadow-2xl dark:shadow-zinc-900 p-8">
       <div className="w-full mx-auto border rounded-lg p-6 space-y-6">
         <div className="flex flex-col gap-6">
           <div className="flex justify-between items-center w-full">

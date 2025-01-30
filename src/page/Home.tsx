@@ -8,7 +8,7 @@ export default function Home() {
       <div className="p-10 space-y-20">
         <div>
           <TextoCafeVariasLinguas />
-          <Separator orientation="horizontal" className="my-6 w-5/6" />
+          <Separator orientation="horizontal" className="my-6 " />
         </div>
         <DashBoard />
       </div>
