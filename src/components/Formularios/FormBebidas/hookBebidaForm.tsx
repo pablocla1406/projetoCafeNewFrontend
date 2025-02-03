@@ -32,7 +32,6 @@ export default function hookBebidaForm(dadosBebidas ?: BebidaSchema){
     }, [dadosBebidas, reset]);
 
     async function onSubmit(data: BebidaSchema) {
-        console.log("Form submitted with data:", data);
 
         let imagemFinal: `data:image/${string};base64,${string}` | null = null;
 

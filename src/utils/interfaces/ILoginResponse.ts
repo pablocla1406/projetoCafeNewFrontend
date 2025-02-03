@@ -1,3 +1,5 @@
+import { HistoricoMes } from "@/components/Tela Inicial/MeusPedidos/MeusPedidos";
+
 interface ILoginResponse {
     pessoa: {
         id: number;
@@ -6,7 +8,9 @@ interface ILoginResponse {
         permissao: string;
         setor: string;
         imagem: string;
-        pedidosNoMes: string;
+        pedidosTotal: string;
+        totalGasto: string;
+        historicoUltimosMeses: HistoricoMes[];
     };
     token: string;
     tipo: string;

@@ -32,7 +32,6 @@ import DialogConfig from "./DialogConfig"
 import { useEffect, useState, useCallback } from "react"
 import DialogeditarImagem from "./DialogeditarImagem"
 import { pessoaService } from "@/service/PessoaService"
-import DialogPedidos from "./DialogPedidos"
 
 export function NavUser() {
   const { isMobile } = useSidebar()
@@ -153,12 +152,7 @@ export function NavUser() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
 
-              <DialogPedidos>
-                <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Meus Pedidos
-                </DropdownMenuItem>
-              </DialogPedidos>
+    
 
               <DialogeditarImagem onImageUpdate={handleImageUpdate}>
                 <DropdownMenuItem className="cursor-pointer" onSelect={(e) => e.preventDefault()}>

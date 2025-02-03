@@ -34,11 +34,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <AlignJustify className="mr-2 h-4 w-4" />
                   Menu Inicial
                 </AccordionTrigger>
-                <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down hover:cursor-pointer">
                   <div className="px-2 pb-2">
                     <Link to="/Home" className="block py-2 text-sm text-center text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
                       Tela Inicial
                     </Link>
+                  </div>
+
+                  <div className="px-2 pb-2 block text-center text-sm text-[#4a3f35]/90 hover:text-[#4a3f35] dark:hover:text-white">
+                    Dashboard
+                  </div>
+
+                  <div className="px-2 pb-2 block text-center text-sm text-[#4a3f35]/90 hover:text-[#4a3f35] dark:hover:text-white">
+                    Meus Pedidos
+                  </div>
+
+                  <div className="px-2 pb-2 block text-center text-sm text-[#4a3f35]/90 hover:text-[#4a3f35] dark:hover:text-white">
+                    Melhorias
                   </div>
                 </AccordionContent>
               </AccordionItem>

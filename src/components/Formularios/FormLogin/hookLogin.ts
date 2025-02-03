@@ -5,9 +5,6 @@ import api from "@/service/api";
 import ILoginResponse from "@/utils/interfaces/ILoginResponse";
 import { toast } from "sonner";
 
-
-
-
 export default function HookLogin() {
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
@@ -18,7 +15,6 @@ export default function HookLogin() {
     })
 
     const { handleSubmit, formState: {errors} } = form
-
 
     async function onSubmit(data: LoginSchema) {
         try{
@@ -41,8 +37,12 @@ export default function HookLogin() {
             localStorage.setItem('nome', pessoa.nome)
             localStorage.setItem('usuario', pessoa.usuario)
             localStorage.setItem('imagem', pessoa.imagem)
-            localStorage.setItem('pedidosNoMes', pessoa.pedidosNoMes)
             
+
+
+            localStorage.setItem('totalGasto', pessoa.totalGasto.toString())
+            localStorage.setItem('pedidosTotal', pessoa.pedidosTotal.toString())
+            localStorage.setItem('historicoUltimosMeses', JSON.stringify(pessoa.historicoUltimosMeses))
 
 
             const expirantionTime = new Date().getTime() + (24 * 60 * 60 * 1000)

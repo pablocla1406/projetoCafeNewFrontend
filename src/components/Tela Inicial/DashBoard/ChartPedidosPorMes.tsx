@@ -17,7 +17,7 @@ import { pedidoService } from "@/service/PedidoService"
 import { coresCharts } from "./coresCharts"
 import { useEffect, useState } from "react"
 import IPedidoPorMes from "@/utils/interfaces/IPedidoPorMes"
-import FiltroPIniPFin from "../FiltroPIniPFin"
+import FiltroPIniPFin from "@/components/FiltroPIniPFin"
 
 export default function ChartPedidosPorMes() {
   const [pedidosPorMeses, setPedidoPorMeses] = useState<IPedidoPorMes[]>([])

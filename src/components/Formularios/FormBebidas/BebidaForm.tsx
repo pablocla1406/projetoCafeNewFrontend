@@ -19,6 +19,8 @@ export default function BebidaForm({ dados,  }: BebidaFormProps) {
     const { form, handleSubmit, errors, onSubmit } = hookBebidaForm(dados);
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+  
+
 
     return (
         <Form {...form}>
