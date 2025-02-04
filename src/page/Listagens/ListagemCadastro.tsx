@@ -165,6 +165,7 @@ export default function ListagemCadastro() {
                 href="cadastroPedido"
                 onPageChange={SetCurrentPage}
                 NomeListagem="Pedidos"
+                textoAdicionalEmFiltros="Pedidos que possuem colaboradores ativos ou bebidas ativas não podem ser excluídos."
             />
         </div>
     )

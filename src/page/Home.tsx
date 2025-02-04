@@ -7,17 +7,16 @@ import { Separator } from "@/components/ui/separator";
 export default function Home() {
   return (
     <div className="">
-      <div className="p-10 space-y-20">
+      <div className="p-2 space-y-12">
         <div>
           <TextoCafeVariasLinguas />
-          <Separator orientation="horizontal" className="my-6 " />
+          <Separator orientation="horizontal" className="my-4" />
         </div>
 
-        <div className="flex flex-col gap-16">
-        <MeusPedidos />
-        <DashBoard />
-        <Melhorias />
-
+        <div className="flex flex-col gap-12">
+          <MeusPedidos />
+          <DashBoard />
+          <Melhorias />
         </div>
       </div>
     </div>

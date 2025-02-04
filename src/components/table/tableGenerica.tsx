@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, Pencil, Trash2 } from 'lucide-react';
+import { CirclePlus, Info, Pencil, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { toast } from 'sonner';
@@ -16,6 +16,8 @@ interface Column {
   filterable?: boolean;
   render?: (value: any) => React.ReactNode;
   positionText?: string;
+  headerSubstituta?: string;
+  keySubstituta?: string;
 }
 
 interface GenericTableProps {
@@ -33,6 +35,7 @@ interface GenericTableProps {
   nomeBotaoAdicional?: string
   abrirDialogBotaoAdicional?: () => void
   NomeListagem: string
+  textoAdicionalEmFiltros?: string
 }
 
 export default function GenericTable({
@@ -49,7 +52,8 @@ export default function GenericTable({
   botaoAdicional = false,
   nomeBotaoAdicional,
   abrirDialogBotaoAdicional,
-  NomeListagem
+  NomeListagem,
+  textoAdicionalEmFiltros,
 }: GenericTableProps) {
   const [filters, setFilters] = useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
@@ -104,19 +108,25 @@ export default function GenericTable({
               <AccordionContent className="px-4 pt-4 pb-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {columns.filter(column => column.filterable).map((column) => (
-                    <div key={column.key} className="space-y-2">
+                    <div key={column.keySubstituta ? column.keySubstituta : column.key} className="space-y-2">
                       <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {column.header}
+                        {column.headerSubstituta ? column.headerSubstituta : column.header}
                       </label>
                       <Input
-                        placeholder={`Filtrar por ${column.header.toLowerCase()}`}
-                        value={filters[column.key] || ''}
-                        onChange={(e) => handleFilterChange(column.key, e.target.value)}
+                        placeholder={`Filtrar`}
+                        value={filters[column.keySubstituta ? column.keySubstituta : column.key] || ''}
+                        onChange={(e) => handleFilterChange(column.keySubstituta ? column.keySubstituta : column.key, e.target.value)}
                         onClick={(e) => e.stopPropagation()}
                         className="w-full"
                       />
                     </div>
                   ))}
+                  {textoAdicionalEmFiltros && (
+             <div className="flex items-center p-4 m-4 bg-gray-100 rounded-lg shadow-md">
+                <Info className="h-11 w-11 text-muted-foreground" />
+                 <p className="ml-4 text-sm text-muted-foreground">{textoAdicionalEmFiltros}</p>
+            </div>
+              )}
                 </div>
               </AccordionContent>
             </AccordionItem>

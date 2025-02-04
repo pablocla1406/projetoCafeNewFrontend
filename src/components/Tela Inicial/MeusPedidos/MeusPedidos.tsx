@@ -69,9 +69,9 @@ export default function MeusPedidos() {
             </div>
 
             <div className="space-y-6">
-                <h2 className="text-2xl font-bold">Histórico Mensal</h2>
+                <h2 className="text-2xl font-bold">Histórico Últimos 3 Meses</h2>
+                    {dadosUsuario.historicoUltimosMeses ? dadosUsuario.historicoUltimosMeses.map((historico, index) => (
                 <div className="grid grid-cols-1 gap-6">
-                    {dadosUsuario.historicoUltimosMeses.map((historico, index) => (
                         <div key={index} className="bg-white rounded-lg shadow p-6">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
@@ -108,8 +108,13 @@ export default function MeusPedidos() {
                                 </div>
                             </div>
                         </div>
-                    ))}
                 </div>
+                    )) : (
+                        <div className="flex flex-col items-center justify-center p-4">
+                            <h2> Nenhum pedido recente</h2>
+                            <p> Já faz um tempo que você não pede fichinhas! Que tal fazer um pedido agora? </p>
+                        </div>
+                    )}
             </div>
         </div>
     );

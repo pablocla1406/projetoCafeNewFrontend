@@ -101,7 +101,8 @@ export default function ListagemBebida(){
         },  
         {
             key: 'id',
-            header: 'Ativo',
+            keySubstituta: 'status',
+            headerSubstituta: 'Status',
             render: (value: string) => {
                 const bebida = bebidas.find(b => b.id === value);
                 const isAnimatingButton = isAnimating === value;
@@ -126,7 +127,7 @@ export default function ListagemBebida(){
                     </div>
                 )
             },
-            filterable: false
+            filterable: true
         }
     ]
 
@@ -144,6 +145,7 @@ export default function ListagemBebida(){
         onPageChange={SetCurrentPage}
         onDeleteUndo={handleDeleteUndo} 
         NomeListagem="Bebidas"
+        textoAdicionalEmFiltros="Bebidas com o status 'inativo' não estarão disponíveis para seleção ao criar um pedido"
         />
 
 

@@ -129,7 +129,7 @@ export default function ListagemPessoa(){
                     )}
                 </div>
             )},
-            filterable: false,
+            filterable: true,
         }
     ]
 
@@ -155,7 +155,8 @@ export default function ListagemPessoa(){
         botaoAdicional={true}
         nomeBotaoAdicional="Listagem Setores"
         abrirDialogBotaoAdicional={() => setOpen(true)}
-        NomeListagem="Pessoas"
+        NomeListagem="Colaboradoes"
+        textoAdicionalEmFiltros="Colaboradores com o status 'inativo' não estarão disponíveis para seleção ao criar um pedido"
         
         />
     </>
