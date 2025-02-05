@@ -56,7 +56,9 @@ export default function ChartBebidasVendidas() {
   }
 
   return (
-    <Card className="rounded-2xl shadow-2xl bg-background">
+    <Card
+    id="chart-bebidas-vendidas"
+    className="rounded-2xl shadow-2xl bg-background">
       <CardHeader>
         <CardTitle className="text-2xl">Bebidas Mais Vendidas</CardTitle>
         <CardDescription className="text-lg">

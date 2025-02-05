@@ -16,6 +16,16 @@ import useBloquearLogin from "@/hooks/useBloquearLogin"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const handleScroll = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+         })
+    }
+  }
+  
   const isBlocked = useBloquearLogin()
 
   return (
@@ -36,24 +46,33 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </AccordionTrigger>
                 <AccordionContent className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down hover:cursor-pointer">
                   <div className="px-2 pb-2">
-                    <div className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                    <Link
+                      to="/Home"
+                      className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
                       Tela Inicial
-                    </div>
+                    </Link>
                   </div>
 
                   <div className="px-2 pb-2">
-                    <div className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
-                      Dashboard
-                    </div>
-                  </div>
-                  <div className="px-2 pb-2">
-                    <div className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                    <div
+                      onClick={() => handleScroll('pedidos-section')} 
+                    className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
                       Meus Pedidos
                     </div>
                   </div>
 
                   <div className="px-2 pb-2">
-                    <div className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                    <div
+                      onClick={() => handleScroll('dashboard-section')} 
+                    className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
+                      Dashboard
+                    </div>
+                  </div>
+
+                  <div className="px-2 pb-2">
+                    <div
+                      onClick={() => handleScroll('melhorias-section')} 
+                    className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
                       Melhorias
                     </div>
                   </div>

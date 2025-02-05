@@ -2,12 +2,11 @@ import { Card } from "@/components/ui/card"
 
 interface ComponentParaGifsProps {
     children: React.ReactNode;
-    alturaELargura?: string;
 }
 
-export default function ComponentParaEnquadramento({children, alturaELargura}: ComponentParaGifsProps) {
+export default function ComponentParaEnquadramento({children}: ComponentParaGifsProps) {
     return (
-        <Card className={`relative bg-[#40425e] p-4 ${alturaELargura}`}>
+        <Card className='flex flex-col h-3/5  justify-center bg-[#40425e] p-4 m-10'>
             <div className="flex gap-2 mb-3">
                     <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
                     <div className="w-3 h-3 rounded-full bg-[#febc2e]" />

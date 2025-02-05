@@ -39,9 +39,14 @@ export default function HookLogin() {
             localStorage.setItem('imagem', pessoa.imagem)
             
 
+            if (pessoa.totalGasto === null && pessoa.pedidosTotal === null) {
+                localStorage.setItem('totalGasto', '0')
+                localStorage.setItem('pedidosTotal', '0')
+            }else{
+                localStorage.setItem('totalGasto', pessoa.totalGasto.toString())
+                localStorage.setItem('pedidosTotal', pessoa.pedidosTotal.toString())
+            }
 
-            localStorage.setItem('totalGasto', pessoa.totalGasto.toString())
-            localStorage.setItem('pedidosTotal', pessoa.pedidosTotal.toString())
             localStorage.setItem('historicoUltimosMeses', JSON.stringify(pessoa.historicoUltimosMeses))
 
 
@@ -49,6 +54,7 @@ export default function HookLogin() {
             
             localStorage.setItem('expirationTime', expirantionTime.toString())
             
+        
        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
        
        window.location.href = '/Home'

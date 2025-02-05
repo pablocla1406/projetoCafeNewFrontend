@@ -1,10 +1,12 @@
 import GenericTable from "@/components/table/tableGenerica";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { bebidaService } from "@/service/BebidaService";
 import debounce from "@/utils/functions/debounce";
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll";
 import IBebida from "@/utils/interfaces/IBebida";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { BadgeCheck, BadgeX, Coffee } from "lucide-react";
+import { BadgeCheck, BadgeX, Coffee, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -14,6 +16,7 @@ export default function ListagemBebida(){
     const [totalPages, SetTotalPages] = useState(1);
     const [filters, SetFilters] = useState<Record<string, string>>({});
     const [isAnimating, setAnimating] = useState<string | null>(null);
+    const [statusFilter, setStatusFilter] = useState<string>('');
 
     async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         const { data, totalPages } = await bebidaService.listarDadosListagem(currentFilters, page, 12);
@@ -26,6 +29,17 @@ export default function ListagemBebida(){
         fetchData(currentPage, filters);
     }, [currentPage, filters]);
 
+
+    async function buscarPorStatusAtivo(statusEscolhido: string) {
+        try {
+            setStatusFilter(statusEscolhido);
+            const filterAtualizado = { ...filters, status: statusEscolhido };
+            await fetchData(currentPage, filterAtualizado);   
+        } catch (error) {
+            toast.error('Erro ao buscar bebidas ativas');
+            throw error;
+        }
+    }
 
     async function handleDelete(id: string){
         try {
@@ -50,6 +64,9 @@ export default function ListagemBebida(){
 
     const handleFilter = React.useCallback(
         debounce((newFilters: Record<string, string>) => {
+            if (!newFilters.status) {
+                setStatusFilter('');
+            }
             SetCurrentPage(1);
             SetFilters(newFilters);
         }, 800),
@@ -67,6 +84,31 @@ export default function ListagemBebida(){
             setTimeout(() => setAnimating(null), 1000);
         }
     }
+
+    const filtrosAdicionaisBebidas = [
+        {
+            key: 'status',
+            label: 'Status',
+            render: () =>
+                <div className="w-full">
+                    <Select value={statusFilter} onValueChange={(value) => buscarPorStatusAtivo(value)}>
+
+                        <SelectTrigger className="hover:text-[#4a3f35] hover:bg-white">
+                            <SelectValue placeholder="Selecione um status" />
+                        </SelectTrigger>
+                        <div className="flex flex-row">
+        
+                        <SelectContent>
+                            <SelectItem value="Ativo">Ativo</SelectItem>
+                            <SelectItem value="Inativo">Inativo</SelectItem>
+                        </SelectContent>
+                        
+                        </div>
+                    </Select>
+
+                </div>
+        }
+    ]
 
     const columnsBebidas = [
         {
@@ -101,8 +143,7 @@ export default function ListagemBebida(){
         },  
         {
             key: 'id',
-            keySubstituta: 'status',
-            headerSubstituta: 'Status',
+            header: 'Status',
             render: (value: string) => {
                 const bebida = bebidas.find(b => b.id === value);
                 const isAnimatingButton = isAnimating === value;
@@ -127,12 +168,15 @@ export default function ListagemBebida(){
                     </div>
                 )
             },
-            filterable: true
+            filterable: false
         }
     ]
 
 
     return(
+
+
+        <AnimatedComponentsScroll idDiv="bebidas-scroll">
         <GenericTable
         cadHref="cadastroBebida"
         data={bebidas}
@@ -146,7 +190,9 @@ export default function ListagemBebida(){
         onDeleteUndo={handleDeleteUndo} 
         NomeListagem="Bebidas"
         textoAdicionalEmFiltros="Bebidas com o status 'inativo' não estarão disponíveis para seleção ao criar um pedido"
+        filtrosAdicionais={filtrosAdicionaisBebidas}
         />
+        </AnimatedComponentsScroll>
 
 
     )

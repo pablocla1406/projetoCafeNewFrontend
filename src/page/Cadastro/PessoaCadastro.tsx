@@ -6,6 +6,7 @@ import { PessoaFormSchema } from "@/components/Formularios/FormPessoa/PessoaSche
 import { ISetor } from "@/utils/interfaces/ISetor";
 import { toast } from "sonner";
 import PessoaFormulario from "@/components/Formularios/FormPessoa/PessoaFormulario";
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll";
 
 export default function PessoaCadastro() {
     const { id } = useParams();
@@ -80,10 +81,12 @@ export default function PessoaCadastro() {
     };
 
     return (
+        <AnimatedComponentsScroll idDiv="pessoaCadastro-scroll">
         <PessoaFormulario
             dadosExistentes={pessoa}
             onAdicionarSetor={handleAdicionarSetor}
             setoresFiltrados={setoresFiltrados}
         />
+        </AnimatedComponentsScroll>
     );
 }

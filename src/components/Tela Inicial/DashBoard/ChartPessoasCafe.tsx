@@ -52,7 +52,9 @@ export default function ChartPessoasCafe() {
   }, [mesSelecionado, anoSelecionado]);
 
   return (
-    <Card className="rounded-2xl shadow-2xl bg-background">
+    <Card
+    id="chart-pessoas-cafe"
+    className="rounded-2xl shadow-2xl bg-background">
       <CardHeader>
         <CardTitle className="text-2xl">As Pessoas que Mais Amam Café</CardTitle>
         <CardDescription className="text-lg">

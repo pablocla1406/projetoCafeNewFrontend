@@ -8,6 +8,7 @@ import TabelaRelatorio, { IClientStats } from "./tabelaRelatorio";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { anos, meses } from "@/utils/dadosDatas/dadosDatas";
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll";
 
 export default function ListagemCadastro() {
     const [pedidos, SetPedidos] = useState<IPedido[]>([]);
@@ -101,6 +102,7 @@ export default function ListagemCadastro() {
     }
 
     return(
+        <AnimatedComponentsScroll idDiv="pedidos-scroll">
         <div className="space-y-4">
             <div className="flex justify-between">
                 <div className="flex gap-3 items-center">
@@ -116,7 +118,7 @@ export default function ListagemCadastro() {
                             handleFilter({});
                             setTimeout(() => setResetDates(false), 100);
                         }} 
-                    >
+                        >
                         Limpar
                     </Button>
                 </div>
@@ -153,6 +155,8 @@ export default function ListagemCadastro() {
                     open={isDialogOpen}
                 />
             </div>
+
+
             <GenericTable
                 cadHref="cadastroPedido"
                 data={pedidos}
@@ -166,7 +170,8 @@ export default function ListagemCadastro() {
                 onPageChange={SetCurrentPage}
                 NomeListagem="Pedidos"
                 textoAdicionalEmFiltros="Pedidos que possuem colaboradores ativos ou bebidas ativas não podem ser excluídos."
-            />
+                />
         </div>
+                </AnimatedComponentsScroll>
     )
 }

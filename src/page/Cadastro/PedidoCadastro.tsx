@@ -7,6 +7,7 @@ import PedidoForm from "@/components/Formularios/FormPedido/PedidoForm";
 import IPessoa from "@/utils/interfaces/IPessoa";
 import IBebida from "@/utils/interfaces/IBebida";
 import IPedido from "@/utils/interfaces/IPedido";
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll";
 
 export default function PedidoCadastro() {
     const { id } = useParams();
@@ -85,10 +86,12 @@ export default function PedidoCadastro() {
     }, [id]);
 
     return (
+        <AnimatedComponentsScroll idDiv="pedidosCadastro-scroll">
         <PedidoForm
             dadosExistentes={pedido}
             clientesFiltrados={clientesFiltrados}
             bebidasFiltradas={bebidasFiltradas}
         />
+        </AnimatedComponentsScroll>
     );
 }

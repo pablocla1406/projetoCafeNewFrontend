@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import BebidaForm from "@/components/Formularios/FormBebidas/BebidaForm"
 import { BebidaSchema } from "@/components/Formularios/FormBebidas/BebidaSchema"
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll"
 
 export default function BebidaCadastro(){
     const { id } = useParams();
@@ -30,7 +31,10 @@ export default function BebidaCadastro(){
                     imagem: dadosBebida.imagem || "",
                     status: dadosBebida.status
                 };
+
                 setBebida(formattedData);
+
+                
             } catch (error) {
                 console.error("Erro ao buscar dados:", error)
             }
@@ -44,8 +48,8 @@ export default function BebidaCadastro(){
     console.log("Current bebida state:", bebida);
 
     return(
-        <>
+        <AnimatedComponentsScroll idDiv="bebidasCadastro-scroll">
             <BebidaForm dados={bebida} />
-        </>
+        </AnimatedComponentsScroll>
     )
 }

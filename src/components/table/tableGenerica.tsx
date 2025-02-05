@@ -20,6 +20,13 @@ interface Column {
   keySubstituta?: string;
 }
 
+interface filtrosAdicionaisInterface {
+  key: string;
+  label: string;
+  render: () => React.ReactNode;
+
+}
+
 interface GenericTableProps {
   data: any[] | undefined;
   columns: Column[];
@@ -36,6 +43,7 @@ interface GenericTableProps {
   abrirDialogBotaoAdicional?: () => void
   NomeListagem: string
   textoAdicionalEmFiltros?: string
+  filtrosAdicionais?: filtrosAdicionaisInterface[]
 }
 
 export default function GenericTable({
@@ -54,6 +62,7 @@ export default function GenericTable({
   abrirDialogBotaoAdicional,
   NomeListagem,
   textoAdicionalEmFiltros,
+  filtrosAdicionais
 }: GenericTableProps) {
   const [filters, setFilters] = useState<Record<string, string>>({});
   const currentlyTheme = localStorage.getItem('theme')
@@ -70,6 +79,13 @@ export default function GenericTable({
     }
     setFilters(newFilters);
     onFilter(newFilters);
+  }
+
+
+
+  function handleClearFilters() {
+    setFilters({});
+    onFilter({});
   }
 
   return (
@@ -121,12 +137,33 @@ export default function GenericTable({
                       />
                     </div>
                   ))}
+
+                  {filtrosAdicionais && filtrosAdicionais.map((filtro) => (
+                    <div key={filtro.key} className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {filtro.label}
+                      </label>
+                      {filtro.render && filtro.render()}
+                    </div>
+                  ))}
+
                   {textoAdicionalEmFiltros && (
-             <div className="flex items-center p-4 m-4 bg-gray-100 rounded-lg shadow-md">
-                <Info className="h-11 w-11 text-muted-foreground" />
-                 <p className="ml-4 text-sm text-muted-foreground">{textoAdicionalEmFiltros}</p>
-            </div>
-              )}
+                    <div className="flex items-center p-4 m-4 bg-gray-100 rounded-lg shadow-md dark:bg-zinc-800">
+                      <Info className="h-11 w-11 text-muted-foreground" />
+                      <p className="ml-4 text-sm text-muted-foreground">{textoAdicionalEmFiltros}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-6 flex justify-end">
+                  <Button
+                    variant="destructive"
+                    className="w-32 items-center justify-center gap-2"
+                    onClick={handleClearFilters}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Limpar Filtros
+                  </Button>
                 </div>
               </AccordionContent>
             </AccordionItem>

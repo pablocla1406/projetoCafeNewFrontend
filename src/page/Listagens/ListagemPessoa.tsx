@@ -7,6 +7,8 @@ import { BadgeCheck, BadgeX, CircleUserRound } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ListagemSetores from "../../components/table/ListagemSetores";
 import { toast } from "sonner";
+import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animatedComponentsScroll";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup } from "@/components/ui/select";
 
 export default function ListagemPessoa(){
     const [pessoas, SetPessoas] = useState<IPessoa[]>([]);
@@ -15,6 +17,8 @@ export default function ListagemPessoa(){
     const [filters, SetFilters] = useState<Record<string, string>>({});
     const [open, setOpen] = useState(false);
     const [isAnimating, SetIsAnimating] = useState<string | null>(null);
+    const [statusFilter, setStatusFilter] = useState<string>('');
+
 
     async function fetchData(page: number = 1, currentFilters: Record<string, string> = {}) {
         try {
@@ -30,9 +34,20 @@ export default function ListagemPessoa(){
     }
 
     useEffect(() => {
-        console.log('useEffect triggered with filters:', filters);
         fetchData(currentPage, filters);
     }, [currentPage, filters]); 
+
+
+    async function buscarPorStatusAtivo(statusEscolhido: string) {
+        try {
+            setStatusFilter(statusEscolhido);
+            const filterAtualizado = { ...filters, status: statusEscolhido };
+            await fetchData(currentPage, filterAtualizado);   
+        } catch (error) {
+            toast.error('Erro ao buscar pessoas ativas');
+            throw error;
+        }
+    }
 
     
 
@@ -80,6 +95,29 @@ export default function ListagemPessoa(){
         }
     }
 
+
+
+
+    const filtrosAdicionaisPessoas = [
+        {
+            key: 'status',
+            label: 'Status',
+            render: () =>
+                <div className="w-full">
+                    <Select value={statusFilter} onValueChange={(value) => buscarPorStatusAtivo(value)}>
+                        <SelectTrigger className="w-full hover:text-[#4a3f35] hover:bg-white">
+                            <SelectValue placeholder="Selecione o status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="ATIVO">Ativo</SelectItem>
+                                <SelectItem value="INATIVO">Inativo</SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+        }
+    ]
     const columnPessoa  = [ 
         {
             key: 'imagem',
@@ -129,13 +167,14 @@ export default function ListagemPessoa(){
                     )}
                 </div>
             )},
-            filterable: true,
+            filterable: false,
         }
     ]
 
     
     return(
-        <>
+        <AnimatedComponentsScroll idDiv="pessoas-scroll">
+
                 <ListagemSetores
                 open={open}
                 setOpen={setOpen}
@@ -155,10 +194,11 @@ export default function ListagemPessoa(){
         botaoAdicional={true}
         nomeBotaoAdicional="Listagem Setores"
         abrirDialogBotaoAdicional={() => setOpen(true)}
-        NomeListagem="Colaboradoes"
+        NomeListagem="Colaboradores"
         textoAdicionalEmFiltros="Colaboradores com o status 'inativo' não estarão disponíveis para seleção ao criar um pedido"
+        filtrosAdicionais={filtrosAdicionaisPessoas}
         
         />
-    </>
+    </AnimatedComponentsScroll>
     )
 }
