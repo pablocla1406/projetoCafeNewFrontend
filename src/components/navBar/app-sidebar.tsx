@@ -9,10 +9,11 @@ import {
 } from "@/components/ui/sidebar"
 import { TituloNavBar } from "./tituloNavBar"
 import { Separator } from "@/components/ui/separator"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
 import { NavUser } from "./NavUser"
 import useBloquearLogin from "@/hooks/useBloquearLogin"
+import { toast } from "sonner"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -24,6 +25,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         block: 'start',
          })
     }
+    else {
+      toast.error("Você precisar estar na tela inicial para ir para essa seção")
+    }
+  }
+
+
+
+  const telaAtual = useParams()
+
+  if (telaAtual) {
+    
   }
   
   const isBlocked = useBloquearLogin()
@@ -55,7 +67,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
                   <div className="px-2 pb-2">
                     <div
-                      onClick={() => handleScroll('pedidos-section')} 
+                      onClick={() => handleScroll('pedidos-section')}
+                      
                     className="block py-2 text-sm text-center font-semibold text-[#4a3f35]/90 dark:text-white/90 transition-colors dark:hover:text-white hover:text-[#4a3f35] hover:cursor-pointer">
                       Meus Pedidos
                     </div>

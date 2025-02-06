@@ -6,7 +6,7 @@ export default function MelhoriaEnviaRelatoria() {
     return (
         <div className="w-full  mx-auto flex flex-row items-center rounded-md shadow-md bg-background">
             <ComponentParaEnquadramento >
-                <img src="images/RelatorioCafé.gif" alt="EnviaRelatorio" className="rounded-md w-full h-auto" />
+                <img src="images/EnviaRelatorioGif.gif" alt="EnviaRelatorio" className="rounded-md w-full h-auto" />
             </ComponentParaEnquadramento>
             <div className="w-1/2 flex flex-col justify-center pl-10">
                 <h1 className="text-2xl font-bold mb-6"> 📊 Relatórios com Apenas um Clique! </h1>

@@ -22,7 +22,7 @@ export default function MelhoriaEditarImagem() {
             </div>
 
             <ComponentParaEnquadramento>
-                <img src="images/EditarImagem.gif" alt="EditarImagem" className="rounded-md w-full h-auto" />
+                <img src="images/editarImagemGif.gif" alt="EditarImagem" className="rounded-md w-full h-auto" />
             </ComponentParaEnquadramento>
         </div>
     );
