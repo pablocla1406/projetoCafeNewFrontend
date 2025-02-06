@@ -8,7 +8,7 @@ import AnimatedComponentsScroll from "@/utils/functions/rolagemComEfeitos/animat
 export default function Home() {
   return (
     <div className="">
-      <div className="p-12 space-y-12">
+      <div className="mx-12 p-13 space-y-12">
         <div>
           <TextoCafeVariasLinguas />
           <Separator orientation="horizontal" className="my-4" />
