@@ -88,17 +88,7 @@ export function NavUser() {
 
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('pessoa')
-    localStorage.removeItem('permissao')
-
-    localStorage.removeItem('nome')
-    localStorage.removeItem('usuario')
-    localStorage.removeItem('imagem')
-    localStorage.removeItem('expirationTime')
-    
-    localStorage.removeItem('vite-ui-theme')
-    localStorage.removeItem('font')
+    localStorage.clear()
 
     window.location.href = '/login'
   }
@@ -107,7 +97,8 @@ export function NavUser() {
     return nome
       .split(' ')
       .map((nome) => nome.charAt(0).toUpperCase())
-      .join('');
+      .join('')
+      .slice(0, 2);
   }
 
   return (

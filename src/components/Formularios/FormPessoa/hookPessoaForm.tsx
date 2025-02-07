@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { pessoaFormSchema } from "./PessoaSchema";
 import { useEffect } from "react";
 import { compressImage } from "@/utils/functions/image/comprimirImage";
+import md5 from "md5";
 
 export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
     const navigate = useNavigate();
@@ -39,7 +40,6 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
         try {
             let imagemFinal: `data:image/${string};base64,${string}` | null = null;
     
-            // Processa a imagem se for um arquivo
             if (data.imagem instanceof File) {
                 try {
                     const imagemComprimida = await compressImage(data.imagem);
@@ -51,7 +51,10 @@ export default function HookPessoaForm(dadosExistentes?: PessoaFormSchema) {
                 imagemFinal = data.imagem as `data:image/${string};base64,${string}`;
             }
     
-            // Dados base que são comuns para POST e PUT
+            const senhaConvertidaMD5 = md5(data.senha);
+            data.senha = senhaConvertidaMD5;
+
+
             const dadosBase = {
                 nome: data.nome,
                 imagem: imagemFinal,

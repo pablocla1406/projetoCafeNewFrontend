@@ -18,6 +18,7 @@ export const PedidoSchema = z.object({
     quantidade: z.number().min(1, "Quantidade é obrigatória"),
     total: z.number(),
     data_compra: z.date(),
+    responsavel_id: z.string(),
 });
 
 export type PedidoSchema = z.infer<typeof PedidoSchema>;

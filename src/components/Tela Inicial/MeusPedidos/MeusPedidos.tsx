@@ -52,6 +52,7 @@ export default function MeusPedidos() {
         <div className="p-6">
             <div className="mb-8">
                 <h1 className="text-4xl font-extrabold m-12 text-gray-800 dark:text-white">Meus Pedidos</h1>
+                <p className="text-gray-500 dark:text-white">Dados a partir de Novembro de 2024</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-white dark:bg-zinc-800 rounded-lg shadow p-6">
                         <h2 className="text-lg font-semibold text-gray-700 mb-2 dark:text-white">Total Gasto</h2>

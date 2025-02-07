@@ -9,6 +9,7 @@ export default interface IPedido{
         id: string;
         nome: string
     };
+    responsavel_id: string;
     unitario: number,
     quantidade: number,
     total: number,

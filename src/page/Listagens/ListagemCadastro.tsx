@@ -58,6 +58,13 @@ export default function ListagemCadastro() {
     const collumnsPedidos = [
         {key: "cliente", header: "Cliente", filterable: true},
         {key: "bebida", header: "Bebida", filterable: true},
+        {key: "responsavel",
+        header: "Responsável",
+        render: (value: string | number) => {
+            const somentePrimeiroNome = value.toString().split(' ')[0];
+            return somentePrimeiroNome;
+        },
+        filterable: true},
         {key: "unitario",
         header: "Preço Unitário",
         render: (value: string | number) => {
@@ -169,7 +176,7 @@ export default function ListagemCadastro() {
                 href="cadastroPedido"
                 onPageChange={SetCurrentPage}
                 NomeListagem="Pedidos"
-                textoAdicionalEmFiltros="Pedidos que possuem colaboradores ativos ou bebidas ativas não podem ser excluídos."
+                textoAdicionalEmFiltros="Não é possível excluir pessoas ou bebidas que possuem pedidos vinculados."
                 />
         </div>
                 </AnimatedComponentsScroll>

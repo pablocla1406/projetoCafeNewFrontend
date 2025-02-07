@@ -2,22 +2,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PedidoSchema } from "./PedidoSchema";
 import { pedidoService } from "@/service/PedidoService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
-    console.log("HookPedidoForm recebeu dados:", dadosExistentes);
+
+    const [usuarioResponsavel, setUsuarioResponsavel] = useState({
+        id: "",
+    })
 
     const navigate = useNavigate();
 
-    // Função para ajustar a data quando recebemos do backend
     const parseDate = (dateStr: string | Date | undefined) => {
         if (!dateStr) return new Date();
         
         const date = new Date(dateStr);
         if (dadosExistentes?.id) {
-            // Se for edição, adiciona um dia ao receber do backend
             date.setDate(date.getDate() + 1);
         }
         return date;
@@ -40,16 +41,24 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
             quantidade: dadosExistentes?.quantidade || 1,
             total: dadosExistentes?.total || 0,
             data_compra: parseDate(dadosExistentes?.data_compra),
+            responsavel_id: dadosExistentes?.responsavel_id || "",
         }
     });
 
     const { handleSubmit, formState: { errors }, reset } = form;
 
     useEffect(() => {
+        const idUsuario = localStorage.getItem('id');
+        
+        if (idUsuario) {
+            setUsuarioResponsavel({ id: idUsuario });
+        }
+
         if (dadosExistentes) {
             const formattedData = {
                 ...dadosExistentes,
-                data_compra: parseDate(dadosExistentes.data_compra)
+                data_compra: parseDate(dadosExistentes.data_compra),
+                responsavel_id: usuarioResponsavel.id || ""
             };
             reset(formattedData);
         }
@@ -70,7 +79,7 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                 unitario: (data.unitario),
                 quantidade: data.quantidade,
                 total: data.total,
-                data_compra: data.data_compra
+                data_compra: data.data_compra,
             };
 
             if (data.id) {
@@ -82,7 +91,11 @@ export default function HookPedidoForm(dadosExistentes?: PedidoSchema) {
                 toast.success('Pedido atualizado com sucesso!');
                 navigate('/ListagemPedidos');
             } else {
-                await pedidoService.criarNovoCadastroId(dadosBasePedido);
+                const dadosPost = {
+                    ...dadosBasePedido,
+                    responsavel_id: usuarioResponsavel.id
+                };
+                await pedidoService.criarNovoCadastroId(dadosPost);
                 toast.success('Pedido criado com sucesso!');
                 navigate('/ListagemPedidos');
             }
