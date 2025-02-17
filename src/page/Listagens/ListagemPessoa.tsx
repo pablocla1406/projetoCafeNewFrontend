@@ -75,6 +75,9 @@ export default function ListagemPessoa(){
 
     const handleFilter = React.useCallback(
         debounce((newFilters: Record<string, string>) => {
+            if(!newFilters.status) {
+                setStatusFilter('');
+            }
             SetCurrentPage(1);
             SetFilters(newFilters);
         }, 800),
@@ -85,8 +88,7 @@ export default function ListagemPessoa(){
     async function ativarInativarStatus(id: string) {
         try {
             SetIsAnimating(id);
-            const response = await pessoaService.ativarOuInativarRegisto(id);
-            console.log('Resposta da ativação/inativação:', response);
+            await pessoaService.ativarOuInativarRegisto(id);
             await fetchData(currentPage, filters); 
         } catch (error) {
             toast.error('Erro ao ativar ou inativar status');

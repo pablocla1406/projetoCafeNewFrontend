@@ -17,6 +17,7 @@ import { toast } from "sonner"
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  
   const handleScroll = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
